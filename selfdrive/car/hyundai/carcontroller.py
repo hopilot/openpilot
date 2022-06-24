@@ -165,6 +165,8 @@ class CarController():
     self.joystick_debug_mode = self.params.get_bool("JoystickDebugMode")
     self.stopsign_enabled = self.params.get_bool("StopAtStopSign")
 
+    self.smooth_start = False
+
     self.cc_timer = 0
     self.on_speed_control = False
     self.curv_speed_control = False
@@ -728,6 +730,8 @@ class CarController():
       else:
         self.objdiststat = 0
 
+    setSpeed = round(set_speed * CV.MS_TO_KPH)
+
     if (CS.CP.sccBus != 0 or self.radarDisableActivated) and self.counter_init and self.longcontrol:
       if frame % 2 == 0:
         if self.radar_disabled_conf:
@@ -815,6 +819,7 @@ class CarController():
         elif self.radar_helper_option == 3:
           if 0 < CS.lead_distance <= 149:
             stock_weight = 0.0
+            self.smooth_start = False
             if accel > 0 and self.change_accel_fast and CS.out.vEgo < 11.:
               if aReqValue >= accel:
                 self.change_accel_fast = False
@@ -862,8 +867,12 @@ class CarController():
             self.stopped = False
             if self.stopsign_enabled:
               if self.sm['longitudinalPlan'].longitudinalPlanSource == LongitudinalPlanSource.stop:
+                self.smooth_start = True
                 accel = faccel
+              elif self.smooth_start and CS.clu_Vanz < setSpeed:
+                accel = interp(CS.clu_Vanz, [0, setSpeed], [faccel, aReqValue])
               else:
+                self.smooth_start = False
                 accel = aReqValue
             else:
               accel = aReqValue
@@ -904,7 +913,6 @@ class CarController():
       self.scc12cnt = CS.scc12init["CR_VSM_Alive"]
       self.scc11cnt = CS.scc11init["AliveCounterACC"]
 
-    setSpeed = round(set_speed * CV.MS_TO_KPH)
     str_log1 = 'MD={}  BS={:1.0f}/{:1.0f}  CV={:03.0f}/{:0.4f}  TQ={:03.0f}/{:03.0f}  VF={:03.0f}  ST={:03.0f}/{:01.0f}/{:01.0f}  FR={:03.0f}'.format(
       CS.out.cruiseState.modeSel, CS.CP.mdpsBus, CS.CP.sccBus, self.model_speed, abs(self.sm['controlsState'].curvature), abs(new_steer), abs(CS.out.steeringTorque), v_future, self.p.STEER_MAX, self.p.STEER_DELTA_UP, self.p.STEER_DELTA_DOWN, self.timer1.sampleTime())
     if CS.out.cruiseState.accActive:
