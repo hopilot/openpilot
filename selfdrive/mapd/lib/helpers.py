@@ -1,3 +1,4 @@
+import os
 import overpy
 import subprocess
 import requests
@@ -72,9 +73,12 @@ def is_local_osm_installed():
       """
 
   try:
-    completion = subprocess.run(["/data/osm/v0.7.56/bin/osm3s_query", "--db-dir=/data/osm/db", f'--request={q}'],
-                                check=True, capture_output=True)
-    print(f'OSM local query returned with exit code: {completion.returncode}')
+    if not os.path.isfile('/data/osm/v0.7.56/bin/osm3s_query'):
+      return False
+    else:
+      completion = subprocess.run(["/data/osm/v0.7.56/bin/osm3s_query", "--db-dir=/data/osm/db", f'--request={q}'],
+                                  check=True, capture_output=True)
+      print(f'OSM local query returned with exit code: {completion.returncode}')
 
     if completion.returncode != 0:
       return False
