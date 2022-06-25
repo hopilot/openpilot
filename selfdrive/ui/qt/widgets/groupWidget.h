@@ -48,7 +48,7 @@ protected:
 protected:  
   int m_bShow;
 
-  QVBoxLayout *CreateBoxLayout();
+  QVBoxLayout *CreateBoxLayout( int nID = 0);
 
 
 };
