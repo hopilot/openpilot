@@ -27,6 +27,9 @@ public:
 public slots:  
   virtual void refresh();
 
+private:
+  QVBoxLayout *m_pBoxLayout;
+  
 };
 
 

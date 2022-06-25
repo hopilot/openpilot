@@ -122,6 +122,17 @@ void CGroupWidget::hideEvent(QHideEvent *event)
 
 void CGroupWidget::refresh() 
 {
+
+  if(  m_bShow == 0 )
+  {
+    // pmyWidget->setVisible(false);
+    icon_label->setPixmap(pix_plus);
+  }
+  else
+  {
+    icon_label->setPixmap(pix_minus);
+    //pmyWidget->setVisible(true);
+  }  
 }
 
 

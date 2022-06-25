@@ -21,7 +21,7 @@
 
 CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" ) 
 {
-  QVBoxLayout *pBox = CreateBoxLayout();
+  m_pBoxLayout = CreateBoxLayout();
 
   MenuControl *pMenu1 = new MenuControl( 
     "OpkrMaxSteeringAngle",
@@ -30,7 +30,7 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
     "../assets/offroad/icon_shell.png"    
     );
   pMenu1->SetControl( 10, 180, 5 );
-  pBox->addWidget( pMenu1 );
+  m_pBoxLayout->addWidget( pMenu1 );
 
 
   // preset1 buttons
@@ -84,9 +84,9 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
     }
   });
 
-  pBox->addLayout( presetone_layout );
-  pBox->addLayout( presettwo_layout );
-  pBox->addWidget( paraminit_btn );
+  m_pBoxLayout->addLayout( presetone_layout );
+  m_pBoxLayout->addLayout( presettwo_layout );
+  m_pBoxLayout->addWidget( paraminit_btn );
 
 
   main_layout->addStretch();
@@ -95,6 +95,17 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
 
 void CPresetWidget::refresh()
 {
+  CGroupWidget::refresh();
+
+  if(  m_bShow == 0 )
+  {
+    m_pBoxLayout->hide();
+  }
+  else
+  {
+    m_pBoxLayout->show();
+  }
+  
 }
 
 
