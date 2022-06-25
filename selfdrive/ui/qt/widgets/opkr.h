@@ -15,6 +15,13 @@
 #include "selfdrive/ui/qt/widgets/groupWidget.h"
 #include "selfdrive/ui/ui.h"
 
+class CGitGroup : public CGroupWidget 
+{
+  Q_OBJECT
+
+public:
+  explicit CGitGroup( void *parent=0);
+};
 
 
 class CUtilWidget : public CGroupWidget 

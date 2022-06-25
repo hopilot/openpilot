@@ -21,7 +21,7 @@
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
 
-CGitGroup::CGitGroup() : CGroupWidget( "git process" ) 
+CGitGroup::CGitGroup(void *p) : CGroupWidget( "git process" ) 
 {
    QVBoxLayout *pBoxLayout = CreateBoxLayout();
 
@@ -44,8 +44,8 @@ CGitGroup::CGitGroup() : CGroupWidget( "git process" )
   });
 
 
-pBoxLayout->addWidget( gitresetbtn );
-pBoxLayout->addWidget( gitpullcanceltbtn );
+  pBoxLayout->addWidget( gitresetbtn );
+  pBoxLayout->addWidget( gitpullcanceltbtn );
 }
 
 CUtilWidget::CUtilWidget( void *p ) : CGroupWidget( "Util Program" ) 
