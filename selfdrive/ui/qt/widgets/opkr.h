@@ -17,6 +17,14 @@
 
 
 
+class CUtilWidget : public CGroupWidget 
+{
+  Q_OBJECT
+
+public:
+  explicit CUtilWidget();
+}
+
 class CPresetWidget : public CGroupWidget 
 {
   Q_OBJECT

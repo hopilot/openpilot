@@ -19,6 +19,37 @@
 
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
+
+CUtilWidget::CUtilWidget() : CGroupWidget( "Util Program" ) 
+{
+   QVBoxLayout *pBoxLayout = CreateBoxLayout();
+
+  const char* open_settings = "am start -a android.intent.action.MAIN -n com.android.settings/.Settings";
+  auto open_settings_btn = new ButtonControl("Open Android Settings", "RUN");
+  QObject::connect(open_settings_btn, &ButtonControl::clicked, [=]() {
+    emit closeSettings();
+    std::system(open_settings);
+  });
+
+  const char* softkey = "am start com.gmd.hidesoftkeys/com.gmd.hidesoftkeys.MainActivity";
+  auto softkey_btn = new ButtonControl("SoftKey RUN/SET", "RUN");
+  QObject::connect(softkey_btn, &ButtonControl::clicked, [=]() {
+    emit closeSettings();
+    std::system(softkey);
+  });
+
+  auto mixplorer_btn = new ButtonControl("RUN Mixplorer", "RUN");
+  QObject::connect(mixplorer_btn, &ButtonControl::clicked, [=]() {
+	  emit closeSettings();
+    std::system("/data/openpilot/selfdrive/assets/addon/script/run_mixplorer.sh");
+  });
+
+
+  pBoxLayout->addWidget( open_settings_btn );
+  pBoxLayout->addWidget( softkey_btn );
+  pBoxLayout->addWidget( mixplorer_btn );  
+}
+
 CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" ) 
 {
   QVBoxLayout *pBoxLayout = CreateBoxLayout();
