@@ -15,7 +15,7 @@
 #include "selfdrive/common/params.h"
 
 #include "selfdrive/ui/qt/api.h"
-#include "selfdrive/ui/qt/offload/settings.h"
+#include "selfdrive/ui/qt/offroad/settings.h"
 #include "selfdrive/ui/qt/widgets/input.h"
 
 #include "selfdrive/ui/qt/widgets/opkr.h"
