@@ -184,7 +184,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   }
 
   // metrics
-  drawMetric(p, "SYS TEMP", temp_status.first, temp_status.second, 378);
+  drawMetric(p, "SYS TEMP", temp_status.first, temp_status.second, 400);
   drawMetric(p, panda_status.first, "", panda_status.second, 558);
   drawMetric(p, connect_status.first, "", connect_status.second, 716);
 
