@@ -343,7 +343,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
   }
 
   addItem(new GitHash());
-  addItem(new GitPullOnBootToggle());
+ // addItem(new GitPullOnBootToggle());
 
   addItem(new CPresetWidget());
 

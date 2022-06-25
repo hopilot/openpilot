@@ -43,7 +43,7 @@ CGitGroup::CGitGroup(void *p) : CGroupWidget( "git process" )
     GitPullCancel::confirm(this);
   });
 
-
+ pBoxLayout->addWidget( new GitPullOnBootToggle() );
   pBoxLayout->addWidget( gitresetbtn );
   pBoxLayout->addWidget( gitpullcanceltbtn );
 }
