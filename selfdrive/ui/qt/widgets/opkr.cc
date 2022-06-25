@@ -10,7 +10,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QDateTime>
-#include <QFrame>
+#include <QVBoxLayout>
 
 #include "selfdrive/common/params.h"
 
