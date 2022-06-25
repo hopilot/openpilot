@@ -25,7 +25,7 @@ public:
   explicit CPresetWidget();
 
 public slots:  
-  virtual void refresh();
+  virtual void refresh(int nID = 0);
 
   
 };

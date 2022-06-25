@@ -27,7 +27,7 @@ private:
   void hideEvent(QHideEvent *event) override;
 
 public slots:  
-  virtual void refresh();
+  virtual void refresh( int nID = 0 );
 
 
 

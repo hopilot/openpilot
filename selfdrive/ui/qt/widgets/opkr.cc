@@ -92,9 +92,9 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
   refresh();
 }
 
-void CPresetWidget::refresh()
+void CPresetWidget::refresh( int nID )
 {
-  CGroupWidget::refresh();
+  CGroupWidget::refresh( nID );
 
   
 }

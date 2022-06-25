@@ -13,7 +13,7 @@ CGroupWidget::CGroupWidget( QString  title ) : QFrame(0)
 {
   m_bShow = 0;
 
-  memset( m_pFrame, null, sizeof(m_pFrame) );
+  memset( m_pFrame, 0, sizeof(m_pFrame) );
 
   main_layout = new QVBoxLayout(this);
   main_layout->setMargin(0);
@@ -129,7 +129,7 @@ void CGroupWidget::hideEvent(QHideEvent *event)
   refresh();
 }
 
-void CGroupWidget::refresh() 
+void CGroupWidget::refresh( int nID ) 
 {
 
   if(  m_bShow == 0 )
@@ -146,8 +146,14 @@ void CGroupWidget::refresh()
  for( int i = 0; i<10; i++ )
  {
   if(  m_pFrame[i] == nullptr ) continue;
+  
   if(  m_bShow == 0 )   m_pFrame[i]->hide();
-  else m_pFrame[i]->show();
+  else 
+  {
+      if( nID == i ) m_pFrame[i]->show();
+      else m_pFrame[i]->hide();
+  }
+ 
  }
 
 }
