@@ -95,7 +95,7 @@ CPresetWidget::CUtilWidget() : CGroupWidget( "Parameter Preset" )
   refresh();
 }
 
-void CUtilWidget::refresh()
+void CPresetWidget::refresh()
 {
 }
 
