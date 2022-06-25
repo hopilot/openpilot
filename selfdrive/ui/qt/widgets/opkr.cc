@@ -21,7 +21,7 @@
 
 
 
-CPresetWidget::CUtilWidget() : CGroupWidget( "Parameter Preset" ) 
+CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" ) 
 {
   QFrame *pFrame = CreateBoxLayout();
 
