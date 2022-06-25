@@ -348,15 +348,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
   addItem(new CPresetWidget());
 
   addItem(new CGitGroup());
-  const char* panda_flashing = "/data/openpilot/selfdrive/assets/addon/script/panda_flashing.sh ''";
-  auto pandaflashingtbtn = new ButtonControl("Panda Flashing", "RUN");
-  QObject::connect(pandaflashingtbtn, &ButtonControl::clicked, [=]() {
-    if (ConfirmationDialog::confirm("Panda's green LED blinks quickly during panda flashing. Never turn off or disconnect the device arbitrarily. Do you want to proceed?", this)) {
-      std::system(panda_flashing);
-    }
-  });
 
-  addItem(pandaflashingtbtn);
   addItem(new SwitchOpenpilot()); // opkr
   addItem(new BranchSelectCombo()); // opkr
 

@@ -22,7 +22,7 @@ class CUtilWidget : public CGroupWidget
   Q_OBJECT
 
 public:
-  explicit CUtilWidget( SoftwarePanel *parent );
+  explicit CUtilWidget( void *parent );
 };
 
 

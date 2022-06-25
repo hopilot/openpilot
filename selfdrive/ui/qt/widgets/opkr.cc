@@ -15,6 +15,7 @@
 #include "selfdrive/common/params.h"
 
 #include "selfdrive/ui/qt/api.h"
+#include "selfdrive/ui/qt/offload/settings.h"
 #include "selfdrive/ui/qt/widgets/input.h"
 
 #include "selfdrive/ui/qt/widgets/opkr.h"
@@ -47,9 +48,20 @@ pBoxLayout->addWidget( gitresetbtn );
 pBoxLayout->addWidget( gitpullcanceltbtn );
 }
 
-CUtilWidget::CUtilWidget( SoftwarePanel *parent ) : CGroupWidget( "Util Program" ) 
+CUtilWidget::CUtilWidget( void *p ) : CGroupWidget( "Util Program" ) 
 {
    QVBoxLayout *pBoxLayout = CreateBoxLayout();
+
+   SoftwarePanel *parent = (SoftwarePanel*)p;
+
+  const char* panda_flashing = "/data/openpilot/selfdrive/assets/addon/script/panda_flashing.sh ''";
+  auto pandaflashingtbtn = new ButtonControl("Panda Flashing", "RUN");
+  QObject::connect(pandaflashingtbtn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Panda's green LED blinks quickly during panda flashing. Never turn off or disconnect the device arbitrarily. Do you want to proceed?", this)) {
+      std::system(panda_flashing);
+    }
+  });
+
 
   const char* open_settings = "am start -a android.intent.action.MAIN -n com.android.settings/.Settings";
   auto open_settings_btn = new ButtonControl("Open Android Settings", "RUN");
@@ -71,7 +83,8 @@ CUtilWidget::CUtilWidget( SoftwarePanel *parent ) : CGroupWidget( "Util Program"
     std::system("/data/openpilot/selfdrive/assets/addon/script/run_mixplorer.sh");
   });
 
-
+  
+  pBoxLayout->addWidget( pandaflashingtbtn );
   pBoxLayout->addWidget( open_settings_btn );
   pBoxLayout->addWidget( softkey_btn );
   pBoxLayout->addWidget( mixplorer_btn );  
