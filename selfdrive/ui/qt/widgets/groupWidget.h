@@ -46,7 +46,7 @@ protected:
   QPushButton *title_label;
 
 protected:  
-  int m_bShow
+  int m_bShow;
 
   QVBoxLayout *CreateBoxLayout();
 };
