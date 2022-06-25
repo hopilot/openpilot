@@ -105,8 +105,6 @@ void CSteerWidget::FrameSmooth(QWidget *parent)
   )");
   
   main_layout->addWidget(m_pChildFrame1);
-
-
   QVBoxLayout *menu_layout = new QVBoxLayout(m_pChildFrame1);
  // menu_layout->setContentsMargins(32, 5, 32, 32);
 

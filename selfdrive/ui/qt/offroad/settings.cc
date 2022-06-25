@@ -345,6 +345,9 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
   addItem(new GitHash());
   addItem(new GitPullOnBootToggle());
 
+  addItem(new CPresetWidget());
+
+/*
   // preset1 buttons
   QHBoxLayout *presetone_layout = new QHBoxLayout();
   presetone_layout->setSpacing(50);
@@ -400,7 +403,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
   addItem(presettwo_layout);
 
   addItem(paraminit_btn);
-
+*/
   const char* git_reset = "/data/openpilot/selfdrive/assets/addon/script/git_reset.sh ''";
   auto gitresetbtn = new ButtonControl("Git Reset", "RUN");
   QObject::connect(gitresetbtn, &ButtonControl::clicked, [=]() {

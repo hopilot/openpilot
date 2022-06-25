@@ -19,6 +19,88 @@
 
 #include "selfdrive/ui/ui.h"
 
+
+
+CPresetWidget::CUtilWidget() : CGroupWidget( "Parameter Preset" ) 
+{
+  QFrame *pFrame = CreateBoxLayout();
+
+  MenuControl *pMenu1 = new MenuControl( 
+    "OpkrMaxSteeringAngle",
+    "Driver to Steer Angle",
+    "mprove the edge between the driver and the openpilot.",
+    "../assets/offroad/icon_shell.png"    
+    );
+  pMenu1->SetControl( 10, 180, 5 );
+  pFrame->addWidget( pMenu1 );
+
+
+  // preset1 buttons
+  QHBoxLayout *presetone_layout = new QHBoxLayout();
+  presetone_layout->setSpacing(50);
+
+  QPushButton *presetoneload_btn = new QPushButton("Load Preset1");
+  presetoneload_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
+  presetone_layout->addWidget(presetoneload_btn);
+  QObject::connect(presetoneload_btn, &QPushButton::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Do you want to load Preset1?", this)) {
+      QProcess::execute("/data/openpilot/selfdrive/assets/addon/script/load_preset1.sh");
+    }
+  });
+
+  QPushButton *presetonesave_btn = new QPushButton("Save Preset1");
+  presetonesave_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
+  presetone_layout->addWidget(presetonesave_btn);
+  QObject::connect(presetonesave_btn, &QPushButton::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Do you want to save Preset1?", this)) {
+      QProcess::execute("/data/openpilot/selfdrive/assets/addon/script/save_preset1.sh");
+    }
+  });
+
+  // preset2 buttons
+  QHBoxLayout *presettwo_layout = new QHBoxLayout();
+  presettwo_layout->setSpacing(50);
+
+  QPushButton *presettwoload_btn = new QPushButton("Load Preset2");
+  presettwoload_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
+  presettwo_layout->addWidget(presettwoload_btn);
+  QObject::connect(presettwoload_btn, &QPushButton::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Do you want to load Preset2?", this)) {
+      QProcess::execute("/data/openpilot/selfdrive/assets/addon/script/load_preset2.sh");
+    }
+  });
+
+  QPushButton *presettwosave_btn = new QPushButton("Save Preset2");
+  presettwosave_btn->setStyleSheet("height: 120px;border-radius: 15px;background-color: #393939;");
+  presettwo_layout->addWidget(presettwosave_btn);
+  QObject::connect(presettwosave_btn, &QPushButton::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Do you want to save Preset2?", this)) {
+      QProcess::execute("/data/openpilot/selfdrive/assets/addon/script/save_preset2.sh");
+    }
+  });
+
+  auto paraminit_btn = new ButtonControl("Parameters Init", "RUN");
+  QObject::connect(paraminit_btn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Initialize parameters. Changes in the EON menu are changed to the initial set value. Do you want to proceed?", this)){
+      QProcess::execute("/data/openpilot/selfdrive/assets/addon/script/init_param.sh");
+    }
+  });
+
+  pFrame->addWidget( presetone_layout );
+  pFrame->addWidget( presettwo_layout );
+  pFrame->addWidget( paraminit_btn );
+
+
+  main_layout->addStretch();
+  refresh();
+}
+
+void CUtilWidget::refresh()
+{
+}
+
+
+
 SwitchOpenpilot::SwitchOpenpilot() : ButtonControl("Change Repo/Branch", "", "Change to another open pilot code. You can change it by entering ID/repository/branch.") {
   QObject::connect(this, &ButtonControl::clicked, [=]() {
     if (text() == "CHANGE") {
