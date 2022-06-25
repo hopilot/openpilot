@@ -1,5 +1,3 @@
-#include "selfdrive/ui/qt/widgets/opkr.h"
-
 #include <algorithm>
 #include <iterator>
 
@@ -12,18 +10,18 @@
 #include <QAction>
 #include <QMenu>
 #include <QDateTime>
+#include <QFrame>
 
 #include "selfdrive/common/params.h"
+
 #include "selfdrive/ui/qt/api.h"
 #include "selfdrive/ui/qt/widgets/input.h"
 
-#include "selfdrive/ui/ui.h"
-
-
+#include "selfdrive/ui/qt/widgets/opkr.h"
 
 CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" ) 
 {
-  QFrame *pFrame = CreateBoxLayout();
+  QVBoxLayout *pBox = CreateBoxLayout();
 
   MenuControl *pMenu1 = new MenuControl( 
     "OpkrMaxSteeringAngle",
@@ -32,7 +30,7 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
     "../assets/offroad/icon_shell.png"    
     );
   pMenu1->SetControl( 10, 180, 5 );
-  pFrame->addWidget( pMenu1 );
+  pBox->addWidget( pMenu1 );
 
 
   // preset1 buttons
@@ -86,9 +84,9 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
     }
   });
 
-  pFrame->addWidget( presetone_layout );
-  pFrame->addWidget( presettwo_layout );
-  pFrame->addWidget( paraminit_btn );
+  pBox->addWidget( presetone_layout );
+  pBox->addWidget( presettwo_layout );
+  pBox->addWidget( paraminit_btn );
 
 
   main_layout->addStretch();
