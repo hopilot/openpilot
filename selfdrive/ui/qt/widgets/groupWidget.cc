@@ -35,7 +35,7 @@ CGroupWidget::CGroupWidget( QString  title ) : QFrame(0)
 
 
   // title
-  QString  title = "Steer control Method";
+ // QString  title = "Steer control Method";
   title_label = new QPushButton(title);
   title_label->setFixedHeight(120);
   title_label->setStyleSheet("font-size: 50px; font-weight: 400; text-align: left");
