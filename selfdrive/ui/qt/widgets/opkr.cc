@@ -84,9 +84,9 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
     }
   });
 
-  pBox->addWidget( presetone_layout );
-  pBox->addWidget( presettwo_layout );
-  pBox->addWidget( paraminit_btn );
+  pBox->addLayout( presetone_layout );
+  pBox->addLayout( presettwo_layout );
+  pBox->addLayout( paraminit_btn );
 
 
   main_layout->addStretch();

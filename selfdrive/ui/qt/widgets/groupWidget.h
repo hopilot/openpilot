@@ -49,5 +49,7 @@ protected:
   int m_bShow;
 
   QVBoxLayout *CreateBoxLayout();
+
+
 };
 
