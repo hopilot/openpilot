@@ -347,24 +347,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
 
   addItem(new CPresetWidget());
 
-
-  const char* git_reset = "/data/openpilot/selfdrive/assets/addon/script/git_reset.sh ''";
-  auto gitresetbtn = new ButtonControl("Git Reset", "RUN");
-  QObject::connect(gitresetbtn, &ButtonControl::clicked, [=]() {
-    if (ConfirmationDialog::confirm("Apply the latest commitment details of Remote Git after forced initialization of local changes. Do you want to proceed?", this)){
-      std::system(git_reset);
-    }
-  });
-  addItem(gitresetbtn);
-
-  const char* gitpull_cancel = "/data/openpilot/selfdrive/assets/addon/script/gitpull_cancel.sh ''";
-  auto gitpullcanceltbtn = new ButtonControl("GitPull Restore", "RUN");
-  QObject::connect(gitpullcanceltbtn, &ButtonControl::clicked, [=]() {
-    std::system(gitpull_cancel);
-    GitPullCancel::confirm(this);
-  });
-  addItem(gitpullcanceltbtn);
-
+  addItem(new CGitGroup());
   const char* panda_flashing = "/data/openpilot/selfdrive/assets/addon/script/panda_flashing.sh ''";
   auto pandaflashingtbtn = new ButtonControl("Panda Flashing", "RUN");
   QObject::connect(pandaflashingtbtn, &ButtonControl::clicked, [=]() {

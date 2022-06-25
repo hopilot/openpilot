@@ -20,6 +20,33 @@
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
 
+CGitGroup::CGitGroup() : CGroupWidget( "git process" ) 
+{
+   QVBoxLayout *pBoxLayout = CreateBoxLayout();
+
+
+
+  const char* git_reset = "/data/openpilot/selfdrive/assets/addon/script/git_reset.sh ''";
+  auto gitresetbtn = new ButtonControl("Git Reset", "RUN");
+  QObject::connect(gitresetbtn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Apply the latest commitment details of Remote Git after forced initialization of local changes. Do you want to proceed?", this)){
+      std::system(git_reset);
+    }
+  });
+
+
+  const char* gitpull_cancel = "/data/openpilot/selfdrive/assets/addon/script/gitpull_cancel.sh ''";
+  auto gitpullcanceltbtn = new ButtonControl("GitPull Restore", "RUN");
+  QObject::connect(gitpullcanceltbtn, &ButtonControl::clicked, [=]() {
+    std::system(gitpull_cancel);
+    GitPullCancel::confirm(this);
+  });
+
+
+pBoxLayout->addWidget( gitresetbtn );
+pBoxLayout->addWidget( gitpullcanceltbtn );
+}
+
 CUtilWidget::CUtilWidget() : CGroupWidget( "Util Program" ) 
 {
    QVBoxLayout *pBoxLayout = CreateBoxLayout();
@@ -27,20 +54,20 @@ CUtilWidget::CUtilWidget() : CGroupWidget( "Util Program" )
   const char* open_settings = "am start -a android.intent.action.MAIN -n com.android.settings/.Settings";
   auto open_settings_btn = new ButtonControl("Open Android Settings", "RUN");
   QObject::connect(open_settings_btn, &ButtonControl::clicked, [=]() {
-    emit closeSettings();
+    emit SettingsWindow::closeSettings();
     std::system(open_settings);
   });
 
   const char* softkey = "am start com.gmd.hidesoftkeys/com.gmd.hidesoftkeys.MainActivity";
   auto softkey_btn = new ButtonControl("SoftKey RUN/SET", "RUN");
   QObject::connect(softkey_btn, &ButtonControl::clicked, [=]() {
-    emit closeSettings();
+    emit SettingsWindow::closeSettings();
     std::system(softkey);
   });
 
   auto mixplorer_btn = new ButtonControl("RUN Mixplorer", "RUN");
   QObject::connect(mixplorer_btn, &ButtonControl::clicked, [=]() {
-	  emit closeSettings();
+	  emit SettingsWindow::closeSettings();
     std::system("/data/openpilot/selfdrive/assets/addon/script/run_mixplorer.sh");
   });
 
