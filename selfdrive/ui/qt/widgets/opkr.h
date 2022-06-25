@@ -22,8 +22,9 @@ class CUtilWidget : public CGroupWidget
   Q_OBJECT
 
 public:
-  explicit CUtilWidget();
-}
+  explicit CUtilWidget( SoftwarePanel *parent );
+};
+
 
 class CPresetWidget : public CGroupWidget 
 {

@@ -361,7 +361,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
   addItem(new BranchSelectCombo()); // opkr
 
 
-  addItem(new CUtilWidget());
+  addItem(new CUtilWidget(this));
 
   addItem(uninstallBtn);
   fs_watch = new QFileSystemWatcher(this);
