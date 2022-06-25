@@ -36,13 +36,13 @@ public slots:
   QPixmap  pix_plus;
   QPixmap  pix_minus;
 
-
+protected:
+  QFrame  *m_pFrame[10];
 
 
 protected:
   QVBoxLayout *main_layout;
   QHBoxLayout *hlayout;
-
   QPushButton *title_label;
 
 protected:  

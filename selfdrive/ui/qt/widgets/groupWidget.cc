@@ -13,6 +13,7 @@ CGroupWidget::CGroupWidget( QString  title ) : QFrame(0)
 {
   m_bShow = 0;
 
+  memset( m_pFrame, null, sizeof(m_pFrame) );
 
   main_layout = new QVBoxLayout(this);
   main_layout->setMargin(0);
@@ -87,8 +88,13 @@ CGroupWidget::~CGroupWidget()
 }
 
 
-QVBoxLayout *CGroupWidget::CreateBoxLayout()
+QVBoxLayout *CGroupWidget::CreateBoxLayout( int nID )
 {
+  if( nID < 0 ) nID = 0;
+  else if( nID >= 10 ) return nullptr;
+  
+  if( m_pFrame[nID]) return nullptr;
+
   QFrame  *pFrame = new QFrame(); 
   pFrame->setContentsMargins(40, 10, 40, 50);
   pFrame->setStyleSheet(R"(
@@ -102,6 +108,9 @@ QVBoxLayout *CGroupWidget::CreateBoxLayout()
     } 
   )");
   
+
+  m_pFrame[nID] = pFrame;
+
   main_layout->addWidget(pFrame);
   QVBoxLayout *layout = new QVBoxLayout(pFrame);
 
@@ -133,6 +142,14 @@ void CGroupWidget::refresh()
     icon_label->setPixmap(pix_minus);
     //pmyWidget->setVisible(true);
   }  
+ 
+ for( int i = 0; i<10; i++ )
+ {
+  if(  m_pFrame[i] == nullptr ) continue;
+  if(  m_bShow == 0 )   m_pFrame[i]->hide();
+  else m_pFrame[i]->show();
+ }
+
 }
 
 

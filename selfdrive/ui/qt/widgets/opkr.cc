@@ -21,8 +21,8 @@
 
 CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" ) 
 {
-  m_pBoxLayout = CreateBoxLayout();
-
+  QVBoxLayout *pBoxLayout = CreateBoxLayout();
+/*
   MenuControl *pMenu1 = new MenuControl( 
     "OpkrMaxSteeringAngle",
     "Driver to Steer Angle",
@@ -31,8 +31,7 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
     );
   pMenu1->SetControl( 10, 180, 5 );
   m_pBoxLayout->addWidget( pMenu1 );
-
-
+*/
   // preset1 buttons
   QHBoxLayout *presetone_layout = new QHBoxLayout();
   presetone_layout->setSpacing(50);
@@ -84,9 +83,9 @@ CPresetWidget::CPresetWidget() : CGroupWidget( "Parameter Preset" )
     }
   });
 
-  m_pBoxLayout->addLayout( presetone_layout );
-  m_pBoxLayout->addLayout( presettwo_layout );
-  m_pBoxLayout->addWidget( paraminit_btn );
+  pBoxLayout->addLayout( presetone_layout );
+  pBoxLayout->addLayout( presettwo_layout );
+  pBoxLayout->addWidget( paraminit_btn );
 
 
   main_layout->addStretch();
@@ -97,14 +96,6 @@ void CPresetWidget::refresh()
 {
   CGroupWidget::refresh();
 
-  if(  m_bShow == 0 )
-  {
-    m_pBoxLayout->hide();
-  }
-  else
-  {
-    m_pBoxLayout->show();
-  }
   
 }
 
