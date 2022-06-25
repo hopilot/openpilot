@@ -349,8 +349,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
 
   addItem(new CGitGroup());
 
-  addItem(new SwitchOpenpilot()); // opkr
-  addItem(new BranchSelectCombo()); // opkr
+
 
 
   addItem(new CUtilWidget(this));

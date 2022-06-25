@@ -21,7 +21,7 @@
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
 
-CGitGroup::CGitGroup(void *p) : CGroupWidget( "git process" ) 
+CGitGroup::CGitGroup(void *p) : CGroupWidget( "Git Branch Change" ) 
 {
    QVBoxLayout *pBoxLayout = CreateBoxLayout();
 
@@ -43,9 +43,15 @@ CGitGroup::CGitGroup(void *p) : CGroupWidget( "git process" )
     GitPullCancel::confirm(this);
   });
 
- pBoxLayout->addWidget( new GitPullOnBootToggle() );
+
+
+
+  pBoxLayout->addWidget( new GitPullOnBootToggle() );
   pBoxLayout->addWidget( gitresetbtn );
   pBoxLayout->addWidget( gitpullcanceltbtn );
+
+  pBoxLayout->addWidget( new SwitchOpenpilot() ); // opkr
+  pBoxLayout->addWidget( new BranchSelectCombo() ); // opkr
 }
 
 CUtilWidget::CUtilWidget( void *p ) : CGroupWidget( "Util Program" ) 
