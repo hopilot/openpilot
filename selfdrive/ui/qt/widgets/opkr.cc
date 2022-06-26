@@ -21,7 +21,7 @@
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
 
-CLateralControlGroup::CLateralControlGroup() : CGroupWidget( "Lateral Control" ) 
+CLateralControlGroup::CLateralControlGroup() : CGroupWidget( "Lateral Control(Reboot)" ) 
 {
   QString str_param = "LateralControlMethod";
 
