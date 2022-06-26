@@ -49,10 +49,8 @@ class TestMsg:
 
 
 
-def main():
-  te = TestMsg
-  te.test_msg()
 
 
 if __name__ == "__main__":
-  main()
+  te = TestMsg
+  te.test_msg()
