@@ -365,10 +365,11 @@ class Controls:
         self.events.add(EventName.commIssue)
 
       if not self.logged_comm_issue:
-        invalid = [s for s, valid in self.sm.valid.items() if not valid]
-        not_alive = [s for s, alive in self.sm.alive.items() if not alive]
-        cloudlog.event("commIssue", invalid=invalid, not_alive=not_alive, can_error=self.can_rcv_error, error=True)
         self.logged_comm_issue = True        
+        service_list = self.sm.alive.keys()
+        for s in service_list:
+          if s not in self.sm.ignore_alive:
+            print('{} = alive={} freq_ok={} valid={}'.format( s, self.sm.alive[s], self.sm.freq_ok[s], self.sm.valid[s] ) )
     else:
       self.logged_comm_issue = False
 
