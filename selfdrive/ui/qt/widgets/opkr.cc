@@ -21,6 +21,27 @@
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
 
+CPandaGroup::CPandaGroup() : CGroupWidget( "Panda Values" ) 
+{
+   QVBoxLayout *pBoxLayout = CreateBoxLayout();
+
+  pBoxLayout->addWidget(new MaxSteer());
+  pBoxLayout->addWidget(new MaxRTDelta());
+  pBoxLayout->addWidget(new MaxRateUp());
+  pBoxLayout->addWidget(new MaxRateDown());
+
+
+  const char* p_edit_go = "/data/openpilot/selfdrive/assets/addon/script/p_edit.sh ''";
+  auto peditbtn = new ButtonControl("Change Panda Values", "RUN");
+  QObject::connect(peditbtn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Apply the changed panda value. Do you want to proceed? It automatically reboots.", this)){
+      std::system(p_edit_go);
+    }
+  });
+  pBoxLayout->addWidget(peditbtn);
+}  
+
+
 CGitGroup::CGitGroup(void *p) : CGroupWidget( "Git Branch Change" ) 
 {
    QVBoxLayout *pBoxLayout = CreateBoxLayout();
@@ -47,11 +68,13 @@ CGitGroup::CGitGroup(void *p) : CGroupWidget( "Git Branch Change" )
 
 
   pBoxLayout->addWidget( new GitPullOnBootToggle() );
-  pBoxLayout->addWidget( gitresetbtn );
-  pBoxLayout->addWidget( gitpullcanceltbtn );
+
 
   pBoxLayout->addWidget( new SwitchOpenpilot() ); // opkr
   pBoxLayout->addWidget( new BranchSelectCombo() ); // opkr
+
+  pBoxLayout->addWidget( gitresetbtn );
+  pBoxLayout->addWidget( gitpullcanceltbtn );  
 }
 
 CUtilWidget::CUtilWidget( void *p ) : CGroupWidget( "Util Program" ) 
