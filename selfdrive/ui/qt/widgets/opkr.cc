@@ -21,6 +21,130 @@
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
 
+CLateralControlGroup::CLateralControlGroup() : CGroupWidget( "Lateral Control" ) 
+{
+  QString str_param = "LateralControlMethod";
+
+  auto str = QString::fromStdString( params.get( str_param.toStdString() ) );
+  int value = str.toInt();
+  m_nMethod = value;     
+
+
+  // label
+  method_label = new QPushButton("method"); // .setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+  method_label->setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #00A12E;
+  )");
+  method_label->setFixedSize( 500, 100);
+  hlayout->addWidget(method_label);
+  connect(method_label, &QPushButton::clicked, [=]() {
+    m_nMethod += 1;
+    if( m_nMethod > LAT_ALL )
+      m_nMethod = 0;
+
+    QString values = QString::number(m_nMethod);
+    params.put( str_param.toStdString(), values.toStdString());      
+    refresh();
+  });
+
+  main_layout->addLayout(hlayout);
+
+  FramePID( CreateBoxLayout(LAT_PID) );
+  FrameINDI( CreateBoxLayout(LAT_INDI) );
+  FrameLQR( CreateBoxLayout(LAT_LQR) );
+  FrameTORQUE( CreateBoxLayout(LAT_TOROUE));
+  FrameMULTI( CreateBoxLayout(LAT_MULTI) );
+
+  refresh();
+}
+
+void  CLateralControlGroup::FramePID(QVBoxLayout *layout)
+{
+  // QVBoxLayout *pBoxLayout = CreateBoxLayout(LAT_PID);
+
+    layout->addWidget(new PidKp());
+    layout->addWidget(new PidKi());
+    layout->addWidget(new PidKd());
+    layout->addWidget(new PidKf());
+}
+
+
+void  CLateralControlGroup::FrameINDI(QVBoxLayout *layout)
+{
+ //  QVBoxLayout *pBoxLayout = CreateBoxLayout(LAT_INDI);
+   
+    layout->addWidget(new InnerLoopGain());
+    layout->addWidget(new OuterLoopGain());
+    layout->addWidget(new TimeConstant());
+    layout->addWidget(new ActuatorEffectiveness());
+}
+
+void  CLateralControlGroup::FrameLQR(QVBoxLayout *layout)
+{
+ //  QVBoxLayout *layout = CreateBoxLayout(LAT_LQR);
+   
+    layout->addWidget(new Scale());
+    layout->addWidget(new LqrKi());
+    layout->addWidget(new DcGain());
+}
+
+
+void  CLateralControlGroup::FrameTORQUE(QVBoxLayout *layout)
+{
+  // QVBoxLayout *layout = CreateBoxLayout(LAT_TOROUE);
+   
+    layout->addWidget(new TorqueMaxLatAccel());
+    layout->addWidget(new TorqueKp());
+    layout->addWidget(new TorqueKf());
+    layout->addWidget(new TorqueKi());
+    layout->addWidget(new TorqueFriction());
+    layout->addWidget(new TorqueUseAngle());
+    layout->addWidget(new TorqueAngDeadZone());
+}
+
+
+
+void  CLateralControlGroup::FrameMULTI(QVBoxLayout *layout)
+{
+  // QVBoxLayout *layout = CreateBoxLayout(LAT_MULTI);
+    layout->addWidget(new MultipleLatSelect());
+    layout->addWidget(new MultipleLateralSpeed());
+    layout->addWidget(new MultipleLateralAngle());
+
+    layout->addWidget(new AbstractControl("[3.TORQUE]","lqr","../assets/offroad/icon_shell.png"));
+    FrameTORQUE( layout );
+    box_layout->addWidget(new AbstractControl("[2.LQR]","torque","../assets/offroad/icon_shell.png"));
+    FrameLQR( layout );
+    box_layout->addWidget(new AbstractControl("[1.INDI]","torque","../assets/offroad/icon_shell.png"));
+    FrameINDI( layout );
+    box_layout->addWidget(new AbstractControl("[0.PID]","torque","../assets/offroad/icon_shell.png"));
+    FramePID( layout );
+}
+
+
+void CLateralControlGroup::refresh( int nID )
+{
+  CGroupWidget::refresh( m_nMethod );
+ 
+
+  QString  str;
+  switch( m_nMethod )
+  {
+    case LAT_PID : str = "0.PID"; break;
+    case LAT_INDI : str = "1.INDI";  break;
+    case LAT_LQR : str = "2.LQR";  break;
+    case LAT_TOROUE : str = "3.TORQUE";  break;
+    case LAT_MULTI : str = "4.MULTI";  break;
+  }
+
+  method_label->setText( str ); 
+}
+
 
 CLongControlGroup::CLongControlGroup() : CGroupWidget( "Long Control" ) 
 {

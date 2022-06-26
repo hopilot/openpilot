@@ -15,6 +15,39 @@
 #include "selfdrive/ui/qt/widgets/groupWidget.h"
 #include "selfdrive/ui/ui.h"
 
+
+class CLateralControlGroup : public CGroupWidget 
+{
+  Q_OBJECT
+
+public:
+  explicit CLateralControlGroup();
+
+  enum TunType {
+    LAT_PID = 0,
+    LAT_INDI,
+    LAT_LQR,
+    LAT_TOROUE,
+    LAT_MULTI,
+    LAT_ALL,
+  };  
+
+ private:
+  QPushButton  *method_label;
+  int    m_nMethod;
+
+  void  FramePID(QVBoxLayout *parent=nullptr);
+  void  FrameINDI(QVBoxLayout *parent=nullptr);
+  void  FrameLQR(QVBoxLayout *parent=nullptr);
+  void  FrameTORQUE(QVBoxLayout *parent=nullptr);
+  void  FrameMULTI(QVBoxLayout *parent=nullptr);
+
+  
+
+public slots:  
+  virtual void refresh(int nID = 0);  
+};
+
 class CLongControlGroup : public CGroupWidget 
 {
   Q_OBJECT

@@ -635,8 +635,10 @@ TuningPanel::TuningPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(horizontal_line());
 
   layout->addWidget(new LabelControl("〓〓〓〓〓〓〓〓【 CONTROL 】〓〓〓〓〓〓〓〓", ""));
-  layout->addWidget(new LateralControl());
+ // layout->addWidget(new LateralControl());
   layout->addWidget(new LiveTunePanelToggle());
+
+  /*
   QString lat_control = QString::fromStdString(Params().get("LateralControlMethod", false));
   if (lat_control == "0") {
     layout->addWidget(new PidKp());
@@ -683,7 +685,8 @@ TuningPanel::TuningPanel(QWidget *parent) : QFrame(parent) {
     layout->addWidget(new PidKd());
     layout->addWidget(new PidKf());
   }
-
+*/
+  layout->addWidget(new CLateralControlGroup());
   layout->addWidget(horizontal_line());
   layout->addWidget(new CLongControlGroup());
 
