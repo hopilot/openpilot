@@ -44,7 +44,7 @@ REPLAY = "REPLAY" in os.environ
 SIMULATION = "SIMULATION" in os.environ
 NOSENSOR = "NOSENSOR" in os.environ
 IGNORE_PROCESSES = {"rtshield", "uploader", "deleter", "loggerd", "logmessaged", "tombstoned",
-                    "logcatd", "proclogd", "clocksd", "updated", "timezoned", "manage_athenad"} | \
+                    "logcatd", "proclogd", "clocksd", "updated", "timezoned", "manage_athenad", "statsd", "shutdownd", 'liveNaviData', 'liveMapData'} | \
                     {k for k, v in managed_processes.items() if not v.enabled}
 
 ACTUATOR_FIELDS = set(car.CarControl.Actuators.schema.fields.keys())
@@ -354,15 +354,37 @@ class Controls:
       self.events.add(EventName.radarFault)
     elif not self.sm.valid["pandaState"]:
       self.events.add(EventName.usbError)
-    elif not self.sm.all_alive_and_valid() and not self.commIssue_ignored and not self.map_enabled:
-      self.events.add(EventName.commIssue)
-      if not self.logged_comm_issue:
+    elif not self.sm.all_checks() or self.can_rcv_error:
+      log_comm_issue = False
+      if self.commIssue_ignored or self.map_enabled:
+        pass
+      elif not self.sm.all_alive():
+        log_comm_issue = True
+        self.events.add(EventName.commIssue)
+      elif not self.sm.all_freq_ok():
+        log_comm_issue = True
+        self.events.add(EventName.commIssueAvgFreq)
+      else: # invalid or can_rcv_error.
+        log_comm_issue = True
+        self.events.add(EventName.commIssue)
+
+      if log_comm_issue and not self.logged_comm_issue:
         invalid = [s for s, valid in self.sm.valid.items() if not valid]
         not_alive = [s for s, alive in self.sm.alive.items() if not alive]
         cloudlog.event("commIssue", invalid=invalid, not_alive=not_alive, can_error=self.can_rcv_error, error=True)
-        self.logged_comm_issue = True
+        self.logged_comm_issue = True        
     else:
       self.logged_comm_issue = False
+
+    #elif not self.sm.all_alive_and_valid() and not self.commIssue_ignored and not self.map_enabled:
+    #  self.events.add(EventName.commIssue)
+    #  if not self.logged_comm_issue:
+    #    invalid = [s for s, valid in self.sm.valid.items() if not valid]
+    #    not_alive = [s for s, alive in self.sm.alive.items() if not alive]
+    #    cloudlog.event("commIssue", invalid=invalid, not_alive=not_alive, can_error=self.can_rcv_error, error=True)
+    #    self.logged_comm_issue = True
+    #else:
+    #  self.logged_comm_issue = False
 
     if not self.sm['liveParameters'].valid:
       self.events.add(EventName.vehicleModelInvalid)
