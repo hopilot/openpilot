@@ -44,8 +44,11 @@ public:
 signals:
   void showDescription();
 
-protected:
+
+public:
   AbstractControl(const QString &title, const QString &desc = "", const QString &icon = "", QWidget *parent = nullptr);
+
+protected:
   void hideEvent(QHideEvent *e) override;
 
   QHBoxLayout *hlayout;
