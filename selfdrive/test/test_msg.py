@@ -21,7 +21,7 @@ from selfdrive.test.helpers import set_params_enabled, release_only
 from tools.lib.logreader import LogReader
 from selfdrive.swaglog import cloudlog
 
-class TestMsg(unittest.TestCase):
+class TestOnroad(unittest.TestCase):
   def __init__(self, sm=None, pm=None, can_sock=None):
 
     # Setup sockets
@@ -46,9 +46,10 @@ class TestMsg(unittest.TestCase):
 
       print('all_freq_ok {}'.format( invalid, not_alive ) )
 
+
   @classmethod
-  def update(self):
-    print('test ')
+  def setUpClass(cls):
+    print('tesetddddd')
 
 
 
