@@ -645,54 +645,6 @@ TuningPanel::TuningPanel(QWidget *parent) : QFrame(parent) {
  // layout->addWidget(new LateralControl());
   layout->addWidget(new LiveTunePanelToggle());
 
-  /*
-  QString lat_control = QString::fromStdString(Params().get("LateralControlMethod", false));
-  if (lat_control == "0") {
-    layout->addWidget(new PidKp());
-    layout->addWidget(new PidKi());
-    layout->addWidget(new PidKd());
-    layout->addWidget(new PidKf());
-  } else if (lat_control == "1") {
-    layout->addWidget(new InnerLoopGain());
-    layout->addWidget(new OuterLoopGain());
-    layout->addWidget(new TimeConstant());
-    layout->addWidget(new ActuatorEffectiveness());
-  } else if (lat_control == "2") {
-    layout->addWidget(new Scale());
-    layout->addWidget(new LqrKi());
-    layout->addWidget(new DcGain());
-  } else if (lat_control == "3") {
-    layout->addWidget(new TorqueMaxLatAccel());
-    layout->addWidget(new TorqueKp());
-    layout->addWidget(new TorqueKf());
-    layout->addWidget(new TorqueKi());
-    layout->addWidget(new TorqueFriction());
-    layout->addWidget(new TorqueUseAngle());
-    layout->addWidget(new TorqueAngDeadZone());
-  } else if (lat_control == "4") {
-    layout->addWidget(new MultipleLatSelect());
-    layout->addWidget(new MultipleLateralSpeed());
-    layout->addWidget(new MultipleLateralAngle());
-    layout->addWidget(new TorqueMaxLatAccel());
-    layout->addWidget(new TorqueKp());
-    layout->addWidget(new TorqueKf());
-    layout->addWidget(new TorqueKi());
-    layout->addWidget(new TorqueFriction());
-    layout->addWidget(new TorqueUseAngle());
-    layout->addWidget(new TorqueAngDeadZone());
-    layout->addWidget(new Scale());
-    layout->addWidget(new LqrKi());
-    layout->addWidget(new DcGain());
-    layout->addWidget(new InnerLoopGain());
-    layout->addWidget(new OuterLoopGain());
-    layout->addWidget(new TimeConstant());
-    layout->addWidget(new ActuatorEffectiveness());
-    layout->addWidget(new PidKp());
-    layout->addWidget(new PidKi());
-    layout->addWidget(new PidKd());
-    layout->addWidget(new PidKf());
-  }
-*/
   layout->addWidget(new CLateralControlGroup());
   layout->addWidget(horizontal_line());
   layout->addWidget(new CLongControlGroup());

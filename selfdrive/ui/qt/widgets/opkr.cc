@@ -44,7 +44,7 @@ CLateralControlGroup::CLateralControlGroup() : CGroupWidget( "Lateral Control" )
   hlayout->addWidget(method_label);
   connect(method_label, &QPushButton::clicked, [=]() {
     m_nMethod += 1;
-    if( m_nMethod > LAT_ALL )
+    if( m_nMethod >= LAT_ALL )
       m_nMethod = 0;
 
     QString values = QString::number(m_nMethod);
