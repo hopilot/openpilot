@@ -21,7 +21,7 @@ from selfdrive.test.helpers import set_params_enabled, release_only
 from tools.lib.logreader import LogReader
 from selfdrive.swaglog import cloudlog
 
-class TestMsg:
+class TestMsg(unittest.TestCase):
   def __init__(self, sm=None, pm=None, can_sock=None):
 
     # Setup sockets
@@ -31,7 +31,6 @@ class TestMsg:
                                     'managerState', 'liveParameters', 'radarState', 'liveNaviData', 'liveMapData'],
                                     ignore_alive=ignore, ignore_avg_freq=['radarState', 'longitudinalPlan'])
 
-  def update(self):
     print('test message start!')
     if not self.sm.all_alive():
       invalid = [s for s, valid in self.sm.valid.items() if not valid]
@@ -47,10 +46,10 @@ class TestMsg:
 
       print('all_freq_ok {}'.format( invalid, not_alive ) )
 
-
+  def update(self):
+    pass
 
 
 
 if __name__ == "__main__":
-  te = TestMsg
-  te.update()
+  unittest.main()
