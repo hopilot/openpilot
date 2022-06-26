@@ -22,7 +22,7 @@ class CPandaGroup : public CGroupWidget
 public:
   explicit CPandaGroup();
 
-}
+};
 
 class CGitGroup : public CGroupWidget 
 {
