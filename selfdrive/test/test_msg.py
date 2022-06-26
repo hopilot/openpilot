@@ -25,26 +25,11 @@ class TestMsg:
   def __init__(self, sm=None, pm=None, can_sock=None):
 
     # Setup sockets
-    self.pm = pm
-    if self.pm is None:
-      self.pm = messaging.PubMaster(['sendcan', 'controlsState', 'carState',
-                                     'carControl', 'carEvents', 'carParams'])
-
-    self.camera_packets = ["roadCameraState", "driverCameraState"]
-    if TICI:
-      self.camera_packets.append("wideRoadCameraState")
-
-    params = Params()
-    self.joystick_mode = params.get_bool("JoystickDebugMode")
-    joystick_packet = ['testJoystick'] if self.joystick_mode else []
-
-    self.sm = sm
-    if self.sm is None:
-      ignore = ['driverCameraState', 'managerState']
-      self.sm = messaging.SubMaster(['deviceState', 'pandaState', 'modelV2', 'liveCalibration',
-                                     'driverMonitoringState', 'longitudinalPlan', 'lateralPlan', 'liveLocationKalman',
-                                     'managerState', 'liveParameters', 'radarState', 'liveNaviData', 'liveMapData'] + self.camera_packets + joystick_packet,
-                                     ignore_alive=ignore, ignore_avg_freq=['radarState', 'longitudinalPlan'])
+    ignore = ['driverCameraState', 'managerState']
+    self.sm = messaging.SubMaster(['deviceState', 'pandaState', 'modelV2', 'liveCalibration',
+                                    'driverMonitoringState', 'longitudinalPlan', 'lateralPlan', 'liveLocationKalman',
+                                    'managerState', 'liveParameters', 'radarState', 'liveNaviData', 'liveMapData'],
+                                    ignore_alive=ignore, ignore_avg_freq=['radarState', 'longitudinalPlan'])
 
   def test_msg():
     print('test message start!')
