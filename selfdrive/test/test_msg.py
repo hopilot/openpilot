@@ -31,7 +31,7 @@ class TestMsg:
                                     'managerState', 'liveParameters', 'radarState', 'liveNaviData', 'liveMapData'],
                                     ignore_alive=ignore, ignore_avg_freq=['radarState', 'longitudinalPlan'])
 
-  def test_msg():
+  def update(self):
     print('test message start!')
     if not self.sm.all_alive():
       invalid = [s for s, valid in self.sm.valid.items() if not valid]
@@ -53,4 +53,4 @@ class TestMsg:
 
 if __name__ == "__main__":
   te = TestMsg
-  te.test_msg()
+  te.update()
