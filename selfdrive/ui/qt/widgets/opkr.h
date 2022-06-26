@@ -35,7 +35,8 @@ public:
  private:
   QPushButton  *method_label;
   int    m_nMethod;
-
+  Params params;
+  
   void  FramePID(QVBoxLayout *parent=nullptr);
   void  FrameINDI(QVBoxLayout *parent=nullptr);
   void  FrameLQR(QVBoxLayout *parent=nullptr);
