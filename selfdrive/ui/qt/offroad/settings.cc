@@ -685,21 +685,8 @@ TuningPanel::TuningPanel(QWidget *parent) : QFrame(parent) {
   }
 
   layout->addWidget(horizontal_line());
+  layout->addWidget(new CLongControlGroup());
 
-  layout->addWidget(new LabelControl("〓〓〓〓〓〓〓【 LONGCONTROL 】〓〓〓〓〓〓〓", ""));
-  layout->addWidget(new CustomTRToggle());
-  layout->addWidget(new CruiseGapTR());
-  layout->addWidget(new DynamicTRGap());
-  layout->addWidget(new DynamicTRUD());
-  layout->addWidget(new DynamicTRBySpeed());
-  layout->addWidget(new RadarLongHelperOption());
-  layout->addWidget(new StoppingDistAdjToggle());
-  layout->addWidget(new StoppingDist());
-  layout->addWidget(new E2ELongToggle());
-  layout->addWidget(new StopAtStopSignToggle());
-  layout->addWidget(new StockDecelonCamToggle());
-  //layout->addWidget(new RadarDisableToggle());
-  //layout->addWidget(new UseRadarTrackToggle());
 }
 
 void SettingsWindow::showEvent(QShowEvent *event) {

@@ -15,6 +15,15 @@
 #include "selfdrive/ui/qt/widgets/groupWidget.h"
 #include "selfdrive/ui/ui.h"
 
+class CLongControlGroup : public CGroupWidget 
+{
+  Q_OBJECT
+
+public:
+  explicit CLongControlGroup();
+
+};
+
 class CPandaGroup : public CGroupWidget 
 {
   Q_OBJECT

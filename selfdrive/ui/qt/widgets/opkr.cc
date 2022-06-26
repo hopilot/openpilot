@@ -21,6 +21,28 @@
 #include "selfdrive/ui/qt/widgets/opkr.h"
 
 
+
+CLongControlGroup::CLongControlGroup() : CGroupWidget( "Long Control" ) 
+{
+   QVBoxLayout *pBoxLayout = CreateBoxLayout();
+
+  //pBoxLayout->addWidget(new LabelControl("〓〓〓〓〓〓〓【 LONGCONTROL 】〓〓〓〓〓〓〓", ""));
+  pBoxLayout->addWidget(new CustomTRToggle());
+  pBoxLayout->addWidget(new CruiseGapTR());
+  pBoxLayout->addWidget(new DynamicTRGap());
+  pBoxLayout->addWidget(new DynamicTRUD());
+  pBoxLayout->addWidget(new DynamicTRBySpeed());
+  pBoxLayout->addWidget(new RadarLongHelperOption());
+  pBoxLayout->addWidget(new StoppingDistAdjToggle());
+  pBoxLayout->addWidget(new StoppingDist());
+  pBoxLayout->addWidget(new E2ELongToggle());
+  pBoxLayout->addWidget(new StopAtStopSignToggle());
+  pBoxLayout->addWidget(new StockDecelonCamToggle());
+  //pBoxLayout->addWidget(new RadarDisableToggle());
+  //pBoxLayout->addWidget(new UseRadarTrackToggle());
+}
+
+
 CPandaGroup::CPandaGroup() : CGroupWidget( "Panda Values" ) 
 {
    QVBoxLayout *pBoxLayout = CreateBoxLayout();
