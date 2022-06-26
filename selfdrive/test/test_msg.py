@@ -46,8 +46,9 @@ class TestMsg(unittest.TestCase):
 
       print('all_freq_ok {}'.format( invalid, not_alive ) )
 
+  @classmethod
   def update(self):
-    pass
+    print('test ')
 
 
 
