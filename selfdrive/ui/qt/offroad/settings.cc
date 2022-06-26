@@ -615,26 +615,33 @@ TuningPanel::TuningPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new LabelControl("〓〓〓〓〓〓〓〓【 TUNING 】〓〓〓〓〓〓〓〓", ""));
   layout->addWidget(new CameraOffset());
   layout->addWidget(new PathOffset());
+  layout->addWidget(horizontal_line());
+
+  layout->addWidget(new SteerActuatorDelay());
+  layout->addWidget(new SteerRateCost());
+  layout->addWidget(new TireStiffnessFactor());
+  layout->addWidget(new SteerThreshold());
+  layout->addWidget(new SteerLimitTimer());
+
   layout->addWidget(new LiveSteerRatioToggle());
   layout->addWidget(new LiveSRPercent());
   layout->addWidget(new SRBaseControl());
   layout->addWidget(new SRMaxControl());
-  layout->addWidget(new SteerActuatorDelay());
-  layout->addWidget(new SteerRateCost());
-  layout->addWidget(new SteerLimitTimer());
-  layout->addWidget(new TireStiffnessFactor());
+
+  layout->addWidget(horizontal_line());
   layout->addWidget(new VariableSteerMaxToggle());
   layout->addWidget(new SteerMax());
   layout->addWidget(new VariableSteerDeltaToggle());
   layout->addWidget(new SteerDeltaUp());
   layout->addWidget(new SteerDeltaDown());
+
+  layout->addWidget(horizontal_line());
   layout->addWidget(new ToAvoidLKASFaultBeyondToggle());
-  layout->addWidget(new SteerThreshold());
   layout->addWidget(new DesiredCurvatureLimit());
 
   layout->addWidget(horizontal_line());
 
-  layout->addWidget(new LabelControl("〓〓〓〓〓〓〓〓【 CONTROL 】〓〓〓〓〓〓〓〓", ""));
+  //layout->addWidget(new LabelControl("〓〓〓〓〓〓〓〓【 CONTROL 】〓〓〓〓〓〓〓〓", ""));
  // layout->addWidget(new LateralControl());
   layout->addWidget(new LiveTunePanelToggle());
 

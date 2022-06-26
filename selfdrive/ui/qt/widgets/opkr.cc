@@ -118,11 +118,11 @@ void  CLateralControlGroup::FrameMULTI(QVBoxLayout *layout)
 
     layout->addWidget(new AbstractControl("[3.TORQUE]","torque","../assets/offroad/icon_shell.png"));
     FrameTORQUE( layout );
-    box_layout->addWidget(new AbstractControl("[2.LQR]","lqr","../assets/offroad/icon_shell.png"));
+    layout->addWidget(new AbstractControl("[2.LQR]","lqr","../assets/offroad/icon_shell.png"));
     FrameLQR( layout );
-    box_layout->addWidget(new AbstractControl("[1.INDI]","indi","../assets/offroad/icon_shell.png"));
+    layout->addWidget(new AbstractControl("[1.INDI]","indi","../assets/offroad/icon_shell.png"));
     FrameINDI( layout );
-    box_layout->addWidget(new AbstractControl("[0.PID]","pid","../assets/offroad/icon_shell.png"));
+    layout->addWidget(new AbstractControl("[0.PID]","pid","../assets/offroad/icon_shell.png"));
     FramePID( layout );
 }
 
