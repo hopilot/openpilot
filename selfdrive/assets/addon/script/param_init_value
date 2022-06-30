@@ -129,13 +129,13 @@ RadarDisable:0
 DesiredCurvatureLimit:5
 LaneWidth:3.7
 SpdLaneWidthSpd:0,31
-SpdLaneWidthSet:2.3,3.5
+SpdLaneWidthSet:2.8,3.5
 CloseToRoadEdge:0
 LeftEdgeOffset:0
 RightEdgeOffset:0
 AvoidLKASFaultEnabled:0
-AvoidLKASFaultMaxAngle:85
-AvoidLKASFaultMaxFrame:90
+AvoidLKASFaultMaxAngle:90
+AvoidLKASFaultMaxFrame:95
 AvoidLKASFaultBeyond:0
 UseStockDecelOnSS:0
 AnimatedRPM:1
