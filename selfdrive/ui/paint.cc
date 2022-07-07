@@ -158,7 +158,7 @@ static void ui_draw_stop_sign(UIState *s) {
     NVGpaint stop_sign = nvgRadialGradient(s->vg, center_x, center_y, radius_i, radius_o, nvgRGBAf(0.0, 1.0, 0.0, 0.9), nvgRGBAf(0.0, 0.0, 0.0, 0.3));
     nvgFillPaint(s->vg, stop_sign);
     nvgFill(s->vg);
-  } else if (s->scene.longitudinalPlan.e2ex[12] < 100 && s->scene.longitudinalPlan.stopline[12] < 100) {
+  } else if (s->scene.longitudinalPlan.e2ex[12] > 0 && s->scene.longitudinalPlan.e2ex[12] < 100 && s->scene.longitudinalPlan.stopline[12] < 100 && s->scene.longitudinalPlan.stopline[12] != 400) {
     nvgBeginPath(s->vg);
     nvgCircle(s->vg, center_x, center_y, radius_i+radius_o);
     NVGpaint stop_sign = nvgRadialGradient(s->vg, center_x, center_y, radius_i, radius_o, nvgRGBAf(1.0, 0.0, 0.0, 0.9), nvgRGBAf(0.0, 0.0, 0.0, 0.3));

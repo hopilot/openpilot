@@ -12,7 +12,7 @@ OpkrAutoLaneChangeDelay:0
 OpkrSteerAngleCorrection:0
 PutPrebuiltOn:1
 LdwsCarFix:0
-LateralControlMethod:3
+LateralControlMethod:2
 CruiseStatemodeSelInit:1
 InnerLoopGain:35
 OuterLoopGain:20
@@ -134,8 +134,8 @@ CloseToRoadEdge:0
 LeftEdgeOffset:0
 RightEdgeOffset:0
 AvoidLKASFaultEnabled:0
-AvoidLKASFaultMaxAngle:90
-AvoidLKASFaultMaxFrame:95
+AvoidLKASFaultMaxAngle:85
+AvoidLKASFaultMaxFrame:90
 AvoidLKASFaultBeyond:0
 UseStockDecelOnSS:0
 AnimatedRPM:1

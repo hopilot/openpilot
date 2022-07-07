@@ -86,9 +86,9 @@ class DesireHelper:
     right_nearside_prob = md.laneLineProbs[3]
     right_edge_prob = np.clip(1.0 - md.roadEdgeStds[1], 0.0, 1.0)
 
-    if right_edge_prob > 0.35 and right_nearside_prob < 0.2 and right_close_prob > 0.5 and left_nearside_prob >= right_nearside_prob:
+    if right_edge_prob > 0.35 and right_nearside_prob < 0.2 and left_nearside_prob >= right_nearside_prob:
       road_edge_stat = 1
-    elif left_edge_prob > 0.35 and left_nearside_prob < 0.2 and left_close_prob > 0.5 and right_nearside_prob >= left_nearside_prob:
+    elif left_edge_prob > 0.35 and left_nearside_prob < 0.2 and right_nearside_prob >= left_nearside_prob:
       road_edge_stat = -1
     else:
       road_edge_stat = 0

@@ -636,7 +636,7 @@ CarSelectCombo::CarSelectCombo() : AbstractControl("", "", "")
 
   //combobox.view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-  hlayout->addWidget(&combobox);
+  hlayout->addWidget(&combobox, Qt::AlignLeft);
   hlayout->addWidget(&btn, Qt::AlignRight);
 
   QObject::connect(&combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [=](int index)
@@ -688,7 +688,7 @@ BranchSelectCombo::BranchSelectCombo() : AbstractControl("", "", "")
     height: 120px;
   )");
 
-  combobox.setFixedWidth(1055);
+  combobox.setFixedWidth(930);
 
   btn.setStyleSheet(R"(
     padding: 0;
@@ -706,7 +706,7 @@ BranchSelectCombo::BranchSelectCombo() : AbstractControl("", "", "")
     refresh();
   });
 
-  hlayout->addWidget(&combobox);
+  hlayout->addWidget(&combobox, Qt::AlignLeft);
   hlayout->addWidget(&btn, Qt::AlignRight);
 
   QObject::connect(&combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [=](int index)
@@ -832,7 +832,7 @@ TimeZoneSelectCombo::TimeZoneSelectCombo() : AbstractControl("", "", "")
 
   //combobox.view()->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-  hlayout->addWidget(&combobox);
+  hlayout->addWidget(&combobox, Qt::AlignLeft);
   hlayout->addWidget(&btn, Qt::AlignRight);
 
   QObject::connect(&combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::activated), [=](int index)

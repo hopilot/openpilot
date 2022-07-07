@@ -38,7 +38,7 @@ private:
   // opkr
   quint64 mLastPressTime = 0;
   bool trig_settings = false;
-  static const quint64 MY_LONG_PRESS_THRESHOLD = 500;
+  static const quint64 MY_LONG_PRESS_THRESHOLD = 350;
 
 protected:
   void paintEvent(QPaintEvent *event) override;
