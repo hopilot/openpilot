@@ -142,7 +142,7 @@ class SubMaster:
     self.rcv_time = {s: 0. for s in services}
     self.rcv_frame = {s: 0 for s in services}
     self.alive = {s: False for s in services}
-    self.freq_ok = {s: False for s in services}    
+    self.freq_ok = {s: False for s in services}
     self.recv_dts = {s: deque([0.0] * AVG_FREQ_HISTORY, maxlen=AVG_FREQ_HISTORY) for s in services}
     self.sock = {}
     self.freq = {}
@@ -242,17 +242,13 @@ class SubMaster:
       service_list = self.valid.keys()
     return all(self.valid[s] for s in service_list)
 
-  def all_alive_and_valid(self, service_list=None) -> bool:
-    if service_list is None:  # check all
-      service_list = self.alive.keys()
-    return self.all_alive(service_list=service_list) and self.all_valid(service_list=service_list)
-
   def all_checks(self, service_list=None) -> bool:
     if service_list is None:  # check all
       service_list = self.alive.keys()
-    return self.all_alive(service_list=service_list) \
-           and self.all_freq_ok(service_list=service_list) \
-           and self.all_valid(service_list=service_list)
+    return self.all_alive(service_list=service_list) and self.all_valid(service_list=service_list)
+    #return self.all_alive(service_list=service_list) \
+    #       and self.all_freq_ok(service_list=service_list) \
+    #       and self.all_valid(service_list=service_list)
 
 class PubMaster:
   def __init__(self, services: List[str]):

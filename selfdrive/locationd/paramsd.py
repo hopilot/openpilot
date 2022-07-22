@@ -162,7 +162,7 @@ def main(sm=None, pm=None):
 
   while True:
     sm.update()
-    if sm.all_alive_and_valid():
+    if sm.all_checks():
       for which in sorted(sm.updated.keys(), key=lambda x: sm.logMonoTime[x]):
         if sm.updated[which]:
           t = sm.logMonoTime[which] * 1e-9
@@ -201,7 +201,7 @@ def main(sm=None, pm=None):
       liveParameters.angleOffsetAverageStd = float(P[States.ANGLE_OFFSET])
       liveParameters.angleOffsetFastStd = float(P[States.ANGLE_OFFSET_FAST])
 
-      msg.valid = sm.all_alive_and_valid()
+      msg.valid = sm.all_checks()
 
       if sm.frame % 1200 == 0:  # once a minute
         params = {

@@ -9,7 +9,12 @@ int HKG_MDPS12_checksum = -1;
 int HKG_MDPS12_cnt = 0;
 int HKG_last_StrColT = 0;
 
-int default_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
+const addr_checks default_rx_checks = {
+  .check = NULL,
+  .len = 0,
+};
+
+int default_rx_hook(CANPacket_t *to_push) {
   int bus = GET_BUS(to_push);
   int addr = GET_ADDR(to_push);
 
@@ -67,17 +72,19 @@ int default_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
 
 // *** no output safety mode ***
 
-static void nooutput_init(int16_t param) {
+static const addr_checks* nooutput_init(uint16_t param) {
   UNUSED(param);
   controls_allowed = false;
   relay_malfunction_reset();
   if (current_board->has_obd && HKG_forward_obd) {
     current_board->set_can_mode(CAN_MODE_OBD_CAN2);
   }
+  return &default_rx_checks;
 }
 
-static int nooutput_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
+static int nooutput_tx_hook(CANPacket_t *to_send, bool longitudinal_allowed) {
   UNUSED(to_send);
+  UNUSED(longitudinal_allowed);
   return false;
 }
 
@@ -88,7 +95,7 @@ static int nooutput_tx_lin_hook(int lin_num, uint8_t *data, int len) {
   return false;
 }
 
-static int default_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
+static int default_fwd_hook(int bus_num, CANPacket_t *to_fwd) {
   int addr = GET_ADDR(to_fwd);
   int bus_fwd = -1;
 
@@ -124,10 +131,12 @@ static int default_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
       dat[6] &= 0xF;
       dat[6] |= (OutTq & 0xF) << 4;
       dat[7] = OutTq >> 4;
-      to_fwd->RDLR &= 0xFFF800;
-      to_fwd->RDLR |= StrColTq;
-      to_fwd->RDHR &= 0xFFFFF;
-      to_fwd->RDHR |= OutTq << 20;
+      uint32_t* RDLR = (uint32_t*)&(to_fwd->data[0]);
+      uint32_t* RDHR = (uint32_t*)&(to_fwd->data[4]);
+      *RDLR &= 0xFFF800;
+      *RDLR |= StrColTq;
+      *RDHR &= 0xFFFFF;
+      *RDHR |= OutTq << 20;
       HKG_last_StrColT = StrColTq;
       dat[3] = 0;
       if (!HKG_MDPS12_checksum) {
@@ -155,7 +164,7 @@ static int default_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
         crc %= 256;
         New_Chksum2 = crc;
       }
-      to_fwd->RDLR |= New_Chksum2 << 24;
+      *RDLR |= New_Chksum2 << 24;
     }
     HKG_MDPS12_cnt += 1;
     HKG_MDPS12_cnt %= 345;
@@ -173,17 +182,24 @@ const safety_hooks nooutput_hooks = {
 
 // *** all output safety mode ***
 
-static void alloutput_init(int16_t param) {
+// Enables passthrough mode where relay is open and bus 0 gets forwarded to bus 2 and vice versa
+const uint16_t ALLOUTPUT_PARAM_PASSTHROUGH = 1;
+bool alloutput_passthrough = false;
+
+static const addr_checks* alloutput_init(uint16_t param) {
   UNUSED(param);
   controls_allowed = true;
+  alloutput_passthrough = GET_FLAG(param, ALLOUTPUT_PARAM_PASSTHROUGH);
   relay_malfunction_reset();
   if (current_board->has_obd && HKG_forward_obd) {
     current_board->set_can_mode(CAN_MODE_OBD_CAN2);
   }
+  return &default_rx_checks;
 }
 
-static int alloutput_tx_hook(CAN_FIFOMailBox_TypeDef *to_send) {
+static int alloutput_tx_hook(CANPacket_t *to_send, bool longitudinal_allowed) {
   UNUSED(to_send);
+  UNUSED(longitudinal_allowed);
   return true;
 }
 
@@ -194,10 +210,26 @@ static int alloutput_tx_lin_hook(int lin_num, uint8_t *data, int len) {
   return true;
 }
 
+static int alloutput_fwd_hook(int bus_num, CANPacket_t *to_fwd) {
+  UNUSED(to_fwd);
+  int bus_fwd = -1;
+
+  if (alloutput_passthrough) {
+    if (bus_num == 0) {
+      bus_fwd = 2;
+    }
+    if (bus_num == 2) {
+      bus_fwd = 0;
+    }
+  }
+
+  return bus_fwd;
+}
+
 const safety_hooks alloutput_hooks = {
   .init = alloutput_init,
   .rx = default_rx_hook,
   .tx = alloutput_tx_hook,
   .tx_lin = alloutput_tx_lin_hook,
-  .fwd = default_fwd_hook,
+  .fwd = alloutput_fwd_hook,
 };

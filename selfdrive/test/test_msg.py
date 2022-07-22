@@ -26,7 +26,7 @@ class TestOnroad():
 
     # Setup sockets
     ignore = ['driverCameraState', 'managerState']
-    self.sm = messaging.SubMaster(['deviceState', 'pandaState', 'modelV2', 'liveCalibration',
+    self.sm = messaging.SubMaster(['deviceState', 'pandaStates', 'modelV2', 'liveCalibration',
                                     'driverMonitoringState', 'longitudinalPlan', 'lateralPlan', 'liveLocationKalman',
                                     'managerState', 'liveParameters', 'radarState', 'liveNaviData', 'liveMapData'],
                                     ignore_alive=ignore, ignore_avg_freq=['radarState', 'longitudinalPlan'])

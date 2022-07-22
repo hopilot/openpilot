@@ -38,6 +38,7 @@ typedef struct uart_ring {
 // ***************************** Function prototypes *****************************
 void debug_ring_callback(uart_ring *ring);
 void uart_tx_ring(uart_ring *q);
+void uart_send_break(uart_ring *u);
 
 // ******************************** UART buffers ********************************
 
@@ -138,11 +139,6 @@ void uart_flush_sync(uart_ring *q) {
   }
 }
 
-void uart_send_break(uart_ring *u) {
-  while ((u->uart->CR1 & USART_CR1_SBK) != 0);
-  u->uart->CR1 |= USART_CR1_SBK;
-}
-
 void clear_uart_buff(uart_ring *q) {
   ENTER_CRITICAL();
   q->w_ptr_tx = 0;
@@ -185,18 +181,23 @@ void putui(uint32_t i) {
   puts(&str[idx + 1U]);
 }
 
-void puth(unsigned int i) {
+void puthx(uint32_t i, uint8_t len) {
   const char c[] = "0123456789abcdef";
-  for (int pos = 28; pos != -4; pos -= 4) {
+  for (int pos = ((int)len * 4) - 4; pos > -4; pos -= 4) {
     putch(c[(i >> (unsigned int)(pos)) & 0xFU]);
   }
 }
 
+void puth(unsigned int i) {
+  puthx(i, 8U);
+}
+
 void puth2(unsigned int i) {
-  const char c[] = "0123456789abcdef";
-  for (int pos = 4; pos != -4; pos -= 4) {
-    putch(c[(i >> (unsigned int)(pos)) & 0xFU]);
-  }
+  puthx(i, 2U);
+}
+
+void puth4(unsigned int i) {
+  puthx(i, 4U);
 }
 
 void hexdump(const void *a, int l) {

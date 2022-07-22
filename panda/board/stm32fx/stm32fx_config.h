@@ -38,6 +38,8 @@
 #define PROVISION_CHUNK_ADDRESS 0x1FFF79E0U
 #define DEVICE_SERIAL_NUMBER_ADDRESS 0x1FFF79C0U
 
+#include "can_definitions.h"
+
 #ifndef BOOTSTUB
   #ifdef PANDA
     #include "main_declarations.h"
@@ -51,6 +53,7 @@
 #include "libc.h"
 #include "critical.h"
 #include "faults.h"
+#include "utils.h"
 
 #include "drivers/registers.h"
 #include "drivers/interrupts.h"
@@ -62,13 +65,19 @@
 #include "stm32fx/board.h"
 #include "stm32fx/clock.h"
 
-#if !defined (BOOTSTUB) && (defined(PANDA) || defined(PEDAL_USB))
+#if !defined(BOOTSTUB) && (defined(PANDA) || defined(PEDAL_USB))
   #include "drivers/uart.h"
   #include "stm32fx/lluart.h"
 #endif
 
-#ifndef BOOTSTUB
-  #include "stm32fx/llcan.h"
+#if !defined(PEDAL_USB) && !defined(PEDAL) && !defined(BOOTSTUB)
+  #include "stm32fx/llexti.h"
+#endif
+
+#ifdef BOOTSTUB
+  #include "stm32fx/llflash.h"
+#else
+  #include "stm32fx/llbxcan.h"
 #endif
 
 #if defined(PANDA) || defined(BOOTSTUB) || defined(PEDAL_USB)
