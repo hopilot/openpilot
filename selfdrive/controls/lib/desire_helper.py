@@ -72,6 +72,10 @@ class DesireHelper:
         self.output_scale = controlstate.lateralControlState.indiState.output
       elif CP.lateralTuning.which() == 'lqr':
         self.output_scale = controlstate.lateralControlState.lqrState.output
+      elif CP.lateralTuning.which() == 'torque':
+        self.output_scale = controlstate.lateralControlState.torqueState.output
+      elif CP.lateralTuning.which() == 'atom':
+        self.output_scale = controlstate.lateralControlState.atomState.output
     except:
       pass
     v_ego = carstate.vEgo
@@ -104,7 +108,7 @@ class DesireHelper:
 
     if self.lane_change_state == LaneChangeState.off and road_edge_stat == lane_direction:
       self.lane_change_direction = LaneChangeDirection.none
-    elif (not controlstate.active) or (self.lane_change_timer > LANE_CHANGE_TIME_MAX) or (abs(self.output_scale) >= 0.8 and self.lane_change_timer > 1):
+    elif (not controlstate.active) or (self.lane_change_timer > LANE_CHANGE_TIME_MAX) or (abs(self.output_scale) >= 0.85 and self.lane_change_timer > 0.7):
       self.lane_change_state = LaneChangeState.off
       self.lane_change_direction = LaneChangeDirection.none
     else:
