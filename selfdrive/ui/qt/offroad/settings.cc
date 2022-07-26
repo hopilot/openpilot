@@ -513,6 +513,7 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new CruiseGapAdjustToggle());
   layout->addWidget(new StandstillResumeAltToggle());
   layout->addWidget(new VariableCruiseToggle());
+  layout->addWidget(new VariableCruiseLevel());
   layout->addWidget(new CruisemodeSelInit());
   layout->addWidget(new LaneChangeSpeed());
   layout->addWidget(new LaneChangeDelay());

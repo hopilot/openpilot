@@ -153,3 +153,4 @@ HoldForSetting:1
 RTShield:1
 OSMOfflineUse:0
 StopAtStopSign:0
+VarCruiseSpeedFactor:0

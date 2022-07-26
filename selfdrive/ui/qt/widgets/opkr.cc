@@ -8059,3 +8059,62 @@ void StoppingDist::refresh() {
   QString valuefs = QString::number(valuef);
   label.setText(QString::fromStdString(valuefs.toStdString()));
 }
+
+VariableCruiseLevel::VariableCruiseLevel() : AbstractControl("Button Spamming Level", "High values make early stopping and starting, but might be not comfortable. Low values are the opposite.", "../assets/offroad/icon_shell.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  btnminus.setText("－");
+  btnplus.setText("＋");
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("VarCruiseSpeedFactor"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value <= -1) {
+      value = 16;
+    }
+    QString values = QString::number(value);
+    params.put("VarCruiseSpeedFactor", values.toStdString());
+    refresh();
+  });
+  
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("VarCruiseSpeedFactor"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value >= 17) {
+      value = 0;
+    }
+    QString values = QString::number(value);
+    params.put("VarCruiseSpeedFactor", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void VariableCruiseLevel::refresh() {
+  label.setText(QString::fromStdString(params.get("VarCruiseSpeedFactor")));
+}
