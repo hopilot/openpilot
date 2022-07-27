@@ -244,6 +244,8 @@ def thermald_thread(end_event, hw_queue):
   wakeuprunning = False
   onroadrefresh = False
 
+  ts = sec_since_boot()
+
   while not end_event.is_set():
     sm.update(PANDA_STATES_TIMEOUT)
 
@@ -252,8 +254,9 @@ def thermald_thread(end_event, hw_queue):
 
     msg = read_thermal(thermal_config)
 
-    ts = sec_since_boot()
     if sm.updated['pandaStates'] and len(pandaStates) > 0:
+
+      ts = sec_since_boot()
 
       # Set ignition based on any panda connected
       onroad_conditions["ignition"] = any(ps.ignitionLine or ps.ignitionCan for ps in pandaStates if ps.pandaType != log.PandaState.PandaType.unknown)
@@ -263,7 +266,6 @@ def thermald_thread(end_event, hw_queue):
       if pandaState.pandaType != log.PandaState.PandaType.unknown:
         shutdown_trigger = 1
       else:
-        onroad_conditions["ignition"] = pandaState.pandaState.ignitionLine or pandaState.pandaState.ignitionCan
         sound_trigger == 1
 
       in_car = pandaState.harnessStatus != log.PandaState.HarnessStatus.notConnected
