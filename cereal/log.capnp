@@ -472,7 +472,7 @@ struct PeripheralState {
   fanSpeedRpm @3 :UInt16;
   usbPowerMode @4 :UsbPowerMode;
 
-  enum UsbPowerMode {
+  enum UsbPowerMode @0xa8883583b32c9877 {
     none @0;
     client @1;
     cdp @2;
@@ -983,6 +983,7 @@ struct LongitudinalPlan @0xe00b5b3eba12876c {
 }
 
 struct LateralPlan @0xe1e9318e2ae8b51e {
+  modelMonoTime @31 :UInt64;
   laneWidth @0 :Float32;
   lProb @5 :Float32;
   rProb @7 :Float32;
@@ -1003,14 +1004,14 @@ struct LateralPlan @0xe1e9318e2ae8b51e {
   solverExecutionTime @30 :Float32;
 
   # opkr
-  outputScale @31 :Float32;
-  steerRateCost @32 :Float32;
-  standstillElapsedTime @33 :Float32;
-  vCruiseSet @34 :Float32;
-  vCurvature @35 :Float32;
-  lanelessMode @36 :Bool;
-  modelSpeed @37 :Float32;
-  totalCameraOffset @38 :Float32;
+  outputScale @32 :Float32;
+  steerRateCost @33 :Float32;
+  standstillElapsedTime @34 :Float32;
+  vCruiseSet @35 :Float32;
+  vCurvature @36 :Float32;
+  lanelessMode @37 :Bool;
+  modelSpeed @38 :Float32;
+  totalCameraOffset @39 :Float32;
 
   enum Desire {
     none @0;

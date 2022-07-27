@@ -331,9 +331,16 @@ class Controls:
     elif self.can_rcv_error or not CS.canValid and not self.ignore_can_error_on_isg:
       self.events.add(EventName.canError)
 
-    safety_mismatch = self.sm['pandaStates'].safetyModel != self.CP.safetyConfigs[i].safetyModel or self.sm['pandaStates'].safetyParam != self.CP.safetyConfigs[i].safetyParam
-    if safety_mismatch or self.mismatch_counter >= 200:
-      self.events.add(EventName.controlsMismatch)
+    for i, pandaState in enumerate(self.sm['pandaStates']):
+      # All pandas must match the list of safetyConfigs, and if outside this list, must be silent or noOutput
+      if i < len(self.CP.safetyConfigs):
+        safety_mismatch = pandaState.safetyModel != self.CP.safetyConfigs[i].safetyModel or \
+                          pandaState.safetyParam != self.CP.safetyConfigs[i].safetyParam or \
+      else:
+        safety_mismatch = pandaState.safetyModel not in IGNORED_SAFETY_MODES
+
+      if safety_mismatch or self.mismatch_counter >= 200:
+        self.events.add(EventName.controlsMismatch)
 
     self.second += DT_CTRL
     if self.second > 1.0:
