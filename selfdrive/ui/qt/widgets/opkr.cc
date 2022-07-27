@@ -7502,8 +7502,8 @@ void MultipleLatSelect::refresh() {
   {
     case 0 : strMethod = "Spd_Split"; break;
     case 1 : strMethod = "Ang_Split"; break;
-    case 2 : strMethod = "Ang_Interp"; break;
-    case 3 : strMethod = "Spd_Interp"; break;
+    case 2 : strMethod = "Ang_Intrp"; break;
+    case 3 : strMethod = "Spd_Intrp"; break;
     default :
       strMethod = "None"; 
       break;
