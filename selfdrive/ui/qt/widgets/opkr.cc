@@ -7500,8 +7500,8 @@ void MultipleLatSelect::refresh() {
 
   switch( m_nMethod )
   {
-    case 0 : strMethod = "Spd_LowDlt"; break;
-    case 1 : strMethod = "Ang_LowDlt"; break;
+    case 0 : strMethod = "Spd_Split"; break;
+    case 1 : strMethod = "Ang_Split"; break;
     case 2 : strMethod = "Ang_Interp"; break;
     case 3 : strMethod = "Spd_Interp"; break;
     default :
@@ -7581,9 +7581,9 @@ MultipleLateralSpeed::MultipleLateralSpeed() : AbstractControl("", "", "") {
   btnplusl.setFixedSize(70, 100);
   btnminusr.setFixedSize(70, 100);
   btnplusr.setFixedSize(70, 100);
-  btn1.setFixedSize(170, 100);
-  btn2.setFixedSize(170, 100);
-  btn3.setFixedSize(170, 100);
+  btn1.setFixedSize(150, 100);
+  btn2.setFixedSize(150, 100);
+  btn3.setFixedSize(150, 100);
 
   hlayout->addWidget(&btn1);
   hlayout->addWidget(&btnminusl);
