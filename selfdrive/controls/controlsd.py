@@ -243,6 +243,7 @@ class Controls:
       self.roadname_and_slc = ""
       pass
 
+    self.var_cruise_speed_factor = int(Params().get("VarCruiseSpeedFactor", encoding="utf8"))
     self.desired_angle_deg = 0
 
   def auto_enable(self, CS):
@@ -792,7 +793,7 @@ class Controls:
 
     speeds = self.sm['longitudinalPlan'].speeds # 17 lists
     if len(speeds) > 1:
-      v_future = speeds[0]
+      v_future = speeds[self.var_cruise_speed_factor]
       v_future_a = speeds[-1]
     else:
       v_future = 100.0

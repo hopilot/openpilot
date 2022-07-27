@@ -1,5 +1,12 @@
 ☞ Use two fingers to scroll down ☜
 
+2022-07-27
+- More visible UI from Atom
+- Better laneless model for now(current comma model)
+- Add blocking lane change when not necessary
+- Add OPKR_C2 branch for C2(uno board) device(need test)
+- Add Variable Cruise(Cruise buttom spamming) Factor
+
 2022-06-21
 - Add EV Car Main Battery Level
 - Add Arabic Language to device
