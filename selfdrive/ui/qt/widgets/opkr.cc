@@ -7823,9 +7823,9 @@ MultipleLateralAngle::MultipleLateralAngle() : AbstractControl("", "", "") {
   btnplusl.setFixedSize(70, 100);
   btnminusr.setFixedSize(70, 100);
   btnplusr.setFixedSize(70, 100);
-  btn1.setFixedSize(170, 100);
-  btn2.setFixedSize(170, 100);
-  btn3.setFixedSize(170, 100);
+  btn1.setFixedSize(150, 100);
+  btn2.setFixedSize(150, 100);
+  btn3.setFixedSize(150, 100);
 
   hlayout->addWidget(&btn1);
   hlayout->addWidget(&btnminusl);
