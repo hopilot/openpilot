@@ -284,11 +284,18 @@ def thermald_thread(end_event, hw_queue):
     elif params.get_bool("IsOpenpilotViewEnabled") and not params.get_bool("IsDriverViewEnabled") and is_openpilot_view_enabled == 0:
       is_openpilot_view_enabled = 1
       onroad_conditions["ignition"] = True
+      if TICI:
+        fan_controller = TiciFanController()
+      elif is_uno or PC:
+        fan_controller = UnoFanController()
+      else:
+        fan_controller = EonFanController()
     elif not params.get_bool("IsOpenpilotViewEnabled") and not params.get_bool("IsDriverViewEnabled") and is_openpilot_view_enabled == 1:
       shutdown_trigger = 0
       sound_trigger == 0
       is_openpilot_view_enabled = 0
       onroad_conditions["ignition"] = False
+      fan_controller = None
     elif not is_openpilot_view_enabled:
       if sec_since_boot() - ts > DISCONNECT_TIMEOUT:
         if onroad_conditions["ignition"]:
@@ -572,7 +579,7 @@ def thermald_thread(end_event, hw_queue):
 
     # atom
     if usb_power and battery_charging_control:
-      power_monitor.charging_ctrl(msg, ts, battery_charging_max, battery_charging_min)
+      power_monitor.charging_ctrl(msg, sec_since_boot(), battery_charging_max, battery_charging_min)
 
     # report to server once every 10 minutes
     if (count % int(600. / DT_TRML)) == 0:
