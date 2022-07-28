@@ -289,7 +289,7 @@ def thermald_thread(end_event, hw_queue):
       sound_trigger == 0
       is_openpilot_view_enabled = 0
       onroad_conditions["ignition"] = False
-    else:
+    elif not is_openpilot_view_enabled:
       if sec_since_boot() - ts > DISCONNECT_TIMEOUT:
         if onroad_conditions["ignition"]:
           cloudlog.error("Lost panda connection while onroad")
