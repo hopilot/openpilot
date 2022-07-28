@@ -267,6 +267,7 @@ CUtilWidget::CUtilWidget( void *p ) : CGroupWidget( "Util Program" )
 
   
   pBoxLayout->addWidget( pandaflashingtbtn );
+  pBoxLayout->addWidget( pandaflashingtbtn_new );
   pBoxLayout->addWidget( open_settings_btn );
   pBoxLayout->addWidget( softkey_btn );
   pBoxLayout->addWidget( mixplorer_btn );  
