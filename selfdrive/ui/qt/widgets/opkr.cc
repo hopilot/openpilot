@@ -229,14 +229,21 @@ CUtilWidget::CUtilWidget( void *p ) : CGroupWidget( "Util Program" )
 
    SoftwarePanel *parent = (SoftwarePanel*)p;
 
-  const char* panda_flashing = "/data/openpilot/selfdrive/assets/addon/script/panda_flashing.sh ''";
-  auto pandaflashingtbtn = new ButtonControl("Panda Flashing", "RUN");
+  const char* panda_flashing = "/data/openpilot/selfdrive/assets/addon/script/panda_flashing.sh";
+  auto pandaflashingtbtn = new ButtonControl("Panda Flashing(OLD)", "RUN");
   QObject::connect(pandaflashingtbtn, &ButtonControl::clicked, [=]() {
     if (ConfirmationDialog::confirm("Panda's green LED blinks quickly during panda flashing. Never turn off or disconnect the device arbitrarily. Do you want to proceed?", this)) {
       std::system(panda_flashing);
     }
   });
 
+  const char* panda_flashing_new = "/data/openpilot/panda/board/recover.sh";
+  auto pandaflashingtbtn_new = new ButtonControl("Panda Flashing(NEW)", "RUN");
+  QObject::connect(pandaflashingtbtn_new, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm("Panda's green LED blinks quickly during panda flashing. Never turn off or disconnect the device arbitrarily. Do you want to proceed?", this)) {
+      std::system(panda_flashing_new);
+    }
+  });
 
   const char* open_settings = "am start -a android.intent.action.MAIN -n com.android.settings/.Settings";
   auto open_settings_btn = new ButtonControl("Open Android Settings", "RUN");
