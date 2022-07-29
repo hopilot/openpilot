@@ -13,6 +13,7 @@
 typedef struct LiveNaviDataResult {
       int speedLimit;  // int;
       float speedLimitDistance;  // Float32;
+      float remainTime;  // Float32;
       int safetySign;    // int;
       float roadCurvature;    // Float32;
       int turnInfo;    // int;
@@ -33,6 +34,7 @@ int main() {
 
   ExitHandler do_exit;
   PubMaster pm({"liveNaviData"});
+  SubMaster sm({"carState"});
   LiveNaviDataResult res;
 
   log_time last_log_time = {};
@@ -73,11 +75,14 @@ int main() {
       MessageBuilder msg;
       auto framed = msg.initEvent().initLiveNaviData();
 
-   //  opkrspdlimit, opkrspddist, opkrsigntype, opkrcurvangle
+   //  opkrspdlimit, opkrspddist, opkrsigntype, opkrcurveangle, opkrremaintime, opkradasicontype, opkraveragespd
 
       // code based from atom
       nDelta_nsec = tv_nsec - res.tv_nsec;
       //nDelta = entry.tv_sec - res.tv_sec;
+
+      sm.update(0);
+      const float dSpeed_ms = sm["carState"].getCarState().getVEgo();
 
       if( strcmp( entry.tag, "opkrspddist" ) == 0 )
       {
@@ -88,6 +93,10 @@ int main() {
       else if( strcmp( entry.tag, "opkrspdlimit" ) == 0 )
       {
         res.speedLimit = atoi( entry.message );
+      }
+      else if( strcmp( entry.tag, "opkrremaintime" ) == 0 )
+      {
+        res.remainTime = atoi( entry.message );
       }
       else if( strcmp( entry.tag, "opkrsigntype" ) == 0 )
       {
@@ -102,6 +111,7 @@ int main() {
       {
         res.speedLimitDistance = 0;
         res.speedLimit = 0;
+        res.remainTime = 0;
         res.safetySign = 0;
         //system("logcat -c &");
       }
@@ -111,13 +121,21 @@ int main() {
       }
       else if( strcmp( entry.tag, "opkrdistancetoturn" ) == 0 )
       {
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
         res.distanceToTurn = atoi( entry.message );
+      }
+      else if( dSpeed_ms < 1.0 )
+      {
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
       }
       else if( nDelta_nsec > 5000 )
       {
         if (res.safetySign == 197 && res.speedLimitDistance < 100) {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
+          res.remainTime = 0;
           res.safetySign = 0;
         }
         else if ( res.safetySign == 124 && (!sBump) )
@@ -128,6 +146,7 @@ int main() {
         {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
+          res.remainTime = 0;
           res.safetySign = 0;
         }
         else if( nDelta_nsec > 10000 )
@@ -136,12 +155,15 @@ int main() {
           res.tv_nsec = tv_nsec;
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
+          res.remainTime = 0;
           res.safetySign = 0;
+          system("logcat -c &");
         }
       }
 
       framed.setSpeedLimit( res.speedLimit );  // int;
       framed.setSpeedLimitDistance( res.speedLimitDistance );  // raw_target_speed_map_dist Float32;
+      framed.setRemainTime( res.remainTime );  // raw_target_speed_map_remain_time Float32;
       framed.setSafetySign( res.safetySign ); // int;
       // framed.setRoadCurvature( res.roadCurvature ); // road_curvature Float32;
       framed.setTurnInfo( res.turnInfo );  // int;
@@ -162,7 +184,8 @@ int main() {
     131 단속카메라(신호위반카메라)  
     135 고정식(버스단속구간)  - 호야
     150 경찰차(이동식단속구간)  - 호야
-    165 구간단속    
+    165 구간단속
+    195, 197 구간단속, 가변속도제한구간
     198 차선변경금지시작
     199 차선변경금지종료
     129 주정차금지구간
