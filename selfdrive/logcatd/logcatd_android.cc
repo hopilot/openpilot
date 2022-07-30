@@ -121,8 +121,6 @@ int main() {
       }
       else if( strcmp( entry.tag, "opkrdistancetoturn" ) == 0 )
       {
-        res.tv_sec = entry.tv_sec;
-        res.tv_nsec = tv_nsec;
         res.distanceToTurn = atoi( entry.message );
       }
       else if( dSpeed_ms < 1.0 )
@@ -157,7 +155,7 @@ int main() {
           res.speedLimit = 0;
           res.remainTime = 0;
           res.safetySign = 0;
-          system("logcat -c &");
+          //system("logcat -c &");
         }
       }
 
