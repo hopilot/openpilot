@@ -13,7 +13,6 @@
 typedef struct LiveNaviDataResult {
       int speedLimit;  // int;
       float speedLimitDistance;  // Float32;
-      float remainTime;  // Float32;
       int safetySign;    // int;
       float roadCurvature;    // Float32;
       int turnInfo;    // int;
@@ -34,7 +33,6 @@ int main() {
 
   ExitHandler do_exit;
   PubMaster pm({"liveNaviData"});
-  SubMaster sm({"carState"});
   LiveNaviDataResult res;
 
   log_time last_log_time = {};
@@ -81,9 +79,6 @@ int main() {
       nDelta_nsec = tv_nsec - res.tv_nsec;
       //nDelta = entry.tv_sec - res.tv_sec;
 
-      sm.update(0);
-      const float dSpeed_ms = sm["carState"].getCarState().getVEgo();
-
       if( strcmp( entry.tag, "opkrspddist" ) == 0 )
       {
         res.tv_sec = entry.tv_sec;
@@ -93,10 +88,6 @@ int main() {
       else if( strcmp( entry.tag, "opkrspdlimit" ) == 0 )
       {
         res.speedLimit = atoi( entry.message );
-      }
-      else if( strcmp( entry.tag, "opkrremaintime" ) == 0 )
-      {
-        res.remainTime = atoi( entry.message );
       }
       else if( strcmp( entry.tag, "opkrsigntype" ) == 0 )
       {
@@ -111,9 +102,7 @@ int main() {
       {
         res.speedLimitDistance = 0;
         res.speedLimit = 0;
-        res.remainTime = 0;
         res.safetySign = 0;
-        //system("logcat -c &");
       }
       else if( strcmp( entry.tag, "opkrturninfo" ) == 0 )
       {
@@ -123,17 +112,11 @@ int main() {
       {
         res.distanceToTurn = atoi( entry.message );
       }
-      else if( dSpeed_ms < 1.0 )
-      {
-        res.tv_sec = entry.tv_sec;
-        res.tv_nsec = tv_nsec;
-      }
       else if( nDelta_nsec > 5000 )
       {
         if (res.safetySign == 197 && res.speedLimitDistance < 100) {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
-          res.remainTime = 0;
           res.safetySign = 0;
         }
         else if ( res.safetySign == 124 && (!sBump) )
@@ -144,7 +127,6 @@ int main() {
         {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
-          res.remainTime = 0;
           res.safetySign = 0;
         }
         else if( nDelta_nsec > 10000 )
@@ -153,7 +135,6 @@ int main() {
           res.tv_nsec = tv_nsec;
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
-          res.remainTime = 0;
           res.safetySign = 0;
           //system("logcat -c &");
         }
@@ -161,7 +142,6 @@ int main() {
 
       framed.setSpeedLimit( res.speedLimit );  // int;
       framed.setSpeedLimitDistance( res.speedLimitDistance );  // raw_target_speed_map_dist Float32;
-      framed.setRemainTime( res.remainTime );  // raw_target_speed_map_remain_time Float32;
       framed.setSafetySign( res.safetySign ); // int;
       // framed.setRoadCurvature( res.roadCurvature ); // road_curvature Float32;
       framed.setTurnInfo( res.turnInfo );  // int;

@@ -314,7 +314,6 @@ typedef struct UIScene {
   {
     int opkrspeedlimit;
     float opkrspeedlimitdist;
-    float opkrspeedlimitremaintime;
     int opkrspeedsign;
     float opkrcurveangle;
     int   opkrturninfo;

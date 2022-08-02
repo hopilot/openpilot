@@ -359,7 +359,6 @@ static void update_state(UIState *s) {
     auto lm_data = sm["liveNaviData"].getLiveNaviData();
     scene.liveNaviData.opkrspeedlimit = lm_data.getSpeedLimit();
     scene.liveNaviData.opkrspeedlimitdist = lm_data.getSpeedLimitDistance();
-    scene.liveNaviData.opkrspeedlimitremaintime = lm_data.getRemainTime();
     scene.liveNaviData.opkrspeedsign = lm_data.getSafetySign();
     scene.liveNaviData.opkrcurveangle = lm_data.getRoadCurvature();
     scene.liveNaviData.opkrturninfo = lm_data.getTurnInfo();
