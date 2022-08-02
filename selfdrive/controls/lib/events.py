@@ -726,6 +726,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .5),
   },
 
+  EventName.cutinDetection: {
+    ET.WARNING: Alert(
+      "Slowing Down by Cutting-In",
+      "",
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, .5),
+  },
+
   EventName.outOfSpace: {
     ET.PERMANENT: NormalPermanentAlert("Out of Storage"),
     ET.NO_ENTRY: NoEntryAlert("Out of Storage"),

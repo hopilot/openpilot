@@ -347,6 +347,8 @@ class CarInterface(CarInterfaceBase):
         events.add(EventName.camSpeedDown)
       if self.CC.curv_speed_control and ret.vEgo > 8.3:
         events.add(EventName.curvSpeedDown)
+      if self.CC.cut_in_control and ret.vEgo > 8.3:
+        events.add(EventName.cutinDetection)
       if self.CC.autohold_popup_timer:
         events.add(EventName.brakeHold)
       if self.CC.auto_res_starting:

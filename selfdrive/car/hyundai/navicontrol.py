@@ -39,6 +39,7 @@ class NaviControl():
     self.map_speed = 0
     self.onSpeedControl = False
     self.curvSpeedControl = False
+    self.cutInControl = False
     self.ctrl_speed = 0
     self.vision_curv_speed_c = list(map(int, Params().get("VCurvSpeedC", encoding="utf8").split(',')))
     self.vision_curv_speed_t = list(map(int, Params().get("VCurvSpeedT", encoding="utf8").split(',')))
@@ -349,11 +350,13 @@ class NaviControl():
         self.faststart = False
         dRel = int(self.lead_0.dRel)
         vRel = int(self.lead_0.vRel * (CV.MS_TO_MPH if CS.is_set_speed_in_mph else CV.MS_TO_KPH))
-        if self.cut_in_run_timer > 0:
+        if self.cut_in_run_timer >= 0:
+          self.cutInControl = False
           self.cut_in_run_timer -= 1
         elif self.cut_in:
           self.cut_in_run_timer = 1000
         if self.cut_in_run_timer and dRel < CS.clu_Vanz * 0.3: # keep decel when cut_in, max running time 10sec
+          self.cutInControl = True
           var_speed = min(CS.CP.vFutureA, navi_speed)
         elif vRel >= (-3 if CS.is_set_speed_in_mph else -5):
           var_speed = min(CS.CP.vFuture + max(0, int(dRel*(0.11 if CS.is_set_speed_in_mph else 0.16)+vRel)), navi_speed)
