@@ -149,7 +149,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     standstillResButton @125;
     routineDriveOn @126;
     lkasEnabled @127;
-    cutinDetection @128;
+    cutinDetection @129;
   }
 }
 
