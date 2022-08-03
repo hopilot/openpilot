@@ -1,27 +1,88 @@
-0. This fork is for all people who love Comma's Openpilot. Thanks to ku7, xx979xx, tk211x, xps-genesis, atom(respect you), hoya, moksatang, mamul, neokii, oricialworks, dragonpilot, shane, kegman, dnv26, move-fast, D.Fyffe and everyone helping me or contributing for HKGs.
+# Welcome to OPKR
 
-1. Branches
- - OPKR: main branch, stable, not latest. This will be updated if test branch is done.
- - _test: test branches, not stable, latest, for testing new functions, codes, or the other things.
- - Old branches are in openpilot_bak repository.
+Table of Contents
+==================
 
-2. How to Install
- - Use fork installer : Type https://opkr.tk/fork/opkr on custom URL window(Short URL. This will install OPKR branch directly. OPKR_test branch is https://opkr.tk/fork/test) or you can use Shane's fork installer(https://smiskol.com/fork)
- - Use a command : cd /data; mv openpilot openpilot_bak; git clone https://github.com/openpilotkr/openpilot.git -b OPKR; reboot
+<img src="https://i.imgur.com/aOxwC8R.png" align="right"
+     alt="OPKR" width="175" height="240">
 
-3. Setting Menu
- - Device(Function Name: Explanation)
+* [Join Our Discord](#-join-our-discord-)
+* [About This Fork](#-about-this-fork)
+* [Main Features](#-main-features)
+* [Branch Definitions](#-branch-definitions)
+* [How To Install](#-how-to-install)
+* [Settings Menu](#-setting-menu)
+* [Special Thanks](#-special-thanks)
+* [Donate](#-donate-)
+
+Join our Discord
+=================
+
+Join OPKR server!
+* https://discord.gg/6H9k4B5a
+
+About This Fork
+================
+
+This fork is focused on Hyundai, Kia, and Genesis Vehicles and for all people who love Comma's Openpilot.
+
+Main Features
+==============
+
+ - Advanced UI with on-screen settings for most openpilot parameters.
+ - Live Tune via UI
+ - Change cruise mode pushing GAP Button at Cruise Standby status.(OpenpilotStock, Dist+Curv, Dist only, Curv only, OneWay mode, Speedlimit decelation mode only)
+ - MapBox support, thanks to Dragonpilot
+ - Showing IP Address/SSID name/cell carrier and signal strength
+ - Cruise Button Spamming to adjust car set speed without longitudinal control, using OP target speed to keep certain distance to lead car. Variable scc speed control for smooth deceleration (better than stock) when you approach the lead car, and smooth acceleration.
+ - SmartMDPS support for steering down to 0 mph.
+ - Auto Recognition of SCC bus on CAN 2 for long control.
+ - Variable color speed display, braking shades of red, acceleration shades of green, coasting (no brake, no gas) white.
+ - OSM integration for auto SCC speed adjust via button spamming and slow down on curve using custom UI settings.
+ - 2 Users presets.
+ - Auto lane mode selection (laneless or lanefull).
+ - No ssh knowledge required, as most paramater can be adjusted via UI.
+ - Always updated and current.
+
+User-Friendly Control Mode(UFC)
+ - Full time lateral control
+ - Auto Resume while Driving
+ - Seperate Lat/StockLong - To be Developed
+
+Branch Definitions
+====================
+
+ - `OPKR:` main branch, stable, not latest. This will be updated if test branch is done.
+ - `OPKR_test:` test branches, not stable, latest, for testing new functions, codes, or the other things.
+    
+    ** old branches are in openpilot_bak repository.
+
+How To Install
+===============
+
+ - `OPKR's fork installer:` Type https://opkr.tk/fork/opkr on custom URL window. (OPKR_test branch is https://opkr.tk/fork/test)
+ - `SSH:` cd /data; mv openpilot openpilot_bak; git clone https://github.com/openpilotkr/openpilot.git -b OPKR; reboot
+
+   ** you can also use Shane's fork installer. (https://smiskol.com/fork)
+
+Setting Menu
+=============
+
+ - `Device` (Function Name: Explanation)
    - Driving Camera: You can preview/unview Openpilot Driving Camera.
- - Network(Function Name: Explanation)
+
+ - `Network` (Function Name: Explanation)
    - HotSpot on Boot: Turn on Hotspot when boot. (reboot required)
    - Use Legacy SSH Key: Use old ssh key access(below 0.8.2). (no reboot required)
- - Toggles(Function Name: Explanation)
+
+ - `Toggles` (Function Name: Explanation)
    - Enable Lane selector Mode: Show a lane mode button on driving screen Laneline/LaneLess/AUTO. AUTO will automatically switch based on presents of lane marker. (no reboot required)
    - Enable Driver Monitoring: On/Off driver monitoring for the EON without filterless IR camera or Someone cannot use front cam due to certain reasons.(reboot required)
    - Enable Driving Log Record: Record driving logs to Local, not to online server. (reboot required)
    - Enable Sending Log to Server: Enable log upload to online server. (reboot required)
    - Use Comma Stock UI: this use original Comma's UI. Also this can be applied on driving screen in realtime (click MaxSpeed box at top-left corner). (no reboot required)
- - Software(Function Name: Explanation)
+
+ - `Software` (Function Name: Explanation)
    - Check for Updates: You can confirm new commits of your fork, press ok will update and reboot.(like git pull).
    - Commit(Local/Remote): Commit name of local(EON) and Remote.(run once when boot in manager.py, search gitcommit.sh at the file, internet connection required)
    - Git Pull On Boot: run 'git pull' command when boot.
@@ -31,7 +92,8 @@
    - Cancel Git Pull: Move back to previous version of fork if last update is not desired.
    - Panda Flashing: Run Panda flashing command manually. Basically this is not necessary on normal operation.
    - Change Repo/Branch: You can install others fork/branch thru typing Git ID, Git Repository, Git Branch.
- UserMenu (Function Name: Description)
+
+ - `UI Menu` (Function Name: Description)
    - EON AutoShutdown: When car ignition is turned off, the device will be shutdown after the set time.
    - EON ForceShutdown: The device will be shutdown by force at offroad status after set time.
    - EON Volume Control(%): set device volume manually.
@@ -57,7 +119,8 @@
    - User's API: Set User driver log server url.
    - Mapbox Style: Choose three styles of the Mapbox, Comma, OPKR(locallized in Korea), User's, if you want to your own, Edit the file with yours(/data/params/d/MapboxStyleCustom). Make your mapbox style at https://studio.mapbox.com/. If you publish the style you can use it.
    - Top Text View : Show Date/Time/Roadname at top of drive screen.
-Driving Menu (Function Name: Description)
+
+ - `Driving Menu` (Function Name: Description)
    - Use Auto Resume at Stop: after standstill, op will auto resume when leadcar start moving.
    - RES count at standstill: some model need to be adjusted so car move when lead car start moving.(reboot required)
    - Change Cruise Gap at Stop: Cruise Gap changed to 1 step for departure faster, it gets back to orignal Gap after few second.
@@ -94,7 +157,8 @@ Driving Menu (Function Name: Description)
    - Set LaneWidth : Adjust if road lane is narrow
    - Speed LaneWidth : [Spd(m/s)], [Lanewidth] Adjust speed based on lane width.
    - Routine Drive by Roadname : (WIP) will change drive characteristics based on road, eg if local or highway will handle curve differently.
-Developer Menu
+
+ - `Developer Menu` (Function Name: Description)
    - DEBUG UI 1: Show debug UI on screen. 2 lines bottom of screen.(no reboot required)
    - DEBUG UI 2: Show debug UI on screen. other lines except 2 lines bottom.(no reboot required)
    - DEBUG UI 3: Show debug UI on screen. more debug info.(no reboot required)
@@ -122,7 +186,8 @@ Developer Menu
    - RUN Mixplorer: file manager application
    - CAR Force Recognition: If your car is not recognized, choose your car at this.(reboot required)
    - Pand Value Edit: not recommended. enough at current status.
- - Tuning(Function Name: Explanation)
+
+ - `Tuning Menu` (Function Name: Explanation)
    - CameraOffset: set your camera offset
    - PathOffset: i'm not sure this. but i recommend if you move your camera offset, adjust this as the value.
    - Use Live SteerRatio: Use Live Parameter value.
@@ -153,26 +218,20 @@ Developer Menu
     - Adjust Stopping Distance: help stopping distance more close to lead car(not recommended)
     - Enable E2E Long: Use Comma E2E long, sometimes it is not comfortable. think it's earlier to release.
 
-4. Main Features.
- - Advance UI with on screen settings for most openpilot parameters.
- - Live Tune via UI
- - Always updated and current.
- - Change cruise mode pushing GAP Button at Cruise Standby status.(OpenpilotStock, Dist+Curv, Dist only, Curv only, OneWay mode, Speedlimit decelation mode only)
- - MapBox support, thanks to Dragonpilot
- - Showing IP Address/SSID name/cell carrier and signal strength
- - Cruise Button Spamming to adjust car set speed without longitudinal control, using OP target speed to keep certain distance to lead car.    Variable scc speed control for smooth deceleration (better than stock) when you approach the lead car, and smooth acceleration.
- - SmartMDPS support for steering down to 0 mph.
- - Auto Recognition of SCC bus on CAN 2 for long control.
- - Variable color speed display, braking shades of red, acceleration shades of green, coasting (no brake, no gas) white.
- - OSM integration for auto SCC speed adjust via button spamming and slow down on curve using custom UI settings.
- - 2 Users presets.
- - Auto lane mode selection (laneless or lanefull).
- - No ssh knowledge required, as most paramater can be adjusted via UI.
+Special Thanks
+================
 
-5. User-Friendly Control Mode(UFC)
- - Full time lateral control
- - Auto Resume while Driving
- - Seperate Lat/StockLong - To be Developed
+`Special Thanks:` ku7, xx979xx, tk211x, xps-genesis, atom(respect you), hoya, moksatang, mamul, neokii, oricialworks, dragonpilot, shane, kegman, dnv26, move-fast, D.Fyffe and everyone helping me or contributing for HKGs.
+
+Donate
+=======
+
+If you enjoy any features of this fork and would like to show your support, feel free to donate to @multiKYD on PayPal.
+
+Thank you!
+
+=================
+
 
 ![](https://i.imgur.com/b0ZyIx5.jpg)
 
