@@ -328,6 +328,7 @@ class NaviControl():
     self.lead_0 = self.sm['radarState'].leadOne
     self.lead_1 = self.sm['radarState'].leadTwo
     self.cut_in = True if self.lead_1.status and (self.lead_0.dRel - self.lead_1.dRel) > 3.0 else False
+    self.cutInControl = False
 
     if CS.driverAcc_time and CS.cruise_set_mode in (1,2,4):
       self.t_interval = 7
@@ -350,8 +351,7 @@ class NaviControl():
         self.faststart = False
         dRel = int(self.lead_0.dRel)
         vRel = int(self.lead_0.vRel * (CV.MS_TO_MPH if CS.is_set_speed_in_mph else CV.MS_TO_KPH))
-        if self.cut_in_run_timer >= 0:
-          self.cutInControl = False
+        if self.cut_in_run_timer > 0:
           self.cut_in_run_timer -= 1
         elif self.cut_in:
           self.cut_in_run_timer = 1000
