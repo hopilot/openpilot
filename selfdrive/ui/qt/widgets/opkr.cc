@@ -726,6 +726,7 @@ BranchSelectCombo::BranchSelectCombo() : AbstractControl("", "", "")
       if (ConfirmationDialog::confirm("Now will checkout the branch, <" + branch_name1 + ">. The device will be rebooted if completed.", this)) {
         QString cmd1 = "git -C /data/openpilot remote set-branches --add origin " + branch_name1;
         QString tcmd1 = "git -C /data/openpilot fetch --progress origin";
+        QProcess::execute("pkill -f thermald");
         QProcess::execute("git -C /data/openpilot clean -d -f -f");
         QProcess::execute(cmd1);
         QProcess::execute("/data/openpilot/selfdrive/assets/addon/script/git_remove.sh");
