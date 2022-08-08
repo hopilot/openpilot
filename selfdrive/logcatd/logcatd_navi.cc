@@ -106,7 +106,7 @@ int main() {
   double  dCurrentSec;
 
   ExitHandler do_exit;
-  PubMaster pm({"liveMapData"});
+  PubMaster pm({"liveNaviData"});
   SubMaster sm({"carState"});
   LiveNaviDataResult  event;
 
