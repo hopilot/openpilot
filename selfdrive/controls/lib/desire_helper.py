@@ -63,6 +63,7 @@ class DesireHelper:
     self.lane_change_adjust_enable = Params().get_bool("LCTimingFactorEnable")
 
     self.output_scale = 0.0
+    self.ready_to_change = False
 
   def update(self, CP, carstate, controlstate, lane_change_prob, md):
     try:
@@ -123,7 +124,7 @@ class DesireHelper:
       if self.lane_change_state == LaneChangeState.off and one_blinker and not self.prev_one_blinker and not below_lane_change_speed:
         self.lane_change_state = LaneChangeState.preLaneChange
         self.lane_change_ll_prob = 1.0
-        self.lane_change_wait_timer = 0
+        self.lane_change_wait_timer = 0 if not self.ready_to_change else self.lane_change_auto_delay
         if self.lane_change_adjust_enable:
           self.lane_change_adjust_new = interp(v_ego, self.lane_change_adjust_vel, self.lane_change_adjust)
 
@@ -159,6 +160,10 @@ class DesireHelper:
       self.lane_change_timer += DT_MDL
 
     self.prev_one_blinker = one_blinker
+    self.ready_to_change = False
+    if self.lane_change_state == LaneChangeState.off and road_edge_stat == lane_direction and one_blinker:
+      self.prev_one_blinker = False
+      self.ready_to_change = True
 
     self.desire = DESIRES[self.lane_change_direction][self.lane_change_state]
 
