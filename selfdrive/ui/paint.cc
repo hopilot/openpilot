@@ -147,7 +147,7 @@ static void ui_draw_stop_line(UIState *s, const cereal::ModelDataV2::StopLineDat
 }
 
 static void ui_draw_stop_sign(UIState *s) {
-  float center_x = 1450.0f;
+  float center_x = 1500.0f;
   float center_y = 105.0f;
   float radius_i = 5.0f;
   float radius_o = 75.0f;

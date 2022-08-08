@@ -150,6 +150,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     routineDriveOn @126;
     lkasEnabled @127;
     cutinDetection @129;
+    gearNotD @130;
   }
 }
 

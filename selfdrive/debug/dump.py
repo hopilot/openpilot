@@ -5,6 +5,7 @@ import argparse
 import json
 from hexdump import hexdump
 import codecs
+import time
 codecs.register_error("strict", codecs.backslashreplace_errors)
 
 from cereal import log
@@ -71,3 +72,4 @@ if __name__ == "__main__":
             s += str(evt.__getattr__(w))
             s += f"\n  valid = {evt.valid} )"
             print(s)
+    time.sleep(2)
