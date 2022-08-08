@@ -407,7 +407,6 @@ class NaviControl():
     # self.gasPressed_old = CS.gasPressed
     if var_speed > round(min(v_curv_speed, o_curv_speed)):
       v_ego_kph = CS.out.vEgo * CV.MS_TO_KPH
-      v_ego_mph = CS.out.vEgo * CV.MS_TO_MPH
       if round(min(v_curv_speed, o_curv_speed))+1 < v_ego_kph and not CS.out.gasPressed:
         self.curvSpeedControl = True
       else:
