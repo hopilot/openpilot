@@ -742,7 +742,6 @@ BranchSelectCombo::BranchSelectCombo() : AbstractControl("", "", "")
       if (ConfirmationDialog::alert("Your branch is already <" + current_branch1 + ">.", this)) {combobox.setCurrentIndex(0);}
     }
   });
-  refresh();
 }
 
 void BranchSelectCombo::printMsg1() {
