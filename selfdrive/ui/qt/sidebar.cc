@@ -9,8 +9,8 @@
 #include <QSoundEffect>
 #include <QDateTime>
 
-void Sidebar::drawMetric(QPainter &p, const QString &label, const QString &val, QColor c, int y) {
-  const QRect rect = {30, y, 240, val.isEmpty() ? (label.contains("\n") ? 124 : 100) : 148};
+void Sidebar::drawMetric(QPainter &p, const QPair<QString, QString> &label, QColor c, int y) {
+  const QRect rect = {30, y, 240, 124};
 
   p.setPen(Qt::NoPen);
   p.setBrush(QBrush(c));
@@ -25,16 +25,9 @@ void Sidebar::drawMetric(QPainter &p, const QString &label, const QString &val, 
   p.drawRoundedRect(rect, 20, 20);
 
   p.setPen(QColor(0xff, 0xff, 0xff));
-  if (val.isEmpty()) {
-    configFont(p, "Open Sans", 35, "Bold");
-    const QRect r = QRect(rect.x() + 30, rect.y(), rect.width() - 40, rect.height());
-    p.drawText(r, Qt::AlignCenter, label);
-  } else {
-    configFont(p, "Open Sans", 58, "Bold");
-    p.drawText(rect.x() + 50, rect.y() + 71, val);
-    configFont(p, "Open Sans", 35, "Regular");
-    p.drawText(rect.x() + 50, rect.y() + 50 + 77, label);
-  }
+  configFont(p, "Open Sans", 35, "Bold");
+  p.drawText(rect.x() + 10, rect.top() - 23, rect.width(), rect.height(), Qt::AlignCenter, label.first);
+  p.drawText(rect.x() + 10, rect.top() + 23, rect.width(), rect.height(), Qt::AlignCenter, label.second);
 }
 
 Sidebar::Sidebar(QWidget *parent) : QFrame(parent) {
@@ -83,7 +76,7 @@ void Sidebar::mouseReleaseEvent(QMouseEvent *event) {
   } else if ( pressTime > MY_LONG_PRESS_THRESHOLD && trig_settings) {
     emit openSettings();
   } else if ( pressTime < 300 && trig_settings) {
-    ConfirmationDialog::alert("Hold 0.5 sec on the button to enter Setting Menu.", this);
+    ConfirmationDialog::alert(tr("Hold 0.3 sec on the button to enter Setting Menu."), this);
   }
 }
 
@@ -98,30 +91,30 @@ void Sidebar::updateState(const UIState &s) {
   ItemStatus connectStatus;
   auto last_ping = deviceState.getLastAthenaPingTime();
   if (last_ping == 0) {
-    connectStatus = ItemStatus{"NETWORK\nOFFLINE", warning_color};
+    connectStatus = ItemStatus{{tr("NETWORK"), tr("OFFLINE")}, warning_color};
   } else {
-    connectStatus = nanos_since_boot() - last_ping < 80e9 ? ItemStatus{"NETWORK\nONLINE", good_color} : ItemStatus{"NETWORK\nERROR", danger_color};
+    connectStatus = nanos_since_boot() - last_ping < 80e9 ? ItemStatus{{tr("NETWORK"), tr("ONLINE")}, good_color} : ItemStatus{{tr("NETWORK"), tr("ERROR")}, danger_color};
   }
   setProperty("connectStatus", QVariant::fromValue(connectStatus));
 
-  QColor tempColor = danger_color;
+  ItemStatus tempStatus = {{tr("TEMP"), tr("HIGH")}, danger_color};
   auto ts = deviceState.getThermalStatus();
   if (ts == cereal::DeviceState::ThermalStatus::GREEN) {
-    tempColor = good_color;
+    tempStatus = {{tr("TEMP"), tr("GOOD")}, good_color};
   } else if (ts == cereal::DeviceState::ThermalStatus::YELLOW) {
-    tempColor = warning_color;
+    tempStatus = {{tr("TEMP"), tr("OK")}, warning_color};
   }
-  setProperty("tempStatus", QVariant::fromValue(ItemStatus{QString("%1℃").arg((int)deviceState.getAmbientTempC()), tempColor}));
+  setProperty("tempStatus", QVariant::fromValue(tempStatus));
 
-  ItemStatus pandaStatus = {"VEHICLE\nONLINE", good_color};
+  ItemStatus pandaStatus = {{tr("VEHICLE"), tr("ONLINE")}, good_color};
   if (s.scene.pandaType == cereal::PandaState::PandaType::UNKNOWN) {
-    pandaStatus = {"NO\nPANDA", danger_color};
+    pandaStatus = {{tr("PANDA"), tr("OFFLINE")}, danger_color};
   } else if (!s.scene.ignition) {
-    pandaStatus = {"VEHICLE\nOFFROAD", warning_color};
+  	pandaStatus = {{tr("VEHICLE"), tr("OFFROAD")}, warning_color};
   } else if (s.scene.started && s.scene.gpsAccuracyUblox != 0.00 && (s.scene.gpsAccuracyUblox > 99 || s.scene.gpsAccuracyUblox == 0)) {
-    pandaStatus = {"ONLINE\nGPS Search", warning_color};
+    pandaStatus = {{tr("ONLINE"), tr("GPS Search")}, warning_color};
   } else if (s.scene.satelliteCount > 0) {
-  	pandaStatus = {QString("ONLINE\nSAT : %1").arg(s.scene.satelliteCount), good_color};
+  	pandaStatus = {{tr("ONLINE"), tr("SAT : ")+QString("%1").arg(s.scene.satelliteCount)}, good_color};
   }
   setProperty("pandaStatus", QVariant::fromValue(pandaStatus));
 
@@ -184,9 +177,9 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   }
 
   // metrics
-  drawMetric(p, "SYS TEMP", temp_status.first, temp_status.second, 400);
-  drawMetric(p, panda_status.first, "", panda_status.second, 558);
-  drawMetric(p, connect_status.first, "", connect_status.second, 716);
+  drawMetric(p, temp_status.first, temp_status.second, 400);
+  drawMetric(p, panda_status.first, panda_status.second, 558);
+  drawMetric(p, connect_status.first, connect_status.second, 716);
 
   // atom - ip
   const QRect r2 = QRect(35, 295, 230, 50);

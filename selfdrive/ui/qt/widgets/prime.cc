@@ -39,7 +39,7 @@ void PairingQRWidget::refresh() {
   QString serial = QString::fromStdString(params.get("HardwareSerial"));
 
   if (std::min(IMEI.length(), serial.length()) <= 5) {
-    qrCode->setText("Error getting serial: contact support");
+    qrCode->setText(tr("Error getting serial: contact support"));
     qrCode->setWordWrap(true);
     qrCode->setStyleSheet(R"(font-size: 48px;)");
     return;
@@ -196,7 +196,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   hkg->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
   finishRegistationLayout->addWidget(hkg, 0, Qt::AlignCenter);
 
-  QPushButton* finishButton = new QPushButton("Show QR Code");
+  QPushButton* finishButton = new QPushButton(tr("Show QR Code"));
   finishButton->setFixedHeight(100);
   finishButton->setStyleSheet(R"(
     border-radius: 30px;
@@ -215,7 +215,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
   QVBoxLayout* qrLayout = new QVBoxLayout(q);
 
   qrLayout->addSpacing(40);
-  QLabel* qrLabel = new QLabel("Scan Device!");
+  QLabel* qrLabel = new QLabel(tr("Scan Device!"));
   qrLabel->setWordWrap(true);
   qrLabel->setAlignment(Qt::AlignHCenter);
   qrLabel->setStyleSheet(R"(

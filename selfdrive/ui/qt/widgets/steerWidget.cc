@@ -36,7 +36,7 @@ CSteerWidget::CSteerWidget(QWidget *parent) : QFrame(parent)
   hlayout->addWidget(icon_label);
 
   // title
-  QString  title = "Steer control Method";
+  QString  title = tr("Steer control Method");
   title_label = new QPushButton(title);
   title_label->setFixedHeight(120);
   title_label->setStyleSheet("font-size: 50px; font-weight: 400; text-align: left");
@@ -50,7 +50,7 @@ CSteerWidget::CSteerWidget(QWidget *parent) : QFrame(parent)
   });
 
   // label
-  method_label = new QPushButton("method"); // .setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
+  method_label = new QPushButton(tr("method")); // .setAlignment(Qt::AlignVCenter|Qt::AlignHCenter);
   method_label->setStyleSheet(R"(
     padding: 0;
     border-radius: 50px;
@@ -111,8 +111,8 @@ void CSteerWidget::FrameSmooth(QWidget *parent)
 
   MenuControl *pMenu1 = new MenuControl( 
     "OpkrMaxSteeringAngle",
-    "Driver to Steer Angle",
-    "mprove the edge between the driver and the openpilot.",
+    tr("Driver to Steer Angle"),
+    tr("Improve the edge between the driver and the openpilot."),
     "../assets/offroad/icon_shell.png"    
     );
   pMenu1->SetControl( 10, 180, 5 );
@@ -121,8 +121,8 @@ void CSteerWidget::FrameSmooth(QWidget *parent)
   
    MenuControl *pMenu2 = new MenuControl( 
     "OpkrMaxDriverAngleWait",
-    "Driver to Steer",
-    "Controls smooth torque by the driver  From OpkrMaxSteeringAngle. def:0.002(5sec)",
+    tr("Driver to Steer"),
+    tr("Controls smooth torque by the driver  From OpkrMaxSteeringAngle. def:0.002(5sec)"),
     "../assets/offroad/icon_shell.png"    
     );
   pMenu2->SetControl( 0, 1, 0.001 );
@@ -132,8 +132,8 @@ void CSteerWidget::FrameSmooth(QWidget *parent)
 
    MenuControl *pMenu3 = new MenuControl( 
     "OpkrMaxSteerAngleWait" ,
-    "Steer angle",
-    "Controls torque by steering angle From OpkrMaxSteeringAngle. def:0.001(10sec)",
+    tr("Steer Angle"),
+    tr("Controls torque by steering angle From OpkrMaxSteeringAngle. def:0.001(10sec)"),
     "../assets/offroad/icon_shell.png"    
     );
   pMenu3->SetControl( 0, 1, 0.001 );
@@ -142,8 +142,8 @@ void CSteerWidget::FrameSmooth(QWidget *parent)
 
    MenuControl *pMenu4 = new MenuControl( 
     "OpkrDriverAngleWait" ,
-    "Normal driver to Steer",
-    "Controls torque limitation due to normal driver handle intervention. def:0.001(10sec)",
+    tr("Normal driver to Steer"),
+    tr("Controls torque limitation due to normal driver handle intervention. def:0.001(10sec)"),
     "../assets/offroad/icon_shell.png"
     );
   pMenu4->SetControl( 0, 1, 0.001 );
@@ -224,8 +224,8 @@ void CSteerWidget::FrameNormal(QWidget *parent)
   QVBoxLayout *menu_layout = new QVBoxLayout(m_pChildFrame2);  
   MenuControl *pMenu1 = new MenuControl( 
     "OpkrMaxAngleLimit",
-    "Max Steering Angle",
-    "Set the maximum steering angle of the handle where the openpilot is possible. Please note that some vehicles may experience errors if the angle is set above 90 degrees."
+    tr("Max Steering Angle"),
+    tr("Set the maximum steering angle of the handle where the openpilot is possible. Please note that some vehicles may experience errors if the angle is set above 90 degrees.")
     //"../assets/offroad/icon_chevron_right.png"    
     );
   pMenu1->SetControl( 80, 360, 10 );
@@ -251,9 +251,9 @@ void CSteerWidget::refresh()
 
   switch( m_nSelect )
   {
-    case 0 : str = "0.Normal"; break;
-    case 1 : str = "1.Smooth"; break;
-    default: str = "2.Empty";  break;
+    case 0 : str = tr("0.Normal"); break;
+    case 1 : str = tr("1.Smooth"); break;
+    default: str = tr("2.Empty");  break;
   }
 
 

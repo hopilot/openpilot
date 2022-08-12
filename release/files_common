@@ -353,6 +353,8 @@ selfdrive/ui/soundd/*.cc
 selfdrive/ui/soundd/*.h
 selfdrive/ui/soundd/soundd
 selfdrive/ui/soundd/.gitignore
+selfdrive/ui/translations/*.ts
+selfdrive/ui/translations/languages.json
 
 selfdrive/ui/qt/*.cc
 selfdrive/ui/qt/*.h
@@ -487,6 +489,8 @@ third_party/acados/x86_64/**
 third_party/acados/aarch64/**
 third_party/acados/larch64/**
 third_party/acados/include/**
+
+third_party/qt5/aarch64/bin/**
 
 third_party/android_frameworks_native/**
 third_party/android_hardware_libhardware/**

@@ -71,6 +71,15 @@ public:
   static bool alert(const QString &prompt_text, QWidget *parent);
 };
 
+class MultiOptionDialog : public QDialogBase {
+  Q_OBJECT
+
+public:
+  explicit MultiOptionDialog(const QString &prompt_text, const QStringList &l, const QString &current, QWidget *parent);
+  static QString getSelection(const QString &prompt_text, const QStringList &l, const QString &current, QWidget *parent);
+  QString selection;
+};
+
 // UpdateInfoDialog
 class UpdateInfoDialog : public QDialogBase {
   Q_OBJECT

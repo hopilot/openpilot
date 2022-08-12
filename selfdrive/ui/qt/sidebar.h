@@ -7,7 +7,7 @@
 #include "selfdrive/common/params.h"
 #include "selfdrive/ui/ui.h"
 
-typedef QPair<QString, QColor> ItemStatus;
+typedef QPair<QPair<QString, QString>, QColor> ItemStatus;
 Q_DECLARE_METATYPE(ItemStatus);
 
 class Sidebar : public QFrame {
@@ -44,7 +44,7 @@ protected:
   void paintEvent(QPaintEvent *event) override;
   void mousePressEvent(QMouseEvent *event) override;
   void mouseReleaseEvent(QMouseEvent *event) override;
-  void drawMetric(QPainter &p, const QString &label, const QString &val, QColor c, int y);
+  void drawMetric(QPainter &p, const QPair<QString, QString> &label, QColor c, int y);
 
   QImage home_img, settings_img;
   const QMap<cereal::DeviceState::NetworkType, QString> network_type = {
