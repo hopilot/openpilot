@@ -83,7 +83,7 @@ void Sidebar::mouseReleaseEvent(QMouseEvent *event) {
   } else if ( pressTime > MY_LONG_PRESS_THRESHOLD && trig_settings) {
     emit openSettings();
   } else if ( pressTime < 300 && trig_settings) {
-    ConfirmationDialog::alert("Hold 0.5 sec on the button to enter Setting Menu.", this);
+    ConfirmationDialog::alert(tr("Hold 0.3 sec on the button to enter Setting Menu."), this);
   }
 }
 
@@ -98,9 +98,9 @@ void Sidebar::updateState(const UIState &s) {
   ItemStatus connectStatus;
   auto last_ping = deviceState.getLastAthenaPingTime();
   if (last_ping == 0) {
-    connectStatus = ItemStatus{"NETWORK\nOFFLINE", warning_color};
+    connectStatus = ItemStatus{{tr("NETWORK"), tr("OFFLINE")}, warning_color};
   } else {
-    connectStatus = nanos_since_boot() - last_ping < 80e9 ? ItemStatus{"NETWORK\nONLINE", good_color} : ItemStatus{"NETWORK\nERROR", danger_color};
+    connectStatus = nanos_since_boot() - last_ping < 80e9 ? ItemStatus{{tr("NETWORK"), tr("ONLINE")}, good_color} : ItemStatus{{tr("NETWORK"), tr("ERROR")}, danger_color};
   }
   setProperty("connectStatus", QVariant::fromValue(connectStatus));
 
@@ -113,15 +113,15 @@ void Sidebar::updateState(const UIState &s) {
   }
   setProperty("tempStatus", QVariant::fromValue(ItemStatus{QString("%1℃").arg((int)deviceState.getAmbientTempC()), tempColor}));
 
-  ItemStatus pandaStatus = {"VEHICLE\nONLINE", good_color};
+  ItemStatus pandaStatus = {{tr("VEHICLE"), tr("ONLINE")}, good_color};
   if (s.scene.pandaType == cereal::PandaState::PandaType::UNKNOWN) {
-    pandaStatus = {"NO\nPANDA", danger_color};
+    pandaStatus = {{tr("NO"), tr("PANDA")}, danger_color};
   } else if (!s.scene.ignition) {
-    pandaStatus = {"VEHICLE\nOFFROAD", warning_color};
+  	pandaStatus = {{tr("VEHICLE"), tr("OFFROAD")}, warning_color};
   } else if (s.scene.started && s.scene.gpsAccuracyUblox != 0.00 && (s.scene.gpsAccuracyUblox > 99 || s.scene.gpsAccuracyUblox == 0)) {
-    pandaStatus = {"ONLINE\nGPS Search", warning_color};
+    pandaStatus = {{tr("ONLINE"), tr("GPS Search")}, warning_color};
   } else if (s.scene.satelliteCount > 0) {
-  	pandaStatus = {QString("ONLINE\nSAT : %1").arg(s.scene.satelliteCount), good_color};
+  	pandaStatus = {{tr("ONLINE"), tr("SAT : ")+QString("%1").arg(s.scene.satelliteCount)}, good_color};
   }
   setProperty("pandaStatus", QVariant::fromValue(pandaStatus));
 
@@ -184,7 +184,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   }
 
   // metrics
-  drawMetric(p, "SYS TEMP", temp_status.first, temp_status.second, 400);
+  drawMetric(p, tr("SYS TEMP"), temp_status.first, temp_status.second, 400);
   drawMetric(p, panda_status.first, "", panda_status.second, 558);
   drawMetric(p, connect_status.first, "", connect_status.second, 716);
 
