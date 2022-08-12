@@ -274,7 +274,6 @@ def thermald_thread(end_event, hw_queue):
       # Setup fan handler on first connect to panda
       if fan_controller is None and peripheralState.pandaType != log.PandaState.PandaType.unknown:
         is_uno = peripheralState.pandaType == log.PandaState.PandaType.uno
-
         if TICI:
           fan_controller = TiciFanController()
         elif is_uno or PC:
@@ -284,12 +283,6 @@ def thermald_thread(end_event, hw_queue):
     elif params.get_bool("IsOpenpilotViewEnabled") and not params.get_bool("IsDriverViewEnabled") and is_openpilot_view_enabled == 0:
       is_openpilot_view_enabled = 1
       onroad_conditions["ignition"] = True
-      if TICI:
-        fan_controller = TiciFanController()
-      elif is_uno or PC:
-        fan_controller = UnoFanController()
-      else:
-        fan_controller = EonFanController()
     elif not params.get_bool("IsOpenpilotViewEnabled") and not params.get_bool("IsDriverViewEnabled") and is_openpilot_view_enabled == 1:
       shutdown_trigger = 0
       sound_trigger == 0
@@ -301,6 +294,13 @@ def thermald_thread(end_event, hw_queue):
         if onroad_conditions["ignition"]:
           cloudlog.error("Lost panda connection while onroad")
         onroad_conditions["ignition"] = False
+    elif is_openpilot_view_enabled:
+      if TICI:
+        fan_controller = TiciFanController()
+      elif is_uno or PC:
+        fan_controller = UnoFanController()
+      else:
+        fan_controller = EonFanController()
 
     try:
       last_hw_state = hw_queue.get_nowait()
