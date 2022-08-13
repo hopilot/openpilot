@@ -160,7 +160,7 @@
     <message>
         <location filename="../qt/sidebar.cc" line="120"/>
         <source>OFFROAD</source>
-        <translation>오프로드</translation>
+        <translation>غير متصل</translation>
     </message>
     <message>
         <location filename="../qt/sidebar.cc" line="122"/>
