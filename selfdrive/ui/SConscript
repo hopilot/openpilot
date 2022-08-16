@@ -18,10 +18,11 @@ if arch == "Darwin":
   del base_libs[base_libs.index('OpenCL')]
   qt_env['FRAMEWORKS'] += ['OpenCL']
 
-widgets_src = ["qt/util.cc", "qt/widgets/input.cc", "qt/widgets/drive_stats.cc",
+qt_util = qt_env.Library("qt_util", ["#selfdrive/ui/qt/api.cc", "#selfdrive/ui/qt/util.cc"], LIBS=base_libs)
+widgets_src = ["ui.cc", "qt/widgets/input.cc", "qt/widgets/drive_stats.cc",
                "qt/widgets/ssh_keys.cc", "qt/widgets/toggle.cc", "qt/widgets/controls.cc",
                "qt/widgets/offroad_alerts.cc", "qt/widgets/prime.cc", "qt/widgets/keyboard.cc",
-               "qt/widgets/scrollview.cc", "qt/widgets/cameraview.cc", "#third_party/qrcode/QrCode.cc", "qt/api.cc",
+               "qt/widgets/scrollview.cc", "qt/widgets/cameraview.cc", "#third_party/qrcode/QrCode.cc",
                "qt/request_repeater.cc", "qt/qt_window.cc", "qt/widgets/opkr.cc"]
 widgets_src += ["qt/widgets/steerWidget.cc", "qt/widgets/groupWidget.cc" ]
 
@@ -32,11 +33,10 @@ qt_env['CPPDEFINES'] = []
 if arch == 'aarch64':
   base_libs += ['qmapboxgl']
   widgets_src += ["qt/maps/map_helpers.cc", "qt/maps/map_settings.cc", "qt/maps/map.cc"]
-
   qt_env['CPPDEFINES'] += ["ENABLE_MAPS"]
 
 widgets = qt_env.Library("qt_widgets", widgets_src, LIBS=base_libs)
-qt_libs = [widgets] + base_libs
+qt_libs = [widgets, qt_util] + base_libs
 
 # build assets
 assets = "#selfdrive/assets/assets.cc"
@@ -49,7 +49,7 @@ asset_obj = qt_env.Object("assets", assets)
 qt_env.Program("soundd/_soundd", ["soundd/main.cc", "soundd/sound.cc"], LIBS=qt_libs)
 if GetOption('test'):
   qt_env.Program("tests/playsound", "tests/playsound.cc", LIBS=base_libs)
-  qt_env.Program('tests/test_sound', ['tests/test_runner.cc', 'soundd/sound.cc', 'tests/test_sound.cc'], LIBS=[base_libs])
+  qt_env.Program('tests/test_sound', ['tests/test_runner.cc', 'soundd/sound.cc', 'tests/test_sound.cc'], LIBS=qt_libs)
 
 qt_env.SharedLibrary("qt/python_helpers", ["qt/qt_window.cc"], LIBS=qt_libs)
 
@@ -58,7 +58,7 @@ qt_env.Program("qt/text", ["qt/text.cc"], LIBS=qt_libs)
 qt_env.Program("qt/spinner", ["qt/spinner.cc"], LIBS=qt_libs)
 
 # build main UI
-qt_src = ["main.cc", "ui.cc", "paint.cc", "qt/sidebar.cc", "qt/onroad.cc",
+qt_src = ["main.cc", "paint.cc", "qt/sidebar.cc", "qt/onroad.cc",
           "qt/window.cc", "qt/home.cc", "qt/offroad/settings.cc",
           "qt/offroad/onboarding.cc", "qt/offroad/driverview.cc",
           "#third_party/nanovg/nanovg.c"]
