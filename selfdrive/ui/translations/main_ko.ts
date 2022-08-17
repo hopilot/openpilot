@@ -1619,7 +1619,7 @@
     <message>
         <location filename="../qt/widgets/opkr.cc" line="1560"/>
         <source>Set the monitoring mode. In the case of preference/prevention of sleepiness and sleepiness prevention, you can send a warning message faster by adjusting (lowering) the threshold value below.</source>
-        <translation>모니터링 모드를 설정합니다. 졸음 예방을 선호하는 경우 아래 임계값을 조정(낮춤)하여 경고 메시지를 더 빠르게 보낼 수 있습니다. 화면에서 모니터링 아이콘을 클릭하여 기본모드/졸음방지 모드를 바꿀 수 있습니다. 기본배경:기본모드, 초록배경:졸음방지모드</translation>
+        <translation>모니터링 모드를 설정합니다. 졸음 예방을 선호하는 경우 아래 임계값을 조정(낮춤)하여 경고 메시지를 더 빠르게 보낼 수 있습니다. 화면에서 모니터링 아이콘을 클릭하여 기본모드/졸음방지 모드를 바꿀 수 있습니다. 기본배경:기본모드, 초록배경:졸음방지모드, 졸음방지 모드에서 3회 이상 경고가 울릴경우, 졸음을 쫓기 위한 음악(베타파)이 자동 재생됩니다. 재생은 음악이 끝나면 자동으로 종료되며, 화면을 터치해서도 끌 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="1618"/>
