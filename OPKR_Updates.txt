@@ -1,12 +1,18 @@
 ☞ Use two fingers to scroll down ☜
 
+2022-08-17
+- Add Korean Language
+- Add Arabic Language(You can PR to add more)
+  (need to add and edit two files,
+   selfdrive/assets/addon/lang/events/<txt file>,
+   selfdrive/ui/translations/<ts file>)
+- Add lane change blocking tweak
 2022-07-27
 - More visible UI from Atom
 - Better laneless model for now(current Comma model)
 - Add blocking lane change when not necessary
 - Add current codes for C2 device
 - Add Variable Cruise(Cruise buttom spamming) Factor
-
 2022-06-21
 - Add EV Car Main Battery Level
 - Add Arabic Language to device
