@@ -209,7 +209,7 @@ typedef struct UIScene {
   float dynamic_tr_value;
   bool touched2 = false;
   int brightness_off;
-  int cameraOffset, pathOffset, osteerRateCost;
+  int cameraOffset, pathOffset;
   int pidKp, pidKi, pidKd, pidKf;
   int indiInnerLoopGain, indiOuterLoopGain, indiTimeConstant, indiActuatorEffectiveness;
   int lqrScale, lqrKi, lqrDcGain;
@@ -217,7 +217,7 @@ typedef struct UIScene {
   bool live_tune_panel_enable;
   int top_text_view;
   int live_tune_panel_list = 0;
-  int list_count = 3;
+  int list_count = 2;
   int nTime, autoScreenOff, brightness, awake;
   int nVolumeBoost = 0;
   bool read_params_once = false;
@@ -298,7 +298,6 @@ typedef struct UIScene {
   struct _LateralPlan
   {
     float laneWidth;
-    float steerRateCost;
     int standstillElapsedTime = 0;
 
     float dProb;

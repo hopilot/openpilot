@@ -96,13 +96,13 @@ void HomeWindow::mousePressCommon(QMouseEvent* e, int nDir) {
     clip(QUIState::ui_state.scene.pathOffset, -1000, 1000);
     QString value = QString::number(QUIState::ui_state.scene.pathOffset);
     Params().put("PathOffsetAdj", value.toStdString());
-  } else if (live_tune_panel_list == 2) {
-    QUIState::ui_state.scene.osteerRateCost += nDir;
-    clip(QUIState::ui_state.scene.osteerRateCost, 1, 200);
-    QString value = QString::number(QUIState::ui_state.scene.osteerRateCost);
-    Params().put("SteerRateCostAdj", value.toStdString());
   }
 }
+
+
+
+
+
 
 void HomeWindow::mousePressPID(QMouseEvent* e, int nDir) {
   int nMenuPos = QUIState::ui_state.scene.live_tune_panel_list - QUIState::ui_state.scene.list_count;
@@ -504,13 +504,13 @@ void HomeWindow::mousePressEvent(QMouseEvent* e)
       int nLoop = QUIState::ui_state.scene.list_count;
 
       if (QUIState::ui_state.scene.lateralControlMethod == 2) { // 2. LQR
-         nLoop = 6; //3+3
+         nLoop = nLoop + 3;
       } else if (QUIState::ui_state.scene.lateralControlMethod == 3) { // 3. TORQ
-        nLoop = 8; //3+5
+        nLoop = nLoop + 5;
       } else if (QUIState::ui_state.scene.lateralControlMethod < 2) { // 0. PID,  1. INDI
-        nLoop = 7; //3+4
+        nLoop = nLoop + 4;
       } else if (QUIState::ui_state.scene.lateralControlMethod == 4) { // 4. MULTI
-        nLoop = 19; //3+12
+        nLoop = nLoop + 16;
       }
 
       if(QUIState::ui_state.scene.live_tune_panel_list < nLoop) return;

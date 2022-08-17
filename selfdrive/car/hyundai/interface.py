@@ -66,7 +66,6 @@ class CarInterface(CarInterfaceBase):
     ret.pcmCruise = not ret.radarOffCan
 
     ret.steerActuatorDelay = 0.25  # Default delay
-    ret.steerRateCost = 0.35
     ret.steerLimitTimer = 0.8
     tire_stiffness_factor = 1.
 
@@ -91,7 +90,6 @@ class CarInterface(CarInterfaceBase):
     params = Params()
     tire_stiffness_factor = float(Decimal(params.get("TireStiffnessFactorAdj", encoding="utf8")) * Decimal('0.01'))
     ret.steerActuatorDelay = float(Decimal(params.get("SteerActuatorDelayAdj", encoding="utf8")) * Decimal('0.01'))
-    ret.steerRateCost = float(Decimal(params.get("SteerRateCostAdj", encoding="utf8")) * Decimal('0.01'))
     ret.steerLimitTimer = float(Decimal(params.get("SteerLimitTimerAdj", encoding="utf8")) * Decimal('0.01'))
     ret.steerRatio = float(Decimal(params.get("SteerRatioAdj", encoding="utf8")) * Decimal('0.01'))
 

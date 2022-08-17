@@ -2066,19 +2066,6 @@
     </message>
 </context>
 <context>
-    <name>SteerRateCost</name>
-    <message>
-        <location filename="../qt/widgets/opkr.cc" line="3242"/>
-        <source>SteerRateCost</source>
-        <translation>SteerRateCost</translation>
-    </message>
-    <message>
-        <location filename="../qt/widgets/opkr.cc" line="3242"/>
-        <source>Adjust the SteerRateCost value.</source>
-        <translation>SteerRateCost 값을 조정합니다.</translation>
-    </message>
-</context>
-<context>
     <name>SteerLimitTimer</name>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="3305"/>

@@ -625,7 +625,7 @@ TuningPanel::TuningPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(horizontal_line());
 
   layout->addWidget(new SteerActuatorDelay());
-  layout->addWidget(new SteerRateCost());
+
   layout->addWidget(new TireStiffnessFactor());
   layout->addWidget(new SteerThreshold());
   layout->addWidget(new SteerLimitTimer());

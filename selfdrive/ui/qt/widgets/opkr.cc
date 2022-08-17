@@ -3239,68 +3239,68 @@ void SteerActuatorDelay::refresh() {
   label.setText(QString::fromStdString(valuefs.toStdString()));
 }
 
-SteerRateCost::SteerRateCost() : AbstractControl(tr("SteerRateCost"), tr("Adjust the SteerRateCost value."), "../assets/offroad/icon_shell.png") {
+// SteerRateCost::SteerRateCost() : AbstractControl(tr("SteerRateCost"), tr("Adjust the SteerRateCost value."), "../assets/offroad/icon_shell.png") {
 
-  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  label.setStyleSheet("color: #e0e879");
-  hlayout->addWidget(&label);
+//   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+//   label.setStyleSheet("color: #e0e879");
+//   hlayout->addWidget(&label);
 
-  btnminus.setStyleSheet(R"(
-    padding: 0;
-    border-radius: 50px;
-    font-size: 35px;
-    font-weight: 500;
-    color: #E4E4E4;
-    background-color: #393939;
-  )");
-  btnplus.setStyleSheet(R"(
-    padding: 0;
-    border-radius: 50px;
-    font-size: 35px;
-    font-weight: 500;
-    color: #E4E4E4;
-    background-color: #393939;
-  )");
-  btnminus.setFixedSize(150, 100);
-  btnplus.setFixedSize(150, 100);
-  btnminus.setText("－");
-  btnplus.setText("＋");
-  hlayout->addWidget(&btnminus);
-  hlayout->addWidget(&btnplus);
+//   btnminus.setStyleSheet(R"(
+//     padding: 0;
+//     border-radius: 50px;
+//     font-size: 35px;
+//     font-weight: 500;
+//     color: #E4E4E4;
+//     background-color: #393939;
+//   )");
+//   btnplus.setStyleSheet(R"(
+//     padding: 0;
+//     border-radius: 50px;
+//     font-size: 35px;
+//     font-weight: 500;
+//     color: #E4E4E4;
+//     background-color: #393939;
+//   )");
+//   btnminus.setFixedSize(150, 100);
+//   btnplus.setFixedSize(150, 100);
+//   btnminus.setText("－");
+//   btnplus.setText("＋");
+//   hlayout->addWidget(&btnminus);
+//   hlayout->addWidget(&btnplus);
 
-  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
-    auto str = QString::fromStdString(params.get("SteerRateCostAdj"));
-    int value = str.toInt();
-    value = value - 1;
-    if (value <= 1) {
-      value = 1;
-    }
-    QString values = QString::number(value);
-    params.put("SteerRateCostAdj", values.toStdString());
-    refresh();
-  });
+//   QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+//     auto str = QString::fromStdString(params.get("SteerRateCostAdj"));
+//     int value = str.toInt();
+//     value = value - 1;
+//     if (value <= 1) {
+//       value = 1;
+//     }
+//     QString values = QString::number(value);
+//     params.put("SteerRateCostAdj", values.toStdString());
+//     refresh();
+//   });
   
-  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
-    auto str = QString::fromStdString(params.get("SteerRateCostAdj"));
-    int value = str.toInt();
-    value = value + 1;
-    if (value >= 200) {
-      value = 200;
-    }
-    QString values = QString::number(value);
-    params.put("SteerRateCostAdj", values.toStdString());
-    refresh();
-  });
-  refresh();
-}
+//   QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+//     auto str = QString::fromStdString(params.get("SteerRateCostAdj"));
+//     int value = str.toInt();
+//     value = value + 1;
+//     if (value >= 200) {
+//       value = 200;
+//     }
+//     QString values = QString::number(value);
+//     params.put("SteerRateCostAdj", values.toStdString());
+//     refresh();
+//   });
+//   refresh();
+// }
 
-void SteerRateCost::refresh() {
-  auto strs = QString::fromStdString(params.get("SteerRateCostAdj"));
-  int valuei = strs.toInt();
-  float valuef = valuei * 0.01;
-  QString valuefs = QString::number(valuef);
-  label.setText(QString::fromStdString(valuefs.toStdString()));
-}
+// void SteerRateCost::refresh() {
+//   auto strs = QString::fromStdString(params.get("SteerRateCostAdj"));
+//   int valuei = strs.toInt();
+//   float valuef = valuei * 0.01;
+//   QString valuefs = QString::number(valuef);
+//   label.setText(QString::fromStdString(valuefs.toStdString()));
+// }
 
 SteerLimitTimer::SteerLimitTimer() : AbstractControl(tr("SteerLimitTimer"), tr("Adjust the SteerLimitTimer value."), "../assets/offroad/icon_shell.png") {
 

@@ -328,7 +328,6 @@ static void update_state(UIState *s) {
     scene.lateralPlan.dProb = lp_data.getDProb();
     scene.lateralPlan.lProb = lp_data.getLProb();
     scene.lateralPlan.rProb = lp_data.getRProb();
-    scene.lateralPlan.steerRateCost = lp_data.getSteerRateCost();
     scene.lateralPlan.standstillElapsedTime = lp_data.getStandstillElapsedTime();
     scene.lateralPlan.lanelessModeStatus = lp_data.getLanelessMode();
     scene.lateralPlan.totalCameraOffset = lp_data.getTotalCameraOffset();
@@ -515,7 +514,6 @@ static void update_status(UIState *s) {
     s->scene.brightness_off = std::stoi(params.get("OpkrUIBrightnessOff"));
     s->scene.cameraOffset = std::stoi(params.get("CameraOffsetAdj"));
     s->scene.pathOffset = std::stoi(params.get("PathOffsetAdj"));
-    s->scene.osteerRateCost = std::stoi(params.get("SteerRateCostAdj"));
     s->scene.pidKp = std::stoi(params.get("PidKp"));
     s->scene.pidKi = std::stoi(params.get("PidKi"));
     s->scene.pidKd = std::stoi(params.get("PidKd"));

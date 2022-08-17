@@ -1005,13 +1005,12 @@ struct LateralPlan @0xe1e9318e2ae8b51e {
 
   # opkr
   outputScale @32 :Float32;
-  steerRateCost @33 :Float32;
-  standstillElapsedTime @34 :Float32;
-  vCruiseSet @35 :Float32;
-  vCurvature @36 :Float32;
-  lanelessMode @37 :Bool;
-  modelSpeed @38 :Float32;
-  totalCameraOffset @39 :Float32;
+  standstillElapsedTime @33 :Float32;
+  vCruiseSet @34 :Float32;
+  vCurvature @35 :Float32;
+  lanelessMode @36 :Bool;
+  modelSpeed @37 :Float32;
+  totalCameraOffset @38 :Float32;
 
   enum Desire {
     none @0;

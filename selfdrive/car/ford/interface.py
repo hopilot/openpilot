@@ -22,7 +22,6 @@ class CarInterface(CarInterfaceBase):
     ret.lateralTuning.pid.kf = 1. / MAX_ANGLE   # MAX Steer angle to normalize FF
     ret.steerActuatorDelay = 0.1  # Default delay, not measured yet
     ret.steerLimitTimer = 1.0
-    ret.steerRateCost = 1.0
     ret.centerToFront = ret.wheelbase * 0.44
     tire_stiffness_factor = 0.5328
     # TODO: add minSteerSpeed
