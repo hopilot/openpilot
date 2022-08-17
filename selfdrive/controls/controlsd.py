@@ -225,6 +225,7 @@ class Controls:
     self.lane_change_delay = int(Params().get("OpkrAutoLaneChangeDelay", encoding="utf8"))
     self.auto_enable_speed = max(1, int(Params().get("AutoEnableSpeed", encoding="utf8"))) if int(Params().get("AutoEnableSpeed", encoding="utf8")) > -1 else int(Params().get("AutoEnableSpeed", encoding="utf8"))
     self.e2e_long_alert_prev = True
+    self.unsleep_mode_alert_prev = True
     self.stock_navi_info_enabled = Params().get_bool("StockNaviSpeedEnabled")
     self.ignore_can_error_on_isg = Params().get_bool("IgnoreCANErroronISG")
     self.ready_timer = 0
@@ -354,6 +355,12 @@ class Controls:
         self.e2e_long_alert_prev = not self.e2e_long_alert_prev
       elif not Params().get_bool("E2ELong"):
         self.e2e_long_alert_prev = True
+      # UnSleep Mode Alert
+      if Params().get_bool("OpkrMonitoringMode") and self.unsleep_mode_alert_prev:
+        self.events.add(EventName.unSleepMode)
+        self.unsleep_mode_alert_prev = not self.unsleep_mode_alert_prev
+      elif not Params().get_bool("OpkrMonitoringMode"):
+        self.unsleep_mode_alert_prev = True
       self.second = 0.0
 
     # if log.PandaState.FaultType.relayMalfunction in pandaState.faults:
