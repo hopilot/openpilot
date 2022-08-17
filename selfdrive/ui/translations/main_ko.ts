@@ -1176,7 +1176,7 @@
     <message>
         <location filename="../qt/widgets/opkr.cc" line="371"/>
         <source>This will download the branch and takes a little time.</source>
-        <translation>이렇게 하면 브랜치가 다운로드되고 시간이 조금 걸립니다.</translation>
+        <translation>입력내용을 확인하세요. 실행하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="371"/>
@@ -1332,6 +1332,17 @@
         <location filename="../qt/widgets/opkr.cc" line="851"/>
         <source>Press OK to set your timezone as</source>
         <translation>시간대를 다음과 같이 설정하려면 [확인]을 누르십시오</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="832"/>
+        <location filename="../qt/widgets/opkr.cc" line="866"/>
+        <source>UNSET</source>
+        <translation>해제</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="869"/>
+        <source>SET</source>
+        <translation>설정</translation>
     </message>
 </context>
 <context>
@@ -3107,6 +3118,11 @@
         <location filename="../qt/widgets/opkr.cc" line="7435"/>
         <source>Put your number you know.</source>
         <translation>사전에 알고 있는 번호를 적으세요.</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="7447"/>
+        <source>SET</source>
+        <translation>설정</translation>
     </message>
 </context>
 <context>
