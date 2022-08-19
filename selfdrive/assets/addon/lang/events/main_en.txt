@@ -161,7 +161,7 @@ LKAS Fault: Restart the Car
 Cruise Fault: Restart the Car
 Cruise Fault: Restart the car to engage
 Cruise Fault: Restart the Car
-Reverse\nGear
+Reverse Gear
 Reverse Gear
 Gear not D
 Gear not D
