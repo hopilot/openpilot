@@ -540,7 +540,7 @@ void HomeWindow::mousePressEvent(QMouseEvent* e)
     sidebar->setVisible(!sidebar->isVisible() && !onroad->isMapVisible());
     QUIState::ui_state.sidebar_view = !QUIState::ui_state.sidebar_view;
   }
-
+  
   if (QUIState::ui_state.scene.started && QUIState::ui_state.scene.autoScreenOff != -2) {
     QUIState::ui_state.scene.touched2 = true;
     QTimer::singleShot(500, []() { QUIState::ui_state.scene.touched2 = false; });

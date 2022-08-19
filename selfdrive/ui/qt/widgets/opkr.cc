@@ -1206,7 +1206,7 @@ BrightnessOffControl::BrightnessOffControl() : AbstractControl(tr("Brightness at
   QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("OpkrUIBrightnessOff"));
     int value = str.toInt();
-    value = value - 10;
+    value = value - 5;
     if (value <= 0) {
       value = 0;
     }
@@ -1219,7 +1219,7 @@ BrightnessOffControl::BrightnessOffControl() : AbstractControl(tr("Brightness at
   QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("OpkrUIBrightnessOff"));
     int value = str.toInt();
-    value = value + 10;
+    value = value + 5;
     if (value >= 100) {
       value = 100;
     }

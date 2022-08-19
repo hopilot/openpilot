@@ -294,13 +294,6 @@ def thermald_thread(end_event, hw_queue):
         if onroad_conditions["ignition"]:
           cloudlog.error("Lost panda connection while onroad")
         onroad_conditions["ignition"] = False
-    elif is_openpilot_view_enabled:
-      if TICI:
-        fan_controller = TiciFanController()
-      elif is_uno or PC:
-        fan_controller = UnoFanController()
-      else:
-        fan_controller = EonFanController()
 
     try:
       last_hw_state = hw_queue.get_nowait()
