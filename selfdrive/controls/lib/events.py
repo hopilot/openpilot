@@ -229,12 +229,12 @@ def user_soft_disable_alert(alert_text_2: str) -> AlertCallbackType:
 
 
 def below_engage_speed_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, soft_disable_time: int) -> Alert:
-  return NoEntryAlert(f"{tr(6)} {get_display_speed(CP.minEnableSpeed, metric)}")
+  return NoEntryAlert(f"Speed Below {get_display_speed(CP.minEnableSpeed, metric)}")
 
 
 def below_steer_speed_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, soft_disable_time: int) -> Alert:
   return Alert(
-    f"{tr(7)} {get_display_speed(CP.minSteerSpeed, metric)}",
+    f"Steer Unavailable Below {get_display_speed(CP.minSteerSpeed, metric)}",
     "",
     AlertStatus.userPrompt, AlertSize.small,
     Priority.MID, VisualAlert.none, AudibleAlert.prompt, 0.4)
@@ -242,8 +242,8 @@ def below_steer_speed_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: 
 
 def calibration_incomplete_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, soft_disable_time: int) -> Alert:
   return Alert(
-    tr(8) + ": %d%%" % sm['liveCalibration'].calPerc,
-    f"{tr(9)} {get_display_speed(MIN_SPEED_FILTER, metric)}",
+    "Calibration in Progress: %d%%" % sm['liveCalibration'].calPerc,
+    f"Drive Above {get_display_speed(MIN_SPEED_FILTER, metric)}",
     AlertStatus.normal, AlertSize.mid,
     Priority.LOWEST, VisualAlert.none, AudibleAlert.none, .2)
 
@@ -267,8 +267,8 @@ def wrong_car_mode_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: boo
 def joystick_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, soft_disable_time: int) -> Alert:
   axes = sm['testJoystick'].axes
   gb, steer = list(axes)[:2] if len(axes) else (0., 0.)
-  vals = f"{tr(15)}: {round(gb * 100.)}%, {tr(16)}: {round(steer * 100.)}%"
-  return NormalPermanentAlert(tr(17), vals)
+  vals = f"Gas: {round(gb * 100.)}%, Steer: {round(steer * 100.)}%"
+  return NormalPermanentAlert("Joystick Mode", vals)
 
 # opkr
 def can_error_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, soft_disable_time: int) -> Alert:
@@ -278,7 +278,7 @@ def can_error_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, so
     add_int = int(add, 0)
     f.close()
     return Alert(
-      f"{tr(18)}: {add}({add_int})",
+      "CAN Error: %s is missing\n Decimal Value : %d" % (add, add_int),
       "",
       AlertStatus.normal, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .2, creation_delay=1.)
@@ -288,13 +288,13 @@ def can_error_alert(CP: car.CarParams, sm: messaging.SubMaster, metric: bool, so
     add_int = int(add, 0)
     f.close()
     return Alert(
-      f"{tr(19)}: {add}({add_int})",
+      "CAN Error: %s is timeout\n Decimal Value : %d" % (add, add_int),
       "",
       AlertStatus.normal, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .2, creation_delay=1.)
   else:
     return Alert(
-      tr(20),
+      "CAN Error: Check Harness Connections",
       "",
       AlertStatus.normal, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .2, creation_delay=1.)
