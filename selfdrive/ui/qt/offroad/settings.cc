@@ -186,6 +186,7 @@ DevicePanel::DevicePanel(SettingsWindow *parent) : ListWidget(parent) {
       btn->setEnabled(offroad);
     }
     resetCalibBtn->setEnabled(true);
+    translateBtn->setEnabled(true);
   });
 
   // power buttons
