@@ -5866,7 +5866,7 @@ void GetOffAlert::refresh() {
   }
 }
 
-OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("Select the navigation you want to use.(Mappy/Waze/None)"), "../assets/offroad/icon_shell.png") {
+OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("Select the navigation you want to use.(iNavi/Waze/None)"), "../assets/offroad/icon_shell.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label.setStyleSheet("color: #e0e879");
@@ -5924,7 +5924,7 @@ OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("
 void OPKRNaviSelect::refresh() {
   QString option = QString::fromStdString(params.get("OPKRNaviSelect"));
   if (option == "0") {
-    label.setText(tr("Mappy"));
+    label.setText(tr("iNavi"));
   } else if (option == "1") {
     label.setText(tr("Waze"));
   } else {
