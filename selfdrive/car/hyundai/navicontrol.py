@@ -224,7 +224,7 @@ class NaviControl():
               self.onSpeedControl = True
             else:
               self.onSpeedControl = False
-      elif CS.map_enabled and self.liveNaviData.speedLimit > 19:  # mappy speedlimit
+      elif CS.map_enabled and self.liveNaviData.speedLimit > 19:  # navi app speedlimit
         self.map_speed_dist = max(0, self.liveNaviData.speedLimitDistance - 30)
         self.map_speed = self.liveNaviData.speedLimit
         if self.map_speed_dist > 1250:

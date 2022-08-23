@@ -63,7 +63,7 @@ void Sidebar::mousePressEvent(QMouseEvent *event) {
     }
     effect.setVolume(volume);
     effect.play();
-    QProcess::execute("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
+    QProcess::execute("am start --activity-task-on-home com.thinkware.inaviair/com.thinkware.inaviair.UIActivity");
     QUIState::ui_state.scene.map_on_top = false;
     QUIState::ui_state.scene.map_on_overlay = !QUIState::ui_state.scene.map_on_overlay;
   }
