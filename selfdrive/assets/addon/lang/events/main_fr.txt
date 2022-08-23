@@ -1,43 +1,43 @@
-openpilot Non disponible
+ï»¿openpilot Non disponible
 REPRENEZ LE CONTROLE IMMEDIATEMENT
-openpilot se désengage
+openpilot se dÃ©sengage
 REPRENEZ LE CONTROLE IMMEDIATEMENT
 Gardez toujours les mains sur le volant et les yeux sur la route
 Vitesse basse
 Volant non disponible
 Calibration en cours
 Roulez au dessus
-Réception GPS faible
+RÃ©ception GPS faible
 Si le ciel est visible, contactez le support
-Vérifiez le placement de l'antenne GPS
-Régulateur désactivé
+VÃ©rifiez le placement de l'antenne GPS
+RÃ©gulateur dÃ©sactivÃ©
 Bouton principale Off
-Accélérateur
+AccÃ©lÃ©rateur
 Volant
 Joystick Mode
 Perte du signal CAN
-Signal CAN, temps dépassé
-Erreur CAN, vérifiez le harnais
+Signal CAN, temps dÃ©passÃ©
+Erreur CAN, vÃ©rifiez le harnais
 Joystick Mode
-Initialisation du système
-Soyez prêt à reprendre le contrôle
-ATTENTION: Cette branche n'a pas été testée
+Initialisation du systÃ¨me
+Soyez prÃªt Ã  reprendre le contrÃ´le
+ATTENTION: Cette branche n'a pas Ã©tÃ© testÃ©e
 Mode Dashcam
-Mode Dashcam pour voitures non supportées
-Véhicule non reconnu
-Vérifiez la connection à l'alimentation
+Mode Dashcam pour voitures non supportÃ©es
+VÃ©hicule non reconnu
+VÃ©rifiez la connection Ã  l'alimentation
 Mode Dashcam
-LKAS d'origine activé
-Désactivez le LKAS pour engager
+LKAS d'origine activÃ©
+DÃ©sactivez le LKAS pour engager
 Mode Dashcam
-Véhicule non reconnu
+VÃ©hicule non reconnu
 FREINEZ !
 AEB: Risque de Collision
 AEB: Risque de Collision
 FREINEZ !
 Risque de Collision
-Franchissement de ligne détecté
-Relachez l'accélérateur pour engager
+Franchissement de ligne dÃ©tectÃ©
+Relachez l'accÃ©lÃ©rateur pour engager
 Parametres Live Invalide
 Parametres Live Invalide
 Volant temporairement indisponible
@@ -46,27 +46,27 @@ Faites Attention
 Conducteur distrait
 DESENGAGEZ IMMEDIATEMENT
 Conducteur distrait
-Touchez le volant : Pas de visage détecté
+Touchez le volant : Pas de visage dÃ©tectÃ©
 Touchez le volant
-Conducteur ne répond pas
+Conducteur ne rÃ©pond pas
 DESENGAGEZ IMMEDIATEMENT
-Conducteur ne répond pas
+Conducteur ne rÃ©pond pas
 REPRENEZ LE CONTROLE
 Reprenez la contruite manuelle
 ARRET
 Appuyez sur reprise pour partir
-Dirigez-vous vers la gauche pour démarrer le changement de voie une fois en sécurité
-Dirigez-vous vers la droite pour démarrer le changement de voie une fois en sécurité
-Véhicule détecté dans l'angle mort
+Dirigez-vous vers la gauche pour dÃ©marrer le changement de voie une fois en sÃ©curitÃ©
+Dirigez-vous vers la droite pour dÃ©marrer le changement de voie une fois en sÃ©curitÃ©
+VÃ©hicule dÃ©tectÃ© dans l'angle mort
 Changement de voie
-E2E Long Activé
-Attention, cela peut fonctionner de manière inattendue
-Activation du clignotant à basse vitesse
-L’assistance à la direction est temporairement désactivée. Tournez manuellement.
-Feux de détresse activés
+E2E Long ActivÃ©
+Attention, cela peut fonctionner de maniÃ¨re inattendue
+Activation du clignotant Ã  basse vitesse
+L'assistance Ã  la direction est temporairement dÃ©sactivÃ©e. Tournez manuellement.
+Feux de dÃ©tresse activÃ©s
 Le conducteur tourne le volant
-L'assistance à la direction est temporairement affaibli.
-Reprenez le contrôle
+L'assistance Ã  la direction est temporairement affaibli.
+Reprenez le contrÃ´le
 Assistez la direction
 Malfonction du ventilateur
 Contactez le Support
@@ -86,30 +86,30 @@ Freinez !
 Risque de collision
 Conduire avec routines
 AUTO HOLD
-Frein à main activé
-Pedale appuyée
-Régulateur adaptatif desactivé
+Frein Ã  main activÃ©
+Pedale appuyÃ©e
+RÃ©gulateur adaptatif desactivÃ©
 Volant temporairement non disponible
 Volant temporairement non disponible
 Volant en pause, ISG en fonctionnement
-Réduction de la vitesse par rapport au limitations
-RES déclenché pour le départ
-Ajustement de la distance de sécurité
-Auto RES déclenché
-Réduction de le vitesse en courbe
-Réduction de le vitesse par coupage
-Mémoire de stockage insuffisante
-Mémoire de stockage insuffisante
-Aucune donnée provenant des capteurs
+RÃ©duction de la vitesse par rapport au limitations
+RES dÃ©clenchÃ© pour le dÃ©part
+Ajustement de la distance de sÃ©curitÃ©
+Auto RES dÃ©clenchÃ©
+RÃ©duction de le vitesse en courbe
+RÃ©duction de le vitesse par coupage
+MÃ©moire de stockage insuffisante
+MÃ©moire de stockage insuffisante
+Aucune donnÃ©e provenant des capteurs
 Redemarrez l'appareil
-Aucune donnée provenant des capteurs
+Aucune donnÃ©e provenant des capteurs
 Haut parleur non disponible
 Redemarrez l'appareil
 Haut parleur non disponible
-Niveau de distraction trop élevé
-Système en surchauffe
-Système en surchauffe
-Système en surchauffe
+Niveau de distraction trop Ã©levÃ©
+SystÃ¨me en surchauffe
+SystÃ¨me en surchauffe
+SystÃ¨me en surchauffe
 Vitesse n'est pas en mode D
 Calibration invalide
 Remontez l'appareil et recalibrez
@@ -119,69 +119,69 @@ Calibration en cours
 Calibration en cours
 Porte ouverte
 Porte ouverte
-Ceinture détachée
-Ceinture détachée
-ESP désactivé
-ESP désactivé
+Ceinture dÃ©tachÃ©e
+Ceinture dÃ©tachÃ©e
+ESP dÃ©sactivÃ©
+ESP dÃ©sactivÃ©
 Batterie faible
 Batterie faible
-Reprennez le contrôle
-Problème de communication entre les processus
+Reprennez le contrÃ´le
+ProblÃ¨me de communication entre les processus
 Faible taux de communication entre les processus
 Faible taux de communication entre les processus
-System Malfonction: Redémarrez votre appareil
-Erreur radar: Redémarrez votre appareil
-Erreur radar: Redémarrez votre appareil
-Problème de ralentissement du model
-Problème de ralentissement du model
-Modèle incertain
-Modèle incertain
-L’appareil est tombé du support
-L’appareil est tombé du support
-Mémoire faible: Redémarrez votre appareil
-Mémoire faible
-Redémarrez votre appareil
-Mémoire faible: Redémarrez votre appareil
-Malfonction système: Redémarrez votre appareil
-Erreur régulateur de vitesse
-Erreur régulateur de vitesse
-Erreur régulateur de vitesse
-Contrôles en erreur
+System Malfonction: RedÃ©marrez votre appareil
+Erreur radar: RedÃ©marrez votre appareil
+Erreur radar: RedÃ©marrez votre appareil
+ProblÃ¨me de ralentissement du model
+ProblÃ¨me de ralentissement du model
+ModÃ¨le incertain
+ModÃ¨le incertain
+L'appareil est tombÃ© du support
+L'appareil est tombÃ© du support
+MÃ©moire faible: RedÃ©marrez votre appareil
+MÃ©moire faible
+RedÃ©marrez votre appareil
+MÃ©moire faible: RedÃ©marrez votre appareil
+Malfonction systÃ¨me: RedÃ©marrez votre appareil
+Erreur rÃ©gulateur de vitesse
+Erreur rÃ©gulateur de vitesse
+Erreur rÃ©gulateur de vitesse
+ContrÃ´les en erreur
 Erreur camera
 Erreur camera
 Erreur camera
-Erreur USB : Redémarrez votre appareil
-Erreur USB : Redémarrez votre appareil
-Erreur USB : Redémarrez votre appareil
-Erreur CAN : Redémarrez votre appareil
-Erreur CAN : Vérifiez les connections
-Erreur LKAS : Redémarrez votre véhicule
-Erreur LKAS : Redémarrez votre appareil
-Erreur LKAS : Redémarrez votre appareil
-Erreur Régulateur de vitesse: Redémarrez votre appareil
-Erreur Régulateur de vitesse: Redémarrez votre appareil
-Erreur Régulateur de vitesse: Redémarrez votre appareil
-Marche arrière
-Marche arrière
+Erreur USB : RedÃ©marrez votre appareil
+Erreur USB : RedÃ©marrez votre appareil
+Erreur USB : RedÃ©marrez votre appareil
+Erreur CAN : RedÃ©marrez votre appareil
+Erreur CAN : VÃ©rifiez les connections
+Erreur LKAS : RedÃ©marrez votre vÃ©hicule
+Erreur LKAS : RedÃ©marrez votre appareil
+Erreur LKAS : RedÃ©marrez votre appareil
+Erreur RÃ©gulateur de vitesse: RedÃ©marrez votre appareil
+Erreur RÃ©gulateur de vitesse: RedÃ©marrez votre appareil
+Erreur RÃ©gulateur de vitesse: RedÃ©marrez votre appareil
+Marche arriÃ¨re
+Marche arriÃ¨re
 La vitesse n'est pas en D
 La vitesse n'est pas en D
-Régulateur de vitesse désactivé
+RÃ©gulateur de vitesse dÃ©sactivÃ©
 Erreur de planificateur
 Erreur de planificateur
 Malfunction du harnais
 Malfunction du harnais
-Vérifiez le hardware
+VÃ©rifiez le hardware
 Malfunction du harnais
-openpilot annulé
-Pas de véhicule proche
-Pas de véhicule proche
-openpilot annulé
+openpilot annulÃ©
+Pas de vÃ©hicule proche
+Pas de vÃ©hicule proche
+openpilot annulÃ©
 Vitesse trop faible
-Vitesse trop élevée
-Modèle incertain à cette vitesse
+Vitesse trop Ã©levÃ©e
+ModÃ¨le incertain Ã  cette vitesse
 Ralentir pour engager
-Erreur régulateur de vitesse : Redemarrez le véhicule pour engager
-Erreur régulateur de vitesse : Redemarrez le véhicule
+Erreur rÃ©gulateur de vitesse : Redemarrez le vÃ©hicule pour engager
+Erreur rÃ©gulateur de vitesse : Redemarrez le vÃ©hicule
 LKAS status : OFF
-LKAS activé
-Mise en veille désactivée
+LKAS activÃ©
+Mise en veille dÃ©sactivÃ©e
