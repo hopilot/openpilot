@@ -3586,7 +3586,7 @@
     <message>
         <location filename="../qt/widgets/opkr.h" line="568"/>
         <source>When decelerating the safety section, use the safety speed from the vehicle navigation system (limited to some vehicles with the corresponding data).</source>
-        <translation>안전 구간에서 감속할 때 차량 내비게이션 시스템의 안전 속도를 사용합니다.(해당 데이터가 있는 일부 차량에 한함).</translation>
+        <translation>안전 구간에서 감속 시 차량 내비게이션의 안전 속도를 사용합니다.(해당 데이터가 있는 일부 차량에 한함). 순정안전구간 감속 기능 사용시 반드시 설정속도(MAX)를 제한속도보다 같거나 높게 설정하여야 합니다. ex)100구간인데 100미만으로 설정시 60으로 인식됩니다. 100구간에서는 반드시 100이상으로 설정하세요. 30구간인 경우는 69까지만 설정해야지 70으로 인식되지 않습니다. 40은 79까지, 50은 89까지, 60은 99까지 입니다.</translation>
     </message>
 </context>
 <context>
