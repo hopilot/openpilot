@@ -129,7 +129,7 @@ Setting Menu
    - **Display Date on Screen:** shows the device date
    - **Display Time on Screen:** shows the device time
    - **API Server:** Choose driver log server
-      - Retropilot
+      - OPKR
       - Comma
       - User's
    - **User's API:** Set User driver log server url.

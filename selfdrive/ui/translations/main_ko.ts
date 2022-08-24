@@ -2611,13 +2611,13 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5935"/>
-        <source>Set API server to Retropilot/Comma/User&apos;s</source>
-        <translation>API 서버를 레트로파일럿/Comma/사용자로 설정</translation>
+        <source>Set API server to OPKR/Comma/User&apos;s</source>
+        <translation>API 서버를 OPKR/Comma/사용자로 설정</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5966"/>
-        <source>Retropilot</source>
-        <translation>레트로파일럿</translation>
+        <source>OPKR</source>
+        <translation>OPKR</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5967"/>
@@ -2666,8 +2666,8 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6084"/>
-        <source>Input Your API(url or ip):</source>
-        <translation>API(url 또는 ip) 입력:</translation>
+        <source>Input Your API without http://</source>
+        <translation>API 입력(http://제외)</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6086"/>
@@ -2681,8 +2681,8 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6097"/>
-        <source>Do you want to unset? the API server gets back to Retropilot server and Device will be rebooted now.</source>
-        <translation>설정을 해제하시겠습니까? API 서버가 레트로파일럿 서버로 바뀌며 장치가 지금 재부팅됩니다.</translation>
+        <source>Do you want to unset? the API server gets back to OPKR server and Device will be rebooted now.</source>
+        <translation>설정을 해제하시겠습니까? API 서버가 OPKR 서버로 바뀌며 장치가 지금 재부팅됩니다.</translation>
     </message>
 </context>
 <context>
