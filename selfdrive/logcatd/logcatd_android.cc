@@ -14,6 +14,7 @@ typedef struct LiveNaviDataResult {
       int speedLimit;  // int;
       float speedLimitDistance;  // Float32;
       int safetySign;    // int;
+      int safetySignCam;    // int;
       float roadCurvature;    // Float32;
       int turnInfo;    // int;
       float distanceToTurn;    // Float32;
@@ -93,6 +94,15 @@ int main() {
       {
         res.tv_sec = entry.tv_sec;
         res.tv_nsec = tv_nsec;
+        res.safetySignCam = atoi( entry.message );
+        if (res.safetySignCam == 124) {
+          sBump = true;
+        }
+      }
+      else if( strcmp( entry.tag, "opkrroadsigntype" ) == 0 )
+      {
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
         res.safetySign = atoi( entry.message );
         if (res.safetySign == 124) {
           sBump = true;
@@ -103,6 +113,7 @@ int main() {
         res.speedLimitDistance = 0;
         res.speedLimit = 0;
         res.safetySign = 0;
+        res.safetySignCam = 0;
       }
       else if( strcmp( entry.tag, "opkrturninfo" ) == 0 )
       {
@@ -128,6 +139,7 @@ int main() {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
           res.safetySign = 0;
+          res.safetySignCam = 0;
         }
         else if( nDelta_nsec > 10000 )
         {
@@ -136,6 +148,7 @@ int main() {
           res.speedLimitDistance = 0;
           res.speedLimit = 0;
           res.safetySign = 0;
+          res.safetySignCam = 0;
           //system("logcat -c &");
         }
       }
@@ -143,6 +156,7 @@ int main() {
       framed.setSpeedLimit( res.speedLimit );  // int;
       framed.setSpeedLimitDistance( res.speedLimitDistance );  // raw_target_speed_map_dist Float32;
       framed.setSafetySign( res.safetySign ); // int;
+      framed.setSafetySignCam( res.safetySignCam ); // int;
       // framed.setRoadCurvature( res.roadCurvature ); // road_curvature Float32;
       framed.setTurnInfo( res.turnInfo );  // int;
       framed.setDistanceToTurn( res.distanceToTurn );  // Float32;

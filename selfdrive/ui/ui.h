@@ -193,6 +193,7 @@ typedef struct UIScene {
   int limitSpeedCamera = 0;
   float limitSpeedCameraDist = 0;
   int mapSign;
+  int mapSignCam;
   float vSetDis;
   bool cruiseAccStatus;
   int laneless_mode;
@@ -313,6 +314,7 @@ typedef struct UIScene {
   {
     int opkrspeedlimit;
     float opkrspeedlimitdist;
+    int opkrroadsign;
     int opkrspeedsign;
     float opkrcurveangle;
     int   opkrturninfo;

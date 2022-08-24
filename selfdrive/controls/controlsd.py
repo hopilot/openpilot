@@ -933,6 +933,7 @@ class Controls:
       controlsState.limitSpeedCamera = int(round(self.sm['liveNaviData'].speedLimit))
       controlsState.limitSpeedCameraDist = float(self.sm['liveNaviData'].speedLimitDistance)
       controlsState.mapSign = int(self.sm['liveNaviData'].safetySign)
+      controlsState.mapSignCam = int(self.sm['liveNaviData'].safetySignCam)
     elif self.stock_navi_info_enabled and int(CS.safetySign):
       controlsState.limitSpeedCamera = int(CS.safetySign)
       controlsState.limitSpeedCameraDist = float(CS.safetyDist)
