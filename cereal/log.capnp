@@ -593,7 +593,7 @@ struct ControlsState @0x97ff69c53601abf1 {
   limitSpeedCameraDist @66 :Float32 = 0;
   steerRatio @67 :Float32;
   mapSign @68 :Float32;
-  mapSignCam @75 :Float32;
+  mapSignCam @76 :Float32;
   dynamicTRMode @69 :UInt8;
   dynamicTRValue @70 :Float32;
   osmOffSpdLimit @71 :Bool;
