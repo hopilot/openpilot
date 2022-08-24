@@ -59,7 +59,7 @@ DriveStats::DriveStats(QWidget* parent) : QFrame(parent) {
 
   if (auto dongleId = getDongleId()) {
     QString url = TARGET_SERVER + "/v1.1/devices/" + *dongleId + "/stats";
-    RequestRepeater* repeater = new RequestRepeater(this, url, "ApiCache_DriveStats", 30);
+    RequestRepeater* repeater = new RequestRepeater(this, url, "ApiCache_DriveStats", 3720);
     QObject::connect(repeater, &RequestRepeater::requestDone, this, &DriveStats::parseResponse);
   }
 

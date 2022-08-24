@@ -131,7 +131,7 @@ PrimeUserWidget::PrimeUserWidget(QWidget* parent) : QWidget(parent) {
   // set up API requests
   if (auto dongleId = getDongleId()) {
     QString url = TARGET_SERVER + "/v1/devices/" + *dongleId + "/owner";
-    RequestRepeater *repeater = new RequestRepeater(this, url, "ApiCache_Owner", 601);
+    RequestRepeater *repeater = new RequestRepeater(this, url, "ApiCache_Owner", 3660);
     QObject::connect(repeater, &RequestRepeater::requestDone, this, &PrimeUserWidget::replyFinished);
   }
 }
@@ -271,7 +271,7 @@ SetupWidget::SetupWidget(QWidget* parent) : QFrame(parent) {
 
   if (auto dongleId = getDongleId()) {
     QString url = TARGET_SERVER + "/v1.1/devices/" + *dongleId + "/";
-    RequestRepeater* repeater = new RequestRepeater(this, url, "ApiCache_Device", 600);
+    RequestRepeater* repeater = new RequestRepeater(this, url, "ApiCache_Device", 3600);
 
     QObject::connect(repeater, &RequestRepeater::requestDone, this, &SetupWidget::replyFinished);
   }
