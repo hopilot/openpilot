@@ -227,10 +227,10 @@ class NaviControl():
               self.onSpeedControl = True
             else:
               self.onSpeedControl = False
-      elif CS.map_enabled and self.liveNaviData.safetySign == 107 and self.decel_on_speedbump:  # speed bump decel
+      elif CS.map_enabled and self.liveNaviData.safetySign == 107 and self.decel_on_speedbump:  # speed bump decel. 60km/h 속도에서 코드 발생 후 과속방지턱까지 15초정도 소요
         cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
         self.onSpeedBumpControl = True
-      elif CS.map_enabled and self.liveNaviData.speedLimit > 19 and self.liveNaviData.safetySignCam not in (4, 7):  # navi app speedlimit
+      elif CS.map_enabled and self.liveNaviData.speedLimit > 19 and self.liveNaviData.safetySignCam not in (4, 7, 16):  # navi app speedlimit
         self.onSpeedBumpControl = False
         self.map_speed_dist = max(0, self.liveNaviData.speedLimitDistance - 30)
         self.map_speed = self.liveNaviData.speedLimit
