@@ -38,6 +38,7 @@ class NaviControl():
     self.map_speed_dist = 0
     self.map_speed = 0
     self.onSpeedControl = False
+    self.onSpeedBumpControl = False
     self.curvSpeedControl = False
     self.cutInControl = False
     self.ctrl_speed = 0
@@ -69,6 +70,8 @@ class NaviControl():
     except:
       self.roadname_and_sl = ""
       pass
+
+    self.decel_on_speedbump = Params().get_bool("OPKRSpeedBump")
 
     self.na_timer = 0
     self.t_interval = 7
@@ -224,7 +227,11 @@ class NaviControl():
               self.onSpeedControl = True
             else:
               self.onSpeedControl = False
-      elif CS.map_enabled and self.liveNaviData.speedLimit > 19:  # navi app speedlimit
+      elif CS.map_enabled and self.liveNaviData.safetySign == 107 and self.decel_on_speedbump:  # speed bump decel
+        cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
+        self.onSpeedBumpControl = True
+      elif CS.map_enabled and self.liveNaviData.speedLimit > 19 and self.liveNaviData.safetySignCam not in (4, 7):  # navi app speedlimit
+        self.onSpeedBumpControl = False
         self.map_speed_dist = max(0, self.liveNaviData.speedLimitDistance - 30)
         self.map_speed = self.liveNaviData.speedLimit
         if self.map_speed_dist > 1250:
@@ -258,7 +265,8 @@ class NaviControl():
           self.onSpeedControl = True
         else:
           self.onSpeedControl = False
-      elif CS.safety_sign > 19 and self.stock_navi_info_enabled:  # cat stock navi speedlimit
+      elif CS.safety_sign > 19 and self.stock_navi_info_enabled and not CS.map_enabled:  # cat stock navi speedlimit
+        self.onSpeedBumpControl = False
         self.map_speed_dist = max(0, CS.safety_dist - int(interp(CS.safety_sign, [30,110], [20,70])))
         self.map_speed = CS.safety_sign
         if CS.safety_block_sl < 150:
@@ -299,12 +307,14 @@ class NaviControl():
         self.map_speed = 0
         self.map_speed_dist = 0
         self.map_speed_block = False
+        self.onSpeedBumpControl = False
     else:
       spdTarget = cruise_set_speed_kph
       self.onSpeedControl = False
       self.map_speed = 0
       self.map_speed_dist = 0
       self.map_speed_block = False
+      self.onSpeedBumpControl = False
 
     # elif speedLimitDistance >= 50:
     #   if speedLimit <= 60:

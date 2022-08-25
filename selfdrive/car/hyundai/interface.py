@@ -341,6 +341,8 @@ class CarInterface(CarInterfaceBase):
         events.add(EventName.standstillResButton)
       if self.CC.cruise_gap_adjusting:
         events.add(EventName.gapAdjusting)
+      if self.CC.on_speed_bump_control and ret.vEgo > 8.3:
+        events.add(EventName.speedBump)
       if self.CC.on_speed_control and ret.vEgo > 0.3:
         events.add(EventName.camSpeedDown)
       if self.CC.curv_speed_control and ret.vEgo > 8.3:

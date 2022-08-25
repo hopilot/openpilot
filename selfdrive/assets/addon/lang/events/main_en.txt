@@ -185,3 +185,4 @@ Cruise Fault: Restart the Car
 LKAS is Off status
 LKAS turned On
 UnSleep Mode turned On
+Slowing Down on SpeedBump

@@ -690,7 +690,7 @@ static void ui_draw_vision_event(UIState *s) {
   const int viz_event_x = s->fb_w - (viz_event_w + bdr_s);
   const int viz_event_y = bdr_s;
 
-  if (s->scene.liveNaviData.opkrspeedsign == 124 && s->scene.limitSpeedCamera == 0 && s->scene.limitSpeedCameraDist == 0 && !s->scene.comma_stock_ui) {
+  if (s->scene.liveNaviData.opkrroadsign == 107 && !s->scene.comma_stock_ui) {
     ui_draw_image(s, {s->fb_w/2 - 500/2, s->fb_h/2 - 500/2, 500, 500}, "speed_bump", 0.35f);
   }
 
@@ -1330,18 +1330,18 @@ static void draw_safetysign(UIState *s) {
       nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
       ui_draw_text(s, rect_d.centerX(), rect_d.centerY(), safetyDist, 78, COLOR_WHITE_ALPHA(200/sl_opacity), "sans-bold");
     }
-  } else if ((s->scene.mapSign == 195 || s->scene.mapSign == 197) && safety_speed == 0 && safety_dist != 0 && !s->scene.comma_stock_ui) {
-    ui_fill_rect(s->vg, rect_si, COLOR_WHITE_ALPHA(200/sl_opacity), diameter2/2);
-    ui_draw_rect(s->vg, rect_s, COLOR_RED_ALPHA(200/sl_opacity), 20, diameter/2);
-    nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
-    ui_draw_text(s, rect_s.centerX(), rect_s.centerY(), "VAR\nSEC", 108, COLOR_BLACK_ALPHA(200/sl_opacity), "sans-bold");
-    if (safety_dist != 0) {
-      ui_fill_rect(s->vg, rect_d, COLOR_RED_ALPHA(opacity/sl_opacity), 20.);
-      ui_draw_rect(s->vg, rect_d, COLOR_WHITE_ALPHA(200/sl_opacity), 8, 20);
-      nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
-      ui_draw_text(s, rect_d.centerX(), rect_d.centerY(), safetyDist, 78, COLOR_WHITE_ALPHA(200/sl_opacity), "sans-bold");
-    }
-  }
+  // } else if ((s->scene.mapSign == 195 || s->scene.mapSign == 197) && safety_speed == 0 && safety_dist != 0 && !s->scene.comma_stock_ui) {
+  //   ui_fill_rect(s->vg, rect_si, COLOR_WHITE_ALPHA(200/sl_opacity), diameter2/2);
+  //   ui_draw_rect(s->vg, rect_s, COLOR_RED_ALPHA(200/sl_opacity), 20, diameter/2);
+  //   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+  //   ui_draw_text(s, rect_s.centerX(), rect_s.centerY(), "VAR\nSEC", 108, COLOR_BLACK_ALPHA(200/sl_opacity), "sans-bold");
+  //   if (safety_dist != 0) {
+  //     ui_fill_rect(s->vg, rect_d, COLOR_RED_ALPHA(opacity/sl_opacity), 20.);
+  //     ui_draw_rect(s->vg, rect_d, COLOR_WHITE_ALPHA(200/sl_opacity), 8, 20);
+  //     nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+  //     ui_draw_text(s, rect_d.centerX(), rect_d.centerY(), safetyDist, 78, COLOR_WHITE_ALPHA(200/sl_opacity), "sans-bold");
+  //   }
+  // }
 }
 
 static void draw_compass(UIState *s) {

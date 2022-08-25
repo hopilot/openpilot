@@ -169,6 +169,7 @@ class CarController():
 
     self.cc_timer = 0
     self.on_speed_control = False
+    self.on_speed_bump_control = False
     self.curv_speed_control = False
     self.cut_in_control = False
     self.vFuture = 0
@@ -509,6 +510,7 @@ class CarController():
       self.standstill_res_button = False
     elif self.opkr_variablecruise and CS.acc_active and CS.out.cruiseState.modeSel > 0:
       self.on_speed_control = self.NC.onSpeedControl
+      self.on_speed_bump_control = self.NC.onSpeedBumpControl
       self.curv_speed_control = self.NC.curvSpeedControl
       self.cut_in_control = self.NC.cutInControl
       btn_signal = self.NC.update(CS, path_plan)
@@ -560,6 +562,7 @@ class CarController():
             self.user_specific_feature_on = False
     else:
       self.on_speed_control = False
+      self.on_speed_bump_control = False
       self.curv_speed_control = False
       self.cut_in_control = False
       self.cruise_gap_adjusting = False

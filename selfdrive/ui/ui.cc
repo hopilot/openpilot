@@ -198,7 +198,7 @@ static void update_state(UIState *s) {
     scene.limitSpeedCamera = scene.controls_state.getLimitSpeedCamera();
     scene.limitSpeedCameraDist = scene.controls_state.getLimitSpeedCameraDist();
     scene.mapSign = scene.controls_state.getMapSign();
-	scene.mapSignCam = scene.controls_state.getMapSignCam();
+    scene.mapSignCam = scene.controls_state.getMapSignCam();
     scene.steerRatio = scene.controls_state.getSteerRatio();
     scene.dynamic_tr_mode = scene.controls_state.getDynamicTRMode();
     scene.dynamic_tr_value = scene.controls_state.getDynamicTRValue();

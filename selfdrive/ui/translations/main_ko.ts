@@ -3940,4 +3940,17 @@
         <translation>로컬 전용 OSM. 온라인에서 DB를 다운로드합니다. 많은 스토리지가 필요합니다. 저장 공간이 충분하지 않으면 부팅 시마다 컴파일이 발생합니다. 이경우 기능을 끄십시오.</translation>
     </message>
 </context>
+<context>
+    <name>SpeedBumpDecelToggle</name>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="904"/>
+        <source>SpeedBump Deceleration</source>
+        <translation>과속방지턱 감속기능 사용</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="904"/>
+        <source>Use the deceleration feature on the speed bump. It&apos;s an indirect control method. It can be decelerated directly in long control control, but for versatility, indirect control for now.</source>
+        <translation>과속방지턱에서 감속기능을 사용합니다. 롱컨트롤제어에서는 직접적으로 감속가능하나 범용성을 위하여 현재는 간접제어방식(크루즈버튼)으로 합니다.</translation>
+    </message>
+</context>
 </TS>

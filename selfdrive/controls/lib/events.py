@@ -1055,6 +1055,14 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       tr(187),
       "",
       AlertStatus.normal, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1.5),
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 2.),
+  },
+
+  EventName.speedBump: {
+    ET.WARNING: Alert(
+      tr(188),
+      "",
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, .5),
   },
 }

@@ -897,6 +897,18 @@ public:
   }
 };
 
+class SpeedBumpDecelToggle : public ToggleControl {
+  Q_OBJECT
+
+public:
+  SpeedBumpDecelToggle() : ToggleControl(tr("SpeedBump Deceleration"), tr("Use the deceleration feature on the speed bump. It's an indirect control method. It can be decelerated directly in long control control, but for versatility, indirect control for now."), "../assets/offroad/icon_shell.png", Params().getBool("OPKRSpeedBump")) {
+    QObject::connect(this, &SpeedBumpDecelToggle::toggleFlipped, [=](int state) {
+      bool status = state ? true : false;
+      Params().putBool("OPKRSpeedBump", status);
+    });
+  }
+};
+
 // openpilot preview
 class OpenpilotView : public AbstractControl {
   Q_OBJECT
