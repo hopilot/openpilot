@@ -185,3 +185,4 @@ Erreur régulateur de vitesse : Redemarrez le véhicule
 LKAS status : OFF
 LKAS activé
 Mise en veille désactivée
+Ralentissement de la bosse de vitesse
