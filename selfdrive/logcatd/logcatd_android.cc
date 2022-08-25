@@ -115,7 +115,6 @@ int main() {
         res.tv_nsec = tv_nsec;
         res.safetySign = 0;
         system("logcat -c &");
-        }
       }
 
       framed.setSpeedLimit( res.speedLimit );  // int;
