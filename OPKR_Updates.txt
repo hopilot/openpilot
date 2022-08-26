@@ -1,5 +1,10 @@
 ☞ Use two fingers to scroll down ☜
 
+2022-08-26
+- Add French Language
+- Navi App Change from Mappy to iNavi
+- Set Default API to OPKR
+- Nuclear Grade model
 2022-08-17
 - Add Korean Language
 - Add Arabic Language(You can PR to add more)
