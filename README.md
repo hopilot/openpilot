@@ -206,7 +206,7 @@ Setting Menu
    - **Use FingerPrint 2.0:** (reboot required)
    - **Support WhitePanda:** Turn this on if you use WhitePanda. this is related to issue stopping processes when you turn device off.(reboot required)
    - **Set BatteryLess Eon:** Screen doesn't show information of battery status.
-   - **Turn Off Communication Issue Alarm:** Turn this on if you do not want alert of communication error. Sometimes you could get an alarm with error commuication issue. I don't know actually what error is. seems a bug or uncertain reason.
+   - **Turn Off Communication Issue Alarm:** Turn this on if you do not want alert of communication error. Sometimes you could get an commuication issue alert while using navi app or your custom UI is busy or rarely due to locationd(regarding GPS) process. I could use OP with the alert before without any issues. This is quite old issue. Currently I'm not sure if the error is still exist.
    - **Set LDWS Vehicles**
    - **Set DriveGear by Force:** for cars don't have dbc info of gear(reboot required)
    - **Ignore of Steering Warning:** Some cars have Steerwarning, so that not engaged.
