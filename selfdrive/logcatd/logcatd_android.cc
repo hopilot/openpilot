@@ -30,7 +30,6 @@ int main() {
   long  nDelta_nsec = 0;
   long  tv_nsec;
   float tv_nsec2;
-  bool  sBump = false;
 
   ExitHandler do_exit;
   PubMaster pm({"liveNaviData"});
@@ -94,12 +93,7 @@ int main() {
       }
       else if( strcmp( entry.tag, "opkrroadsigntype" ) == 0 )
       {
-        res.tv_sec = entry.tv_sec;
-        res.tv_nsec = tv_nsec;
         res.safetySign = atoi( entry.message );
-        if (res.safetySign == 107) {
-          sBump = true;
-        }
       }
       else if( strcmp( entry.tag, "opkrturninfo" ) == 0 )
       {
@@ -109,11 +103,10 @@ int main() {
       {
         res.distanceToTurn = atoi( entry.message );
       }
-      else if( nDelta_nsec > 2000 && res.safetySign != 0)
+      else if( nDelta_nsec > 60000)
       {
         res.tv_sec = entry.tv_sec;
         res.tv_nsec = tv_nsec;
-        res.safetySign = 0;
         system("logcat -c &");
       }
 
