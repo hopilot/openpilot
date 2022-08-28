@@ -107,7 +107,7 @@ int main() {
       {
         res.tv_sec = entry.tv_sec;
         res.tv_nsec = tv_nsec;
-        system("logcat -c &");
+        //system("logcat -c &");
       }
 
       framed.setSpeedLimit( res.speedLimit );  // int;
