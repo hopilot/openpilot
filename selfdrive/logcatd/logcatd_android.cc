@@ -32,7 +32,7 @@ int main() {
   long  tv_nsec;
   float tv_nsec2;
   bool  sBump = false;
-  int   naviSel = Params().getInt("OPKRNaviSelect");
+  int   naviSel = std::stoi(Params().get("OPKRNaviSelect"));
 
   ExitHandler do_exit;
   PubMaster pm({"liveNaviData"});
