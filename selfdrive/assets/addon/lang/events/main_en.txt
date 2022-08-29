@@ -186,4 +186,4 @@ LKAS is Off status
 LKAS turned On
 UnSleep Mode turned On
 Slowing Down for SpeedBump
-SCC Set Speed Overriding by Driver
+SCC Set Speed Driver Override

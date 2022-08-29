@@ -12,13 +12,13 @@
 
 // atom
 typedef struct LiveNaviDataResult {
-      int speedLimit;  // int;
-      float speedLimitDistance;  // Float32;
+      int speedLimit = 0;  // int;
+      float speedLimitDistance = 0;  // Float32;
       int safetySign = 0;    // int;
       int safetySignCam = 0;    // int;
-      float roadCurvature;    // Float32;
-      int turnInfo;    // int;
-      float distanceToTurn;    // Float32;
+      float roadCurvature = 0;    // Float32;
+      int turnInfo = 0;    // int;
+      float distanceToTurn = 0;    // Float32;
       //bool  mapValid;    // bool;
       //int  mapEnable;    // bool;
       long  tv_sec;
