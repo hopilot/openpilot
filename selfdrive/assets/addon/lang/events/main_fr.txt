@@ -2,14 +2,14 @@ openpilot Non disponible
 REPRENEZ LE CONTROLE IMMEDIATEMENT
 openpilot se désengage
 REPRENEZ LE CONTROLE IMMEDIATEMENT
-Gardez toujours les mains sur le volant et les yeux sur la route
+Restez attentifs à la route
 Vitesse basse
 Volant non disponible
 Calibration en cours
-Roulez au dessus
+Roulez moins vite
 Réception GPS faible
 Si le ciel est visible, contactez le support
-Vérifiez le placement de l'antenne GPS
+Vérifiez le placement de l'antenne GPS 
 Régulateur désactivé
 Bouton principale Off
 Accélérateur
@@ -55,8 +55,8 @@ REPRENEZ LE CONTROLE
 Reprenez la contruite manuelle
 ARRET
 Appuyez sur reprise pour partir
-Dirigez-vous vers la gauche pour démarrer le changement de voie une fois en sécurité
-Dirigez-vous vers la droite pour démarrer le changement de voie une fois en sécurité
+Dirigez-vous vers la gauche pour démarrer le changement de file une fois en sécurité
+Dirigez-vous vers la droite pour démarrer le changement de file une fois en sécurité
 Véhicule détecté dans l'angle mort
 Changement de voie
 E2E Long Activé
@@ -110,7 +110,7 @@ Niveau de distraction trop élevé
 Système en surchauffe
 Système en surchauffe
 Système en surchauffe
-Vitesse n'est pas en mode D
+La vitesse n'est pas en mode D
 Calibration invalide
 Remontez l'appareil et recalibrez
 Calibration invalide: Remontez l'appareil et recalibrez
@@ -182,8 +182,8 @@ Modèle incertain à cette vitesse
 Ralentir pour engager
 Erreur régulateur de vitesse : Redemarrez le véhicule pour engager
 Erreur régulateur de vitesse : Redemarrez le véhicule
-LKAS status : OFF
+LKAS desactivé
 LKAS activé
 Mise en veille désactivée
-Ralentissement de la bosse de vitesse
-Remplacement de la vitesse définie par le SCC par le conducteur
+Ralentissement avant dos-d'âne
+Vitesse du régulateur modifiée par le conducteur
