@@ -1065,4 +1065,12 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       AlertStatus.normal, AlertSize.small,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .5),
   },
+
+  EventName.sccDriverOverride: {
+    ET.WARNING: Alert(
+      tr(189),
+      "",
+      AlertStatus.normal, AlertSize.small,
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, .5),
+  },
 }

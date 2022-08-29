@@ -92,12 +92,12 @@ Adaptive Cruise Disabled
 Steering Temporarily Unavailable
 Steering Temporarily Unavailable
 Steering paused, ISG is working
-Slowing Down on SpeedLimit
+Slowing Down for SpeedLimit
 RES triggered for Departure
 Adjusting Cruise Gap
 Auto RES triggered
-Slowing Down On Curve
-Slowing Down by Cutting-In
+Slowing Down for Curve
+Slowing Down for Vehicle Cut-In
 Out of Storage
 Out of Storage
 No Data from Device Sensors
@@ -185,4 +185,5 @@ Cruise Fault: Restart the Car
 LKAS is Off status
 LKAS turned On
 UnSleep Mode turned On
-Slowing Down on SpeedBump
+Slowing Down for SpeedBump
+SCC Set Speed Overriding by Driver

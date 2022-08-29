@@ -186,3 +186,4 @@ LKAS status : OFF
 LKAS activé
 Mise en veille désactivée
 Ralentissement de la bosse de vitesse
+Remplacement de la vitesse définie par le SCC par le conducteur

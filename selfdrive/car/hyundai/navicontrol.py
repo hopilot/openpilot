@@ -41,6 +41,7 @@ class NaviControl():
     self.onSpeedBumpControl = False
     self.curvSpeedControl = False
     self.cutInControl = False
+    self.driverSccSetControl = False
     self.ctrl_speed = 0
     self.vision_curv_speed_c = list(map(int, Params().get("VCurvSpeedC", encoding="utf8").split(',')))
     self.vision_curv_speed_t = list(map(int, Params().get("VCurvSpeedT", encoding="utf8").split(',')))
@@ -340,9 +341,11 @@ class NaviControl():
     self.lead_1 = self.sm['radarState'].leadTwo
     self.cut_in = True if self.lead_1.status and (self.lead_0.dRel - self.lead_1.dRel) > 3.0 else False
     self.cutInControl = False
+    self.driverSccSetControl = False
 
     if CS.driverAcc_time and CS.cruise_set_mode in (1,2,4):
       self.t_interval = 7
+      self.driverSccSetControl = True
       return min(CS.clu_Vanz + (3 if CS.is_set_speed_in_mph else 5), navi_speed)
     # elif self.gasPressed_old:
     #   clu_Vanz = CS.clu_Vanz

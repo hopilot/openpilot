@@ -153,6 +153,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     gearNotD @130;
     unSleepMode @131;
     speedBump @132;
+    sccDriverOverride @133;
   }
 }
 
