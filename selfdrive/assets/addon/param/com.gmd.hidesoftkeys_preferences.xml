@@ -7,7 +7,7 @@
     <int name="quick_bar_spacing" value="50" />
     <int name="quick_bar_trigger_position" value="50" />
     <boolean name="side_mode" value="false" />
-    <string name="ring4">{&quot;type&quot;:&quot;EMPTY&quot;}</string>
+    <string name="ring4">{&quot;type&quot;:&quot;APPLICATION&quot;,&quot;title&quot;:&quot;MAPPY&quot;,&quot;data&quot;:&quot;com.mnsoft.mappyobn#com.mnsoft.offboardnavi.intro.MappyIntroActivity&quot;}</string>
     <boolean name="hideSoftKeys" value="true" />
     <boolean name="hideStatusBar" value="true" />
     <set name="auto_hide_options">
