@@ -5866,7 +5866,7 @@ void GetOffAlert::refresh() {
   }
 }
 
-OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("Select the navigation you want to use.(iNavi/Waze/None)"), "../assets/offroad/icon_shell.png") {
+OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("Select the navigation you want to use.(iNavi/Mappy/Waze/None)"), "../assets/offroad/icon_shell.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label.setStyleSheet("color: #e0e879");
@@ -5900,18 +5900,17 @@ OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("
     int value = str.toInt();
     value = value - 1;
     if (value <= -1) {
-      value = 2;
+      value = 3;
     }
     QString values = QString::number(value);
     params.put("OPKRNaviSelect", values.toStdString());
     refresh();
   });
-  
   QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("OPKRNaviSelect"));
     int value = str.toInt();
     value = value + 1;
-    if (value >= 3) {
+    if (value >= 4) {
       value = 0;
     }
     QString values = QString::number(value);
@@ -5920,12 +5919,13 @@ OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("
   });
   refresh();
 }
-
 void OPKRNaviSelect::refresh() {
   QString option = QString::fromStdString(params.get("OPKRNaviSelect"));
   if (option == "0") {
     label.setText(tr("iNavi"));
   } else if (option == "1") {
+    label.setText(tr("Mappy"));
+  } else if (option == "2") {
     label.setText(tr("Waze"));
   } else {
     label.setText(tr("None"));

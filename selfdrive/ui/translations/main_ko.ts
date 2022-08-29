@@ -2583,13 +2583,18 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5869"/>
-        <source>Select the navigation you want to use.(iNavi/Waze/None)</source>
-        <translation>사용할 네비게이션을 선택합니다.(아이나비/웨이즈/없음)</translation>
+        <source>Select the navigation you want to use.(iNavi/Mappy/Waze/None)</source>
+        <translation>사용할 네비게이션을 선택합니다.(아이나비/맵피/웨이즈/없음)</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="5925"/>
+        <source>iNavi</source>
+        <translation>아이나비</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5927"/>
-        <source>iNavi</source>
-        <translation>아이나비</translation>
+        <source>Mappy</source>
+        <translation>맵피</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5929"/>

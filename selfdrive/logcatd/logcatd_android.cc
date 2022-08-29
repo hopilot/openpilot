@@ -7,6 +7,7 @@
 
 #include "cereal/messaging/messaging.h"
 #include "selfdrive/common/util.h"
+#include "selfdrive/common/params.h"
 
 
 // atom
@@ -14,7 +15,7 @@ typedef struct LiveNaviDataResult {
       int speedLimit;  // int;
       float speedLimitDistance;  // Float32;
       int safetySign = 0;    // int;
-      int safetySignCam;    // int;
+      int safetySignCam = 0;    // int;
       float roadCurvature;    // Float32;
       int turnInfo;    // int;
       float distanceToTurn;    // Float32;
@@ -30,6 +31,8 @@ int main() {
   long  nDelta_nsec = 0;
   long  tv_nsec;
   float tv_nsec2;
+  bool  sBump = false;
+  int   naviSel = Params().getInt("OPKRNaviSelect");
 
   ExitHandler do_exit;
   PubMaster pm({"liveNaviData"});
@@ -81,6 +84,8 @@ int main() {
 
       if( strcmp( entry.tag, "opkrspddist" ) == 0 )
       {
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
         res.speedLimitDistance = atoi( entry.message );
       }
       else if( strcmp( entry.tag, "opkrspdlimit" ) == 0 )
@@ -89,11 +94,22 @@ int main() {
       }
       else if( strcmp( entry.tag, "opkrsigntype" ) == 0 )
       {
+        res.tv_sec = entry.tv_sec;
+        res.tv_nsec = tv_nsec;
         res.safetySignCam = atoi( entry.message );
+        if (res.safetySignCam == 124 && naviSel == 1) {
+          sBump = true;
+        }
       }
       else if( strcmp( entry.tag, "opkrroadsigntype" ) == 0 )
       {
         res.safetySign = atoi( entry.message );
+      }
+      else if( naviSel == 1 && (res.speedLimitDistance > 1 && res.speedLimitDistance < 60) && (strcmp( entry.tag, "AudioFlinger" ) == 0) )  //   msm8974_platform
+      {
+        res.speedLimitDistance = 0;
+        res.speedLimit = 0;
+        res.safetySignCam = 0;
       }
       else if( strcmp( entry.tag, "opkrturninfo" ) == 0 )
       {
@@ -103,11 +119,38 @@ int main() {
       {
         res.distanceToTurn = atoi( entry.message );
       }
-      else if( nDelta_nsec > 60000)
+      else if( nDelta_nsec > 60000 && naviSel == 0)
       {
         res.tv_sec = entry.tv_sec;
         res.tv_nsec = tv_nsec;
-        //system("logcat -c &");
+        // system("logcat -c &");
+      }
+      else if( nDelta_nsec > 5000 && naviSel == 1)
+      {
+        if (res.safetySignCam == 197 && res.speedLimitDistance < 100) {
+          res.speedLimitDistance = 0;
+          res.speedLimit = 0;
+          res.safetySignCam = 0;
+        }
+        else if ( res.safetySignCam == 124 && (!sBump) )
+        {
+          res.safetySignCam = 0;
+        }
+        else if (res.safetySignCam != 0 && res.safetySignCam != 124 && res.speedLimitDistance < 50 && res.speedLimitDistance > 0)
+        {
+          res.speedLimitDistance = 0;
+          res.speedLimit = 0;
+          res.safetySignCam = 0;
+        }
+        else if( nDelta_nsec > 10000 )
+        {
+          res.tv_sec = entry.tv_sec;
+          res.tv_nsec = tv_nsec;
+          res.speedLimitDistance = 0;
+          res.speedLimit = 0;
+          res.safetySignCam = 0;
+          // system("logcat -c &");
+        }
       }
 
       framed.setSpeedLimit( res.speedLimit );  // int;

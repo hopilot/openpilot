@@ -72,6 +72,7 @@ class NaviControl():
       pass
 
     self.decel_on_speedbump = Params().get_bool("OPKRSpeedBump")
+    self.navi_sel = int(Params().get("OPKRNaviSelect", encoding="utf8"))
 
     self.na_timer = 0
     self.t_interval = 7
@@ -227,7 +228,7 @@ class NaviControl():
               self.onSpeedControl = True
             else:
               self.onSpeedControl = False
-      elif CS.map_enabled and self.liveNaviData.safetySign == 107 and self.decel_on_speedbump:  # speed bump decel. 60km/h 속도에서 코드 발생 후 과속방지턱까지 15초정도 소요
+      elif self.decel_on_speedbump and CS.map_enabled and ((self.liveNaviData.safetySign == 107 and self.navi_sel == 0) or (self.liveNaviData.safetySignCam == 124 and self.navi_sel == 1)):
         cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
         self.onSpeedBumpControl = True
       elif CS.map_enabled and self.liveNaviData.speedLimit > 19 and self.liveNaviData.safetySignCam not in (4, 7, 16):  # navi app speedlimit
@@ -357,6 +358,9 @@ class NaviControl():
         var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 45)
       elif self.faststart and CS.CP.vFuture <= 40:
         var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 45)
+      elif ((self.lead_0.status and self.lead_0.dRel > 25) or not self.lead_0.status) and self.onSpeedBumpControl:
+        var_speed = navi_speed
+        self.t_interval = int(interp(CS.out.vEgo, [9, 20], [80, 10])) if not (self.onSpeedControl or self.curvSpeedControl or self.cut_in) else 7
       elif self.lead_0.status and CS.CP.vFuture >= (min_control_speed-(4 if CS.is_set_speed_in_mph else 7)):
         self.faststart = False
         dRel = int(self.lead_0.dRel)

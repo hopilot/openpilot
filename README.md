@@ -124,8 +124,9 @@ Setting Menu
    - **Blink Threshold:** For Driver Monitoring. Set the value below the threshold of your eyes blink recognition. Driver Monitoring camera shows the values of your face recognition, eyes and the other things. Preview 'Driver Camera' and then check the recognition value of your eye blink to modify the value on menu.
    - **Navigation Select:** 
       - iNavi (Korea)
+      - Mappy (Korea)
       - Waze (Global)
-   - **RUN Navigation on Boot:** Run your selected iNavi or Waze on boot. If it runs well, will go to background after few seconds.
+   - **RUN Navigation on Boot:** Run your selected iNavi, Mappy or Waze on boot. If it runs well, will go to background after few seconds.
    - **Display Date on Screen:** shows the device date
    - **Display Time on Screen:** shows the device time
    - **API Server:** Choose driver log server
@@ -157,7 +158,7 @@ Setting Menu
       - Dist: distance only. 
       - Curv: curvature only. 
       - Oneway: change camera offset to approach the edge of a road. 
-      - CamSpeed: is changing set speed only by value of speed sign (OSM, iNavi).
+      - CamSpeed: is changing set speed only by value of speed sign (OSM, iNavi, Mappy).
    - **LaneChange Speed:** minimum lane change speed
    - **LaneChange Delay:** adjust delay time before lane change
       - Nudge/Nudgeless/Set Seconds

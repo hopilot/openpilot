@@ -8,7 +8,7 @@ from selfdrive.swaglog import cloudlog
 from common.spinner import Spinner
 import time
 
-android_packages = ("com.android.carrierconfig", "com.opkr.maphack", "com.mixplorer", "com.thinkware.inaviair", "com.waze", "com.phillit.akeyboard", "com.gmd.hidesoftkeys", "com.android.chrome",)
+android_packages = ("com.android.carrierconfig", "com.opkr.maphack", "com.mixplorer", "com.thinkware.inaviair", "com.mnsoft.mappyobn", "com.waze", "com.phillit.akeyboard", "com.gmd.hidesoftkeys", "com.android.chrome",)
 
 def get_installed_apks():
   dat = subprocess.check_output(["pm", "list", "packages", "-f"], encoding='utf8').strip().split("\n")
@@ -91,6 +91,10 @@ def update_apks(show_spinner=False):
         wanted_permissions = ["ACCESS_FINE_LOCATION", "READ_PHONE_STATE", "READ_EXTERNAL_STORAGE", "SYSTEM_ALERT_WINDOW"]
         for permission in wanted_permissions:
           pm_grant("com.thinkware.inaviair", "android.permission."+permission)
+      if app == "com.mnsoft.mappyobn":
+        wanted_permissions = ["ACCESS_FINE_LOCATION", "READ_PHONE_STATE", "READ_EXTERNAL_STORAGE", "SYSTEM_ALERT_WINDOW"]
+        for permission in wanted_permissions:
+          pm_grant("com.mnsoft.mappyobn", "android.permission."+permission)
       if app == "com.waze":
         pm_grant("com.waze", "android.permission.ACCESS_FINE_LOCATION")
         pm_grant("com.waze", "android.permission.SYSTEM_ALERT_WINDOW")
