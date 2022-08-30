@@ -3962,7 +3962,7 @@
     <name>OPKREarlyStoppingToggle</name>
     <message>
         <location filename="../qt/widgets/opkr.h" line="916"/>
-        <source>Early Stopping with Gap</source>
+        <source>Early Slowdown with Gap</source>
         <translation>크루즈갭 조기 감속기능 사용</translation>
     </message>
     <message>
