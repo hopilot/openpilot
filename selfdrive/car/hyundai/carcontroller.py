@@ -542,7 +542,8 @@ class CarController():
         else:
           self.cruise_gap_adjusting = False
       if not self.cruise_gap_adjusting:
-        if 0 < CS.lead_distance <= 149 and self.try_early_stop and CS.cruiseGapSet != 4.0 and 0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and self.sm['longitudinalPlan'].stopLine[12] < 100:
+        if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 self.try_early_stop and CS.cruiseGapSet != 4.0 and \
+         0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and self.sm['longitudinalPlan'].stopLine[12] < 100:
           if not self.try_early_stop_retrieve:
             self.try_early_stop_org_gap = CS.cruiseGapSet
           self.try_early_stop_retrieve = True
@@ -559,7 +560,8 @@ class CarController():
           can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.clu11, btn_signal)) if not self.longcontrol \
           else can_sends.append(create_clu11(self.packer, frame, CS.clu11, btn_signal, clu11_speed, CS.CP.sccBus))
           self.resume_cnt += 1
-        elif self.try_early_stop and self.try_early_stop_retrieve and CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 100 and self.sm['longitudinalPlan'].stopLine[12] == 400:
+        elif 0 < CS.lead_distance <= 149 and CS.lead_objspd >= 0 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
+         CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 100 and self.sm['longitudinalPlan'].stopLine[12] == 400:
           if self.switch_timer > 0:
             self.switch_timer -= 1
           else:
