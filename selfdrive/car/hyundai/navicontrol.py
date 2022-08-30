@@ -359,11 +359,11 @@ class NaviControl():
       if CS.out.brakeLights and CS.out.vEgo == 0:
         self.faststart = True
         var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 45)
+      elif ((self.lead_0.status and self.lead_0.dRel > 23) or not self.lead_0.status) and self.onSpeedBumpControl:
+        var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 45)
+        self.t_interval = int(interp(CS.out.vEgo, [9, 20], [70, 7])) if not (self.onSpeedControl or self.curvSpeedControl or self.cut_in) else 7
       elif self.faststart and CS.CP.vFuture <= 40:
         var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 45)
-      elif ((self.lead_0.status and self.lead_0.dRel > 25) or not self.lead_0.status) and self.onSpeedBumpControl:
-        var_speed = navi_speed
-        self.t_interval = int(interp(CS.out.vEgo, [9, 20], [80, 10])) if not (self.onSpeedControl or self.curvSpeedControl or self.cut_in) else 7
       elif self.lead_0.status and CS.CP.vFuture >= (min_control_speed-(4 if CS.is_set_speed_in_mph else 7)):
         self.faststart = False
         dRel = int(self.lead_0.dRel)
