@@ -207,6 +207,10 @@ class CarController():
     self.lkas_temp_disabled = False
     self.lkas_temp_disabled_timer = 0
 
+    self.try_early_stop = self.params.get_bool("OPKREarlyStop")
+    self.try_early_stop_retrieve = False
+    self.try_early_stop_org_gap = 4.0
+
     self.str_log2 = 'MultiLateral'
     if CP.lateralTuning.which() == 'pid':
       self.str_log2 = 'T={:0.2f}/{:0.3f}/{:0.2f}/{:0.5f}'.format(CP.lateralTuning.pid.kpV[1], CP.lateralTuning.pid.kiV[1], CP.lateralTuning.pid.kdV[0], CP.lateralTuning.pid.kf)
@@ -490,7 +494,10 @@ class CarController():
           self.standstill_fault_reduce_timer += 1
         # gap save after 1sec
         elif 100 < self.standstill_fault_reduce_timer and self.cruise_gap_prev == 0 and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj: 
-          self.cruise_gap_prev = CS.cruiseGapSet
+          if self.try_early_stop and self.try_early_stop_retrieve:
+            self.cruise_gap_prev = self.try_early_stop_org_gap
+          else:
+            self.cruise_gap_prev = CS.cruiseGapSet
           self.cruise_gap_set_init = 1
         # gap adjust to 1 for fast start
         elif 110 < self.standstill_fault_reduce_timer and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj:
@@ -535,10 +542,35 @@ class CarController():
         else:
           self.cruise_gap_adjusting = False
       if not self.cruise_gap_adjusting:
-        if btn_signal != None:
+        if 0 < CS.lead_distance <= 149 and self.try_early_stop and CS.cruiseGapSet != 4.0 and 0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and self.sm['longitudinalPlan'].stopLine[12] < 100:
+          if not self.try_early_stop_retrieve:
+            self.try_early_stop_org_gap = CS.cruiseGapSet
+          self.try_early_stop_retrieve = True
+          if self.switch_timer > 0:
+            self.switch_timer -= 1
+          else:
+            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
+            self.resume_cnt += 1
+            if self.resume_cnt >= randint(6, 8):
+              self.resume_cnt = 0
+              self.switch_timer = randint(30, 36)
+        elif btn_signal != None:
           can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.clu11, btn_signal)) if not self.longcontrol \
           else can_sends.append(create_clu11(self.packer, frame, CS.clu11, btn_signal, clu11_speed, CS.CP.sccBus))
           self.resume_cnt += 1
+        elif self.try_early_stop and self.try_early_stop_retrieve and CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 100 and self.sm['longitudinalPlan'].stopLine[12] == 400:
+          if self.switch_timer > 0:
+            self.switch_timer -= 1
+          else:
+            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
+            self.resume_cnt += 1
+            if self.resume_cnt >= randint(6, 8):
+              self.resume_cnt = 0
+              self.switch_timer = randint(30, 36)
+          if CS.cruiseGapSet == self.try_early_stop_org_gap:
+            self.try_early_stop_retrieve = False
         else:
           self.resume_cnt = 0
         if self.user_specific_feature == 60: # for D.Fyffe
@@ -572,6 +604,7 @@ class CarController():
       self.standstill_res_button = False
       self.auto_res_starting = False
       self.user_specific_feature_on = False
+      self.try_early_stop_retrieve = False
 
     if not enabled:
       self.cruise_init = False

@@ -158,7 +158,7 @@ static void ui_draw_stop_sign(UIState *s) {
     NVGpaint stop_sign = nvgRadialGradient(s->vg, center_x, center_y, radius_i, radius_o, nvgRGBAf(0.0, 1.0, 0.0, 0.9), nvgRGBAf(0.0, 0.0, 0.0, 0.3));
     nvgFillPaint(s->vg, stop_sign);
     nvgFill(s->vg);
-  } else if (s->scene.longitudinalPlan.e2ex[12] > 0 && s->scene.longitudinalPlan.e2ex[12] < 100 && s->scene.longitudinalPlan.stopline[12] < 100 && s->scene.longitudinalPlan.stopline[12] != 400) {
+  } else if (s->scene.longitudinalPlan.e2ex[12] > 0 && s->scene.longitudinalPlan.e2ex[12] < 100 && s->scene.longitudinalPlan.stopline[12] < 100) {
     nvgBeginPath(s->vg);
     nvgCircle(s->vg, center_x, center_y, radius_i+radius_o);
     NVGpaint stop_sign = nvgRadialGradient(s->vg, center_x, center_y, radius_i, radius_o, nvgRGBAf(1.0, 0.0, 0.0, 0.9), nvgRGBAf(0.0, 0.0, 0.0, 0.3));
@@ -690,7 +690,7 @@ static void ui_draw_vision_event(UIState *s) {
   const int viz_event_x = s->fb_w - (viz_event_w + bdr_s);
   const int viz_event_y = bdr_s;
 
-  if (s->scene.liveNaviData.opkrroadsign == 107 && !s->scene.comma_stock_ui) {
+  if ((s->scene.liveNaviData.opkrroadsign == 107 || s->scene.liveNaviData.opkrspeedsign == 124) && !s->scene.comma_stock_ui) {
     ui_draw_image(s, {s->fb_w/2 - 500/2, s->fb_h/2 - 500/2, 500, 500}, "speed_bump", 0.35f);
   }
 

@@ -538,7 +538,6 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new BlindSpotDetectToggle());
 
   layout->addWidget(new CSteerWidget());
-  
   layout->addWidget(new SteerAngleCorrection());
   layout->addWidget(new TurnSteeringDisableToggle());
   layout->addWidget(new CruiseOverMaxSpeedToggle());
@@ -556,6 +555,7 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new OCurvSpeedUD());
   layout->addWidget(new OCurvSpeed());
   layout->addWidget(new SpeedBumpDecelToggle());
+  layout->addWidget(new OPKREarlyStoppingToggle());
   layout->addWidget(new AutoEnabledToggle());
   layout->addWidget(new AutoEnableSpeed());
   layout->addWidget(new CruiseAutoResToggle());

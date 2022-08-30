@@ -3958,4 +3958,17 @@
         <translation>과속방지턱에서 감속기능을 사용합니다. 롱컨트롤제어에서는 직접적으로 감속가능하나 범용성을 위하여 현재는 간접제어방식(크루즈버튼)으로 합니다.</translation>
     </message>
 </context>
+<context>
+    <name>OPKREarlyStoppingToggle</name>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="916"/>
+        <source>Early Stopping with Gap</source>
+        <translation>크루즈갭 조기 감속기능 사용</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="916"/>
+        <source>This feature may halp your vehicle to stop early using Cruise Gap with value 4 when your car start to stop from model.</source>
+        <translation>크루즈 갭을 이용해 모델 감속 신호 시 갭간격 4단계를 이용하여 조금 더 일찍 브레이킹을 시도할 수 있도록 합니다. 화면에 빨간색 신호가 들어오는 동안은 적용되며 상황 해제시 일정 조건에 의해 원래 갭으로 돌아갑니다.</translation>
+    </message>
+</context>
 </TS>
