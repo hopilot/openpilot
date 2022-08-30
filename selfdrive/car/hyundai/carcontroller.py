@@ -561,7 +561,7 @@ class CarController():
           else can_sends.append(create_clu11(self.packer, frame, CS.clu11, btn_signal, clu11_speed, CS.CP.sccBus))
           self.resume_cnt += 1
         elif 0 < CS.lead_distance <= 149 and CS.lead_objspd >= 0 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
-         CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 100 and self.sm['longitudinalPlan'].stopLine[12] == 400:
+         CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 80 and self.sm['longitudinalPlan'].stopLine[12] == 400:
           if self.switch_timer > 0:
             self.switch_timer -= 1
           else:
