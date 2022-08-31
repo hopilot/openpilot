@@ -913,7 +913,7 @@ class OPKREarlyStoppingToggle : public ToggleControl {
   Q_OBJECT
 
 public:
-  OPKREarlyStoppingToggle() : ToggleControl(tr("Early Slowdown with Gap"), tr("This feature may halp your vehicle to stop early using Cruise Gap with value 4 when your car start to stop from model."), "../assets/offroad/icon_shell.png", Params().getBool("OPKREarlyStop")) {
+  OPKREarlyStoppingToggle() : ToggleControl(tr("Early Slowdown with Gap"), tr("This feature may help your vehicle to stop early using Cruise Gap with value 4 when your car start to stop from model."), "../assets/offroad/icon_shell.png", Params().getBool("OPKREarlyStop")) {
     QObject::connect(this, &OPKREarlyStoppingToggle::toggleFlipped, [=](int state) {
       bool status = state ? true : false;
       Params().putBool("OPKREarlyStop", status);
