@@ -239,7 +239,7 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.h" line="916"/>
-        <source>This feature may halp your vehicle to stop early using Cruise Gap with value 4 when your car start to stop from model.</source>
+        <source>This feature may halp your vehicle to Slowdown early using Cruise Gap with value 4 when your car start to stop from model.</source>
         <translation>Cette fonctionnalité aide le véhicule à s'arrêter plus tôt en utilisant le réglage de distance (gap) avec 4 réglages possible quand le véhicule commence à s'arrêter.</translation>
     </message>
 </context>
