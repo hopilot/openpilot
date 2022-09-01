@@ -20,7 +20,7 @@ Join our Discord
 
 Join The OPKR Server!
 
-* https://discord.gg/6H9k4B5a
+* https://discord.gg/pppFp2pVW3
 
 About This Fork
 ================
