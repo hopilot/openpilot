@@ -58,7 +58,7 @@ Appuyez sur reprise pour partir
 Dirigez-vous vers la gauche pour démarrer le changement de file une fois en sécurité
 Dirigez-vous vers la droite pour démarrer le changement de file une fois en sécurité
 Véhicule détecté dans l'angle mort
-Changement de voie
+Changement de file
 E2E Long Activé
 Attention, cela peut fonctionner de manière inattendue
 Activation du clignotant à basse vitesse
