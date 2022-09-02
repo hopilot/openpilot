@@ -492,10 +492,7 @@ class CarController():
           self.standstill_fault_reduce_timer += 1
         # gap save after 1sec
         elif 100 < self.standstill_fault_reduce_timer and self.cruise_gap_prev == 0 and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj: 
-          if self.try_early_stop and self.try_early_stop_retrieve:
-            self.cruise_gap_prev = self.try_early_stop_org_gap
-          else:
-            self.cruise_gap_prev = CS.cruiseGapSet
+          self.cruise_gap_prev = CS.cruiseGapSet
           self.cruise_gap_set_init = 1
         # gap adjust to 1 for fast start
         elif 110 < self.standstill_fault_reduce_timer and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj:
@@ -525,7 +522,7 @@ class CarController():
         # gap restore
         if self.switch_timer > 0:
           self.switch_timer -= 1
-        elif self.dRel > 16 and self.vRel*3.6 < 5 and self.cruise_gap_prev != CS.cruiseGapSet and self.cruise_gap_set_init == 1 and self.opkr_autoresume:
+        elif self.dRel > 15 and self.vRel*3.6 < 5 and self.cruise_gap_prev != CS.cruiseGapSet and self.cruise_gap_set_init == 1 and self.opkr_autoresume:
           can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
             else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
           self.cruise_gap_adjusting = True
@@ -540,8 +537,8 @@ class CarController():
         else:
           self.cruise_gap_adjusting = False
       if not self.cruise_gap_adjusting:
-        if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 and self.try_early_stop and CS.cruiseGapSet != 4.0 and CS.clu_Vanz > 30 and \
-         0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and (self.sm['longitudinalPlan'].stopLine[12] < 100 or CS.lead_objspd < -10):
+        if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 and self.try_early_stop and CS.cruiseGapSet != 4.0 and CS.clu_Vanz > 35 and \
+         0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and (self.sm['longitudinalPlan'].stopLine[12] < 100 or CS.lead_objspd < -7):
           if not self.try_early_stop_retrieve:
             self.try_early_stop_org_gap = CS.cruiseGapSet
           self.try_early_stop_retrieve = True
@@ -558,8 +555,21 @@ class CarController():
           can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.clu11, btn_signal)) if not self.longcontrol \
           else can_sends.append(create_clu11(self.packer, frame, CS.clu11, btn_signal, clu11_speed, CS.CP.sccBus))
           self.resume_cnt += 1
+        elif 0 < CS.lead_distance <= 149 and self.try_early_stop and self.try_early_stop_retrieve and not self.cruise_gap_set_init and \
+         CS.cruiseGapSet != self.try_early_stop_org_gap and CS.clu_Vanz <= 10:
+          if self.switch_timer > 0:
+            self.switch_timer -= 1
+          else:
+            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
+            self.resume_cnt += 1
+            if self.resume_cnt >= randint(6, 8):
+              self.resume_cnt = 0
+              self.switch_timer = randint(30, 36)
+          if CS.cruiseGapSet == self.try_early_stop_org_gap:
+            self.try_early_stop_retrieve = False
         elif 0 < CS.lead_distance <= 149 and CS.lead_objspd >= 0 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
-         CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 70 and self.sm['longitudinalPlan'].stopLine[12] == 400:
+         CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 60 and self.sm['longitudinalPlan'].stopLine[12] == 400 and CS.clu_Vanz > 10:
           if self.switch_timer > 0:
             self.switch_timer -= 1
           else:
@@ -600,6 +610,7 @@ class CarController():
       self.standstill_res_button = False
       self.auto_res_starting = False
       self.try_early_stop_retrieve = False
+      self.try_early_stop_org_gap = CS.cruiseGapSet
 
     if not enabled:
       self.cruise_init = False
