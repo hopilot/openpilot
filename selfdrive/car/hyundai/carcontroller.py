@@ -583,7 +583,7 @@ class CarController():
             self.try_early_stop_retrieve = False
         else:
           self.resume_cnt = 0
-        if self.user_specific_feature == 60: # for D.Fyffe
+        if self.user_specific_feature == 60 and not self.try_early_stop_retrieve and not self.cruise_gap_set_init: # for D.Fyffe
           if self.switch_timer > 0:
             self.switch_timer -= 1
           elif CS.cruiseGapSet != 2.0 and CS.clu_Vanz > 60:
