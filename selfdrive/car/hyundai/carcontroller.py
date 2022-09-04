@@ -555,21 +555,9 @@ class CarController():
           can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.clu11, btn_signal)) if not self.longcontrol \
           else can_sends.append(create_clu11(self.packer, frame, CS.clu11, btn_signal, clu11_speed, CS.CP.sccBus))
           self.resume_cnt += 1
-        elif 0 < CS.lead_distance <= 149 and self.try_early_stop and self.try_early_stop_retrieve and not self.cruise_gap_set_init and \
-         CS.cruiseGapSet != self.try_early_stop_org_gap and CS.clu_Vanz <= 10:
-          if self.switch_timer > 0:
-            self.switch_timer -= 1
-          else:
-            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
-              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
-            self.resume_cnt += 1
-            if self.resume_cnt >= randint(6, 8):
-              self.resume_cnt = 0
-              self.switch_timer = randint(30, 36)
-          if CS.cruiseGapSet == self.try_early_stop_org_gap:
-            self.try_early_stop_retrieve = False
-        elif 0 < CS.lead_distance <= 149 and CS.lead_objspd >= 0 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
-         CS.cruiseGapSet != self.try_early_stop_org_gap and self.sm['longitudinalPlan'].e2eX[12] > 60 and self.sm['longitudinalPlan'].stopLine[12] == 400 and CS.clu_Vanz > 10:
+        elif 0 < CS.lead_distance <= 149 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
+         CS.cruiseGapSet != self.try_early_stop_org_gap and \
+         (CS.clu_Vanz <= 10 or (CS.lead_objspd >= 0 and self.sm['longitudinalPlan'].e2eX[12] > 60 and self.sm['longitudinalPlan'].stopLine[12] == 400 and CS.clu_Vanz > 10)):
           if self.switch_timer > 0:
             self.switch_timer -= 1
           else:
@@ -619,6 +607,8 @@ class CarController():
       self.cancel_counter += 1
       self.auto_res_starting = False
       self.standstill_res_button = False
+      self.try_early_stop_retrieve = False
+      self.try_early_stop_org_gap = CS.cruiseGapSet
     elif CS.cruise_active:
       self.cruise_init = True
       self.cancel_counter = 0
