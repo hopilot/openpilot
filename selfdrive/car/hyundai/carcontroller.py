@@ -865,8 +865,8 @@ class CarController():
                 accel = (aReqValue + accel) / 2
             elif aReqValue < 0 and accel > 0 and accel - aReqValue > 0.3 and lead_objspd > 0 and CS.out.vEgo < 11.:
               self.change_accel_fast = True
-            elif CS.lead_distance < 30.0 and aReqValue > 0.8 and lead_objspd > 0 and aReqValue - accel > 0.8:
-              accel = (aReqValue + accel) / 3
+            elif 0.1 < self.dRel < 6 and CS.lead_distance < 30.0 and lead_objspd > 0 and aReqValue - accel > 0.8: # in case radar detection works during vision breaking at stop.
+              accel = interp(aReqValue, [0.0, 1.8], [0.0, -0.7])
               self.change_accel_fast = False
             elif 0.1 < self.dRel <= 10.0 and CS.lead_distance - self.dRel >= 5.0 and aReqValue >= 0:
               self.change_accel_fast = False
