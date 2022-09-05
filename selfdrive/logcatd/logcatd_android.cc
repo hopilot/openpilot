@@ -119,10 +119,13 @@ int main() {
       {
         res.distanceToTurn = atoi( entry.message );
       }
-      else if( nDelta_nsec > 60000 && naviSel == 0)
+      else if( nDelta_nsec > 10000 && naviSel == 0)
       {
         res.tv_sec = entry.tv_sec;
         res.tv_nsec = tv_nsec;
+        res.speedLimitDistance = 0;
+        res.speedLimit = 0;
+        res.safetySign = 0;
         // system("logcat -c &");
       }
       else if( nDelta_nsec > 5000 && naviSel == 1)
