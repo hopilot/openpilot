@@ -8,7 +8,7 @@ from selfdrive.swaglog import cloudlog
 from common.spinner import Spinner
 import time
 
-android_packages = ("com.android.carrierconfig", "com.opkr.maphack", "com.mixplorer", "com.thinkware.inaviair", "com.mnsoft.mappyobn", "com.waze", "com.phillit.akeyboard", "com.gmd.hidesoftkeys", "com.android.chrome",)
+android_packages = ("com.android.carrierconfig", "com.opkr.maphack", "com.mixplorer", "com.thinkware.inaviair", "com.mnsoft.mappyobn", "com.waze", "com.google.android.inputmethod.korean", "com.phillit.akeyboard", "com.gmd.hidesoftkeys", "com.android.chrome",)
 
 def get_installed_apks():
   dat = subprocess.check_output(["pm", "list", "packages", "-f"], encoding='utf8').strip().split("\n")
@@ -98,6 +98,18 @@ def update_apks(show_spinner=False):
       if app == "com.waze":
         pm_grant("com.waze", "android.permission.ACCESS_FINE_LOCATION")
         pm_grant("com.waze", "android.permission.SYSTEM_ALERT_WINDOW")
+      if app == "com.google.android.inputmethod.korean":
+        pm_grant("com.google.android.inputmethod.korean", "android.permission.BIND_INPUT_METHOD")
+        system("am start com.google.android.inputmethod.korean/com.google.android.apps.inputmethod.libs.framework.core.LauncherActivity")
+        time.sleep(3)
+        system("pkill com.google.android.inputmethod.korean")        
+        system("settings put secure enabled_input_methods com.google.android.inputmethod.korean/.KoreanIme")
+        system("settings put secure default_input_method com.google.android.inputmethod.korean/.KoreanIme")
+        system("cp -f /data/openpilot/selfdrive/assets/addon/param/com.google.android.inputmethod.korean*.xml /data/data/com.google.android.inputmethod.korean/shared_prefs/")
+        time.sleep(1)
+        system("am start com.google.android.inputmethod.korean/com.google.android.apps.inputmethod.libs.framework.core.LauncherActivity")
+        time.sleep(3)
+        system("reboot")
       if app == "com.phillit.akeyboard":
         pm_grant("com.phillit.akeyboard", "android.permission.READ_EXTERNAL_STORAGE")
         pm_grant("com.phillit.akeyboard", "android.permission.WRITE_EXTERNAL_STORAGE")
