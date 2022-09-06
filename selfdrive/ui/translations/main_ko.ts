@@ -553,7 +553,7 @@
     <message>
         <location filename="../qt/offroad/settings.cc" line="238"/>
         <source> Your device is pointed %1° %2 and %3° %4.</source>
-        <translation> 장치가 %1° %2 그리고 %3° %4에 위치하고 있습니다.</translation>
+        <translation> 장치가 %1° %2 그리고 %3° %4 위치하고 있습니다.</translation>
     </message>
     <message>
         <location filename="../qt/offroad/settings.cc" line="239"/>
@@ -1510,9 +1510,14 @@
         <translation>장치 화면 끄기 기능 사용 시, 자동 밝기 비율에 따라 밝기가 감소됩니다.</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="1237"/>
+        <location filename="../qt/widgets/opkr.cc" line="1236"/>
         <source>Dark</source>
         <translation>끄기</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="1238"/>
+        <source>MinBr</source>
+        <translation>최저</translation>
     </message>
 </context>
 <context>
@@ -1528,22 +1533,27 @@
         <translation>주행 시작 후 화면을 보호하기 위해 장치 화면을 끄거나 밝기를 줄이십시오. 터치나 이벤트가 발생하면 자동으로 밝아지거나 켜집니다.</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="1305"/>
+        <location filename="../qt/widgets/opkr.cc" line="1304"/>
         <source>AlwaysOn</source>
         <translation>항상켜기</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="1307"/>
+        <location filename="../qt/widgets/opkr.cc" line="1306"/>
+        <source>5secs</source>
+        <translation>5초</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="1308"/>
         <source>15secs</source>
         <translation>15초</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="1309"/>
+        <location filename="../qt/widgets/opkr.cc" line="1310"/>
         <source>30secs</source>
         <translation>30초</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="1311"/>
+        <location filename="../qt/widgets/opkr.cc" line="1312"/>
         <source>min(s)</source>
         <translation>분</translation>
     </message>

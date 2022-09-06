@@ -76,10 +76,16 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
 }
 
 void MainWindow::openSettings() {
+  if (QUIState::ui_state.scene.brightness_off < 4 && QUIState::ui_state.scene.autoScreenOff != -3) {
+    QUIState::ui_state.scene.autoScreenOff = -3;
+  }
   main_layout->setCurrentWidget(settingsWindow);
 }
 
 void MainWindow::closeSettings() {
+  if (QUIState::ui_state.scene.brightness_off < 4 && QUIState::ui_state.scene.autoScreenOff == -3) {
+    QUIState::ui_state.scene.autoScreenOff = std::stoi(Params().get("OpkrAutoScreenOff"));
+  }
   main_layout->setCurrentWidget(homeWindow);
 
   if (QUIState::ui_state.scene.started) {

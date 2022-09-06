@@ -1230,16 +1230,16 @@ BrightnessOffControl::BrightnessOffControl() : AbstractControl(tr("Brightness at
   });
   refresh();
 }
-
 void BrightnessOffControl::refresh() {
   QString option = QString::fromStdString(params.get("OpkrUIBrightnessOff"));
   if (option == "0") {
     label.setText(tr("Dark"));
+  } else if (option == "5") {
+    label.setText(tr("MinBr"));
   } else {
     label.setText(QString::fromStdString(params.get("OpkrUIBrightnessOff")));
   }
 }
-
 AutoScreenOff::AutoScreenOff() : AbstractControl(tr("EON SCR Off Timer"), tr("Turn off the EON screen or reduce brightness to protect the screen after driving starts. It automatically brightens or turns on when a touch or event occurs."), "../assets/offroad/icon_shell.png") 
 {
 
@@ -1274,8 +1274,8 @@ AutoScreenOff::AutoScreenOff() : AbstractControl(tr("EON SCR Off Timer"), tr("Tu
     auto str = QString::fromStdString(params.get("OpkrAutoScreenOff"));
     int value = str.toInt();
     value = value - 1;
-    if (value <= -2) {
-      value = -2;
+    if (value <= -3) {
+      value = -3;
     }
     QUIState::ui_state.scene.autoScreenOff = value;
     QString values = QString::number(value);
@@ -1297,12 +1297,13 @@ AutoScreenOff::AutoScreenOff() : AbstractControl(tr("EON SCR Off Timer"), tr("Tu
   });
   refresh();
 }
-
 void AutoScreenOff::refresh() 
 {
   QString option = QString::fromStdString(params.get("OpkrAutoScreenOff"));
-  if (option == "-2") {
+  if (option == "-3") {
     label.setText(tr("AlwaysOn"));
+  } else if (option == "-2") {
+    label.setText(tr("5secs"));
   } else if (option == "-1") {
     label.setText(tr("15secs"));
   } else if (option == "0") {
@@ -1311,7 +1312,6 @@ void AutoScreenOff::refresh()
     label.setText(QString::fromStdString(params.get("OpkrAutoScreenOff")) + tr("min(s)"));
   }
 }
-
 ChargingMin::ChargingMin() : AbstractControl(tr("BAT MinCharging Value"), tr("Sets the minimum battery charge value."), "../assets/offroad/icon_shell.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);

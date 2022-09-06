@@ -553,6 +553,8 @@ static void update_status(UIState *s) {
       s->scene.nTime = 30 * UI_FREQ;
     } else if (s->scene.autoScreenOff == -1) {
       s->scene.nTime = 15 * UI_FREQ;
+    } else if (s->scene.autoScreenOff == -2) {
+      s->scene.nTime = 5 * UI_FREQ;
     } else {
       s->scene.nTime = -1;
     }
@@ -650,23 +652,29 @@ void Device::updateBrightness(const UIState &s) {
     }
   }
 
-  if (s.scene.autoScreenOff != -2 && s.scene.touched2) {
+  if (s.scene.autoScreenOff != -3 && s.scene.touched2) {
     sleep_time = s.scene.nTime;
-  } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE && s.scene.autoScreenOff != -2) {
+  } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE && s.scene.autoScreenOff != -3) {
     sleep_time = s.scene.nTime;
-  } else if (sleep_time > 0 && s.scene.autoScreenOff != -2) {
+  } else if (sleep_time > 0 && s.scene.autoScreenOff != -3) {
     sleep_time--;
-  } else if (s.scene.started && sleep_time == -1 && s.scene.autoScreenOff != -2) {
+  } else if (s.scene.started && sleep_time == -1 && s.scene.autoScreenOff != -3) {
     sleep_time = s.scene.nTime;
   }
 
   int brightness = brightness_filter.update(clipped_brightness);
   if (!awake) {
     brightness = 0;
-  } else if (s.scene.started && sleep_time == 0 && s.scene.autoScreenOff != -2) {
-    brightness = s.scene.brightness_off * 0.01 * brightness;
-  } else if( s.scene.brightness ) {
-    brightness = s.scene.brightness * 0.99;
+  } else if (s.scene.started && sleep_time == 0 && s.scene.autoScreenOff != -3) {
+    if (s.scene.brightness_off < 4) {
+      brightness = 0;
+    } else if (s.scene.brightness_off < 9) {
+      brightness = 1;
+    } else {
+      brightness = s.scene.brightness_off * 0.01 * brightness;
+    }
+  } else if ( s.scene.brightness ) {
+    brightness = s.scene.brightness;
   }
 
   if (brightness != last_brightness) {
