@@ -76,15 +76,15 @@ MainWindow::MainWindow(QWidget *parent) : QWidget(parent) {
 }
 
 void MainWindow::openSettings() {
-  if (QUIState::ui_state.scene.brightness_off < 4 && QUIState::ui_state.scene.autoScreenOff != -3) {
-    QUIState::ui_state.scene.autoScreenOff = -3;
+  if (QUIState::ui_state.scene.autoScreenOff != -3) {
+    QUIState::ui_state.scene.brightness_off = 100;
   }
   main_layout->setCurrentWidget(settingsWindow);
 }
 
 void MainWindow::closeSettings() {
-  if (QUIState::ui_state.scene.brightness_off < 4 && QUIState::ui_state.scene.autoScreenOff == -3) {
-    QUIState::ui_state.scene.autoScreenOff = std::stoi(Params().get("OpkrAutoScreenOff"));
+  if (QUIState::ui_state.scene.brightness_off == 100) {
+    QUIState::ui_state.scene.brightness_off = std::stoi(Params().get("OpkrUIBrightnessOff"));
   }
   main_layout->setCurrentWidget(homeWindow);
 
