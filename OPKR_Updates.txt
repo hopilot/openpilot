@@ -1,5 +1,8 @@
 ☞ Use two fingers to scroll down ☜
 
+2022-09-07
+- Early Slowdown with Gap 4
+- Fix darkscreen on Settings
 2022-08-26
 - Add French Language
 - Navi App Change from Mappy to iNavi
