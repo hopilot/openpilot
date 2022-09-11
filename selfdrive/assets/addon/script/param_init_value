@@ -146,7 +146,7 @@ MultipleLateralOpS:3,3,0
 MultipleLateralSpd:60,90
 MultipleLateralOpA:3,3,0
 MultipleLateralAng:20,35
-StoppingDist:3.5
+StoppingDist:35
 SpeedCameraOffset:0
 HoldForSetting:1
 RTShield:1
