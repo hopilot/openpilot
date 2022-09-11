@@ -51,7 +51,7 @@ class EonFanController(BaseFanController):
       bus.close()
       self.fan_speed = speed
 
-  def update(self, max_cpu_temp: float, ignition: bool) -> int:
+  def update(self, max_cpu_temp: float, bat_temp: float, ignition: bool) -> int:
     new_speed_h = next(speed for speed, temp_h in zip(self.FAN_SPEEDS, self.TEMP_THRS_H) if temp_h > max_cpu_temp)
     new_speed_l = next(speed for speed, temp_l in zip(self.FAN_SPEEDS, self.TEMP_THRS_L) if temp_l > max_cpu_temp)
 
@@ -59,6 +59,11 @@ class EonFanController(BaseFanController):
       self.set_eon_fan(new_speed_h)
     elif new_speed_l < self.fan_speed:
       self.set_eon_fan(new_speed_l)
+
+    if bat_temp >= 45: # get lower temp to charge bat
+      self.fan_speed = 65535
+    elif bat_temp >= 40:
+      self.fan_speed = 32768
 
     return self.fan_speed
 
@@ -68,7 +73,7 @@ class UnoFanController(BaseFanController):
     super().__init__()
     cloudlog.info("Setting up UNO fan handler")
 
-  def update(self, max_cpu_temp: float, ignition: bool) -> int:
+  def update(self, max_cpu_temp: float, bat_temp: float, ignition: bool) -> int:
     new_speed = int(interp(max_cpu_temp, [40.0, 80.0], [0, 80]))
 
     if not ignition:
@@ -85,7 +90,7 @@ class TiciFanController(BaseFanController):
     self.last_ignition = False
     self.controller = PIDController(k_p=0, k_i=2e-3, k_f=1, neg_limit=-80, pos_limit=0, rate=(1 / DT_TRML))
 
-  def update(self, max_cpu_temp: float, ignition: bool) -> int:
+  def update(self, max_cpu_temp: float, bat_temp: float, ignition: bool) -> int:
     self.controller.neg_limit = -(80 if ignition else 30)
     self.controller.pos_limit = -(30 if ignition else 0)
 
