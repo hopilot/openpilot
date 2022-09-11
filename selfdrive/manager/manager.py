@@ -217,7 +217,7 @@ def manager_init() -> None:
     ("UserSpecificFeature", "0"),
     ("OpkrWakeUp", "0"),
     ("MultipleLateralUse", "2"),
-    ("MultipleLateralOpS", "0,0,3"),
+    ("MultipleLateralOpS", "3,3,0"),
     ("MultipleLateralSpd", "60,90"),
     ("MultipleLateralOpA", "3,3,0"),
     ("MultipleLateralAng", "20,35"),
