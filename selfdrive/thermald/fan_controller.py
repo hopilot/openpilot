@@ -62,8 +62,6 @@ class EonFanController(BaseFanController):
 
     if bat_temp >= 45: # get lower temp to charge bat
       self.fan_speed = 65535
-    elif bat_temp >= 40:
-      self.fan_speed = 32768
 
     return self.fan_speed
 
