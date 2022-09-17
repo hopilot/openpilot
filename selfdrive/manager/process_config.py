@@ -13,6 +13,7 @@ EnableOSM = Params().get_bool('OSMEnable') or Params().get_bool('OSMSpeedLimitEn
 EnableMapbox = Params().get_bool('MapboxEnabled')
 EnableShutdownD = Params().get_bool('C2WithCommaPower')
 EnableRTShield = Params().get_bool('RTShield')
+EnableExternalNavi = int(Params().get('OPKRNaviSelect')) == 3
 
 procs = [
   DaemonProcess("manage_athenad", "selfdrive.athena.manage_athenad", "AthenadPid"),
@@ -85,6 +86,10 @@ if EnableShutdownD:
 if EnableRTShield:
   procs += [
     PythonProcess("rtshield", "selfdrive.rtshield", enabled=EON),
+  ]
+if EnableExternalNavi:
+  procs += [
+    PythonProcess("navid", "selfdrive.navi.navi_external", persistent=True),
   ]
 
 managed_processes = {p.name: p for p in procs}

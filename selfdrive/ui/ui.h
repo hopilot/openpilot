@@ -259,6 +259,7 @@ typedef struct UIScene {
   cereal::CarState::GearShifter getGearShifter;
   cereal::LateralPlan::Reader lateral_plan;
   cereal::LiveNaviData::Reader live_navi_data;
+  cereal::LiveENaviData::Reader live_enavi_data;
   cereal::LiveMapData::Reader live_map_data;
   cereal::LongitudinalPlan::Reader longitudinal_plan;
 
@@ -320,6 +321,15 @@ typedef struct UIScene {
     int   opkrturninfo;
     float opkrdisttoturn;
   } liveNaviData;
+
+  struct _LiveENaviData
+  {
+    int eopkrspeedlimit;
+    float eopkrsafetydist;
+    int eopkrsafetysign;
+    int   eopkrturninfo;
+    float eopkrdisttoturn;
+  } liveENaviData;
 
   struct _LiveMapData
   {

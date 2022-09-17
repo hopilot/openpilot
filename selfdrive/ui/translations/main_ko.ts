@@ -2593,8 +2593,8 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5869"/>
-        <source>Select the navigation you want to use.(iNavi/Mappy/Waze/None)</source>
-        <translation>사용할 네비게이션을 선택합니다.(아이나비/맵피/웨이즈/없음)</translation>
+        <source>Select the navigation you want to use.(iNavi/Mappy/Waze/TMap/None)</source>
+        <translation>사용할 네비게이션을 선택합니다.(아이나비/맵피/웨이즈/티맵/없음), 티맵의 경우 OPKR Connect 어플과 함께 별도 단말기로 실행해야 합니다.</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5925"/>
@@ -2613,6 +2613,11 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="5931"/>
+        <source>TMap</source>
+        <translation>티맵</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="5933"/>
         <source>None</source>
         <translation>없음</translation>
     </message>
@@ -3979,6 +3984,29 @@
         <location filename="../qt/widgets/opkr.h" line="916"/>
         <source>This feature may help your vehicle to stop early using Cruise Gap with value 4 when your car start to stop from model.</source>
         <translation>크루즈 갭을 이용해 모델 감속 신호 시 갭간격 4단계를 이용하여 조금 더 일찍 브레이킹을 시도할 수 있도록 합니다. 화면에 빨간색 신호가 들어오는 동안은 적용되며 상황 해제시 일정 조건에 의해 원래 갭으로 돌아갑니다.</translation>
+    </message>
+</context>
+<context>
+    <name>ExternalDeviceIP</name>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="8130"/>
+        <source>ExternalDevIP</source>
+        <translation>외부장치IP</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="8130"/>
+        <source>Set Your External Device IP to get useful data.</source>
+        <translation>외부 장치 IP를 설정하여 장치로부터 유용한 데이터(네비 등)를 받아올수 있게 합니다.</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="8143"/>
+        <source>SET</source>
+        <translation>설정</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="8147"/>
+        <source>Input Your External Dev IP</source>
+        <translation>외부장치의 IP를 입력하세요</translation>
     </message>
 </context>
 </TS>

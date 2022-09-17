@@ -365,6 +365,15 @@ static void update_state(UIState *s) {
     scene.liveNaviData.opkrturninfo = lm_data.getTurnInfo();
     scene.liveNaviData.opkrdisttoturn = lm_data.getDistanceToTurn();
   }
+  if (sm.updated("liveENaviData")) {
+    scene.live_enavi_data = sm["liveENaviData"].getLiveENaviData();
+    auto lme_data = sm["liveENaviData"].getLiveENaviData();
+    scene.liveENaviData.eopkrspeedlimit = lme_data.getSpeedLimit();
+    scene.liveENaviData.eopkrsafetydist = lme_data.getSafetyDistance();
+    scene.liveENaviData.eopkrsafetysign = lme_data.getSafetySign();
+    scene.liveENaviData.eopkrturninfo = lme_data.getTurnInfo();
+    scene.liveENaviData.eopkrdisttoturn = lme_data.getDistanceToTurn();
+  }
   if (sm.updated("liveMapData")) {
     scene.live_map_data = sm["liveMapData"].getLiveMapData();
     auto lmap_data = sm["liveMapData"].getLiveMapData();
@@ -570,7 +579,7 @@ QUIState::QUIState(QObject *parent) : QObject(parent) {
   ui_state.sm = std::make_unique<SubMaster, const std::initializer_list<const char *>>({
     "modelV2", "controlsState", "liveCalibration", "radarState", "deviceState", "roadCameraState",
     "pandaStates", "carParams", "driverMonitoringState", "sensorEvents", "carState", "liveLocationKalman",
-    "ubloxGnss", "gpsLocationExternal", "liveParameters", "lateralPlan", "liveNaviData", "liveMapData", "longitudinalPlan",
+    "ubloxGnss", "gpsLocationExternal", "liveParameters", "lateralPlan", "liveNaviData",  "liveENaviData","liveMapData", "longitudinalPlan",
   });
 
   Params params;

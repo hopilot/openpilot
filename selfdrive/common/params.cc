@@ -385,6 +385,7 @@ std::unordered_map<std::string, uint32_t> keys = {
     {"LanguageSetting", PERSISTENT},
     {"OPKRSpeedBump", PERSISTENT},
     {"OPKREarlyStop", PERSISTENT},
+    {"ExternalDeviceIP", PERSISTENT},
 };
 
 } // namespace

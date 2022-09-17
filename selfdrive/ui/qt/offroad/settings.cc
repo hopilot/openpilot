@@ -499,6 +499,7 @@ UIPanel::UIPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new NormalEyesThreshold());
   layout->addWidget(new BlinkThreshold());
   layout->addWidget(new OPKRNaviSelect());
+  layout->addWidget(new ExternalDeviceIP());
   layout->addWidget(new RunNaviOnBootToggle());
   layout->addWidget(new OPKRServerSelect());
   layout->addWidget(new OPKRServerAPI());
@@ -512,7 +513,6 @@ UIPanel::UIPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new HoldForSettingToggle());
   layout->addWidget(new RTShieldToggle());
   layout->addWidget(new OSMOfflineUseToggle());
-
 }
 
 DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {

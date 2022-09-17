@@ -5900,7 +5900,7 @@ OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("
     int value = str.toInt();
     value = value - 1;
     if (value <= -1) {
-      value = 3;
+      value = 4;
     }
     QString values = QString::number(value);
     params.put("OPKRNaviSelect", values.toStdString());
@@ -5910,7 +5910,7 @@ OPKRNaviSelect::OPKRNaviSelect() : AbstractControl(tr("Navigation Select"), tr("
     auto str = QString::fromStdString(params.get("OPKRNaviSelect"));
     int value = str.toInt();
     value = value + 1;
-    if (value >= 4) {
+    if (value >= 5) {
       value = 0;
     }
     QString values = QString::number(value);
@@ -5927,11 +5927,11 @@ void OPKRNaviSelect::refresh() {
     label.setText(tr("Mappy"));
   } else if (option == "2") {
     label.setText(tr("Waze"));
+  } else if (option == "3") {
+    label.setText(tr("TMap"));
   } else {
     label.setText(tr("None"));
-  }
-}
-
+  }}
 OPKRServerSelect::OPKRServerSelect() : AbstractControl(tr("API Server"), tr("Set API server to OPKR/Comma/User's"), "../assets/offroad/icon_shell.png") {
   btn1.setStyleSheet(R"(
     padding: 0;
@@ -8125,4 +8125,34 @@ VariableCruiseLevel::VariableCruiseLevel() : AbstractControl(tr("Button Spamming
 
 void VariableCruiseLevel::refresh() {
   label.setText(QString::fromStdString(params.get("VarCruiseSpeedFactor")));
+}
+
+ExternalDeviceIP::ExternalDeviceIP() : AbstractControl(tr("ExternalDevIP"), tr("Set Your External Device IP to get useful data."), "") {
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+  btn.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btn.setFixedSize(150, 100);
+  btn.setText(tr("SET"));
+  hlayout->addWidget(&btn);
+
+  QObject::connect(&btn, &QPushButton::clicked, [=]() {
+    QString eip_address = InputDialog::getText(tr("Input Your External Dev IP"), this, "", false, 1, QString::fromStdString(params.get("ExternalDeviceIP")));
+    if (eip_address.length() > 0) {
+      params.put("ExternalDeviceIP", eip_address.toStdString());
+    }
+    refresh();
+  });
+  refresh();
+}
+
+void ExternalDeviceIP::refresh() {
+  label.setText(QString::fromStdString(params.get("ExternalDeviceIP")));
 }
