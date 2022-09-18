@@ -8,7 +8,6 @@ export PYTHONPATH=/data/openpilot
 cd /data/openpilot
 ping -q -c 1 -w 1 google.com &> /dev/null
 if [ "$?" == "0" ]; then
-  /data/openpilot/selfdrive/assets/addon/script/git_remove.sh
   REMOVED_BRANCH=$(git branch -vv | grep ': gone]' | awk '{print $1}')
   if [ "$REMOVED_BRANCH" != "" ]; then
     if [ "$REMOVED_BRANCH" == "*" ]; then

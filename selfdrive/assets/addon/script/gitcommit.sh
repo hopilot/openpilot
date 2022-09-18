@@ -9,6 +9,7 @@ export PYTHONPATH=/data/openpilot
 cd /data/openpilot
 ping -q -c 1 -w 1 google.com &> /dev/null
 if [ "$?" == "0" ]; then
+  /data/openpilot/selfdrive/assets/addon/script/git_remove.sh
   CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
   LOCAL_HASH=$(git rev-parse HEAD)
   /data/data/com.termux/files/usr/bin/git fetch
