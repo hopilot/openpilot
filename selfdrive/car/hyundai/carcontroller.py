@@ -537,8 +537,8 @@ class CarController():
         else:
           self.cruise_gap_adjusting = False
       if not self.cruise_gap_adjusting:
-        if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 and self.try_early_stop and CS.cruiseGapSet != 4.0 and CS.clu_Vanz > 35 and \
-         0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and (self.sm['longitudinalPlan'].stopLine[12] < 100 or CS.lead_objspd < -6):
+        if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 and self.try_early_stop and CS.cruiseGapSet != 4.0 and CS.clu_Vanz > 30 and \
+         0 < self.sm['longitudinalPlan'].e2eX[12] < 110 and (self.sm['longitudinalPlan'].stopLine[12] < 110 or CS.lead_objspd < -5):
           if not self.try_early_stop_retrieve:
             self.try_early_stop_org_gap = CS.cruiseGapSet
           self.try_early_stop_retrieve = True
@@ -557,7 +557,7 @@ class CarController():
           self.resume_cnt += 1
         elif 0 < CS.lead_distance <= 149 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
          CS.cruiseGapSet != self.try_early_stop_org_gap and \
-         (CS.clu_Vanz <= 10 or (CS.lead_objspd >= 0 and self.sm['longitudinalPlan'].e2eX[12] > 60 and self.sm['longitudinalPlan'].stopLine[12] == 400 and CS.clu_Vanz > 10)):
+         (CS.clu_Vanz <= 10 or (CS.lead_objspd >= 0 and self.sm['longitudinalPlan'].e2eX[12] > 50 and self.sm['longitudinalPlan'].stopLine[12] > 110 and CS.clu_Vanz > 10)):
           if self.switch_timer > 0:
             self.switch_timer -= 1
           else:
