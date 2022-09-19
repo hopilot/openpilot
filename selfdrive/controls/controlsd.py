@@ -571,7 +571,7 @@ class Controls:
           self.osm_off_spdlimit = False    
         elif self.osm_speedlimit == osm_speedlimit_:
           self.osm_off_spdlimit = True
-        elif round(self.sm['liveMapData'].speedLimit) > 19 and osm_speedlimit != self.v_cruise_kph:
+        elif round(self.sm['liveMapData'].speedLimit) > 21 and osm_speedlimit != self.v_cruise_kph:
           self.osm_speedlimit = 255
           self.osm_off_spdlimit = False
           self.v_cruise_kph = osm_speedlimit
@@ -936,7 +936,7 @@ class Controls:
       controlsState.mapSign = int(self.sm['liveENaviData'].safetySign)
     elif self.map_enabled:
       controlsState.limitSpeedCamera = int(round(self.sm['liveNaviData'].speedLimit))
-      controlsState.limitSpeedCameraDist = float(self.sm['liveNaviData'].speedLimitDistance)
+      controlsState.limitSpeedCameraDist = float(self.sm['liveNaviData'].safetyDistance)
       controlsState.mapSign = int(self.sm['liveNaviData'].safetySign)
       controlsState.mapSignCam = int(self.sm['liveNaviData'].safetySignCam)
     elif self.stock_navi_info_enabled and int(CS.safetySign):

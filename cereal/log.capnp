@@ -1744,7 +1744,7 @@ struct LiveParametersData {
 
 struct LiveNaviData {
   speedLimit @0 :Int32;
-  speedLimitDistance @1 :Float32;
+  safetyDistance @1 :Float32;
   safetySign @2 :Int32;
   safetySignCam @3 :Int32;
   roadCurvature @4 :Float32;
@@ -1762,6 +1762,8 @@ struct LiveENaviData {
   safetySign @2 :Int32;
   turnInfo @3 :Int32;
   distanceToTurn @4 :Float32;
+  safetySignCam @5 :Int32;
+  connectionAlive @6 :Bool;
 }
 
 struct LiveMapDataDEPRECATED {

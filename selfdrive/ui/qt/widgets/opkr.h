@@ -2593,7 +2593,7 @@ public:
 
 private:
   QPushButton btn;
-  QLabel label;
+  QLineEdit edit;
   Params params;
   
   void refresh();

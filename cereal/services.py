@@ -67,7 +67,7 @@ services = {
   "navRoute": (True, 0.),
   "navThumbnail": (True, 0.),
   "liveNaviData": (False, 0.),
-  "liveENaviData": (False, 2.),
+  "liveENaviData": (False, 0.),
   "liveMapData": (False, 0.),
   # debug
   "testJoystick": (False, 0.),

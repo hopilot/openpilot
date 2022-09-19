@@ -329,6 +329,7 @@ typedef struct UIScene {
     int eopkrsafetysign;
     int   eopkrturninfo;
     float eopkrdisttoturn;
+    bool eopkrconalive;
   } liveENaviData;
 
   struct _LiveMapData

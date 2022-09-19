@@ -8128,9 +8128,6 @@ void VariableCruiseLevel::refresh() {
 }
 
 ExternalDeviceIP::ExternalDeviceIP() : AbstractControl(tr("ExternalDevIP"), tr("Set Your External Device IP to get useful data."), "") {
-  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  label.setStyleSheet("color: #e0e879");
-  hlayout->addWidget(&label);
   btn.setStyleSheet(R"(
     padding: 0;
     border-radius: 50px;
@@ -8139,12 +8136,23 @@ ExternalDeviceIP::ExternalDeviceIP() : AbstractControl(tr("ExternalDevIP"), tr("
     color: #E4E4E4;
     background-color: #393939;
   )");
+  edit.setStyleSheet(R"(
+    background-color: grey;
+    font-size: 55px;
+    font-weight: 500;
+    height: 120px;
+  )");
+
   btn.setFixedSize(150, 100);
   btn.setText(tr("SET"));
+  edit.setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+
+  hlayout->addWidget(&edit);
   hlayout->addWidget(&btn);
 
+
   QObject::connect(&btn, &QPushButton::clicked, [=]() {
-    QString eip_address = InputDialog::getText(tr("Input Your External Dev IP"), this, "", false, 1, QString::fromStdString(params.get("ExternalDeviceIP")));
+    QString eip_address = InputDialog::getText(tr("Input Your External Dev IP"), this, tr("Seperate with (,) for multiple IP"), false, 1, QString::fromStdString(params.get("ExternalDeviceIP")));
     if (eip_address.length() > 0) {
       params.put("ExternalDeviceIP", eip_address.toStdString());
     }
@@ -8154,5 +8162,6 @@ ExternalDeviceIP::ExternalDeviceIP() : AbstractControl(tr("ExternalDevIP"), tr("
 }
 
 void ExternalDeviceIP::refresh() {
-  label.setText(QString::fromStdString(params.get("ExternalDeviceIP")));
+  auto strs = QString::fromStdString(params.get("ExternalDeviceIP"));
+  edit.setText(QString::fromStdString(strs.toStdString()));
 }

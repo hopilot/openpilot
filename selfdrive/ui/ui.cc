@@ -358,7 +358,7 @@ static void update_state(UIState *s) {
     scene.live_navi_data = sm["liveNaviData"].getLiveNaviData();
     auto lm_data = sm["liveNaviData"].getLiveNaviData();
     scene.liveNaviData.opkrspeedlimit = lm_data.getSpeedLimit();
-    scene.liveNaviData.opkrspeedlimitdist = lm_data.getSpeedLimitDistance();
+    scene.liveNaviData.opkrspeedlimitdist = lm_data.getSafetyDistance();
     scene.liveNaviData.opkrroadsign = lm_data.getSafetySign();
     scene.liveNaviData.opkrspeedsign = lm_data.getSafetySignCam();
     scene.liveNaviData.opkrcurveangle = lm_data.getRoadCurvature();
@@ -373,6 +373,7 @@ static void update_state(UIState *s) {
     scene.liveENaviData.eopkrsafetysign = lme_data.getSafetySign();
     scene.liveENaviData.eopkrturninfo = lme_data.getTurnInfo();
     scene.liveENaviData.eopkrdisttoturn = lme_data.getDistanceToTurn();
+    scene.liveENaviData.eopkrconalive = lme_data.getConnectionAlive();
   }
   if (sm.updated("liveMapData")) {
     scene.live_map_data = sm["liveMapData"].getLiveMapData();

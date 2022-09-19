@@ -13,7 +13,7 @@
 // atom
 typedef struct LiveNaviDataResult {
       int speedLimit = 0;  // int;
-      float speedLimitDistance = 0;  // Float32;
+      float safetyDistance = 0;  // Float32;
       int safetySign = 0;    // int;
       int safetySignCam = 0;    // int;
       float roadCurvature = 0;    // Float32;
@@ -86,7 +86,7 @@ int main() {
       {
         res.tv_sec = entry.tv_sec;
         res.tv_nsec = tv_nsec;
-        res.speedLimitDistance = atoi( entry.message );
+        res.safetyDistance = atoi( entry.message );
       }
       else if( strcmp( entry.tag, "opkrspdlimit" ) == 0 )
       {
@@ -105,9 +105,9 @@ int main() {
       {
         res.safetySign = atoi( entry.message );
       }
-      else if( naviSel == 1 && (res.speedLimitDistance > 1 && res.speedLimitDistance < 60) && (strcmp( entry.tag, "AudioFlinger" ) == 0) )  //   msm8974_platform
+      else if( naviSel == 1 && (res.safetyDistance > 1 && res.safetyDistance < 60) && (strcmp( entry.tag, "AudioFlinger" ) == 0) )  //   msm8974_platform
       {
-        res.speedLimitDistance = 0;
+        res.safetyDistance = 0;
         res.speedLimit = 0;
         res.safetySignCam = 0;
       }
@@ -123,15 +123,15 @@ int main() {
       {
         res.tv_sec = entry.tv_sec;
         res.tv_nsec = tv_nsec;
-        res.speedLimitDistance = 0;
+        res.safetyDistance = 0;
         res.speedLimit = 0;
         res.safetySign = 0;
         // system("logcat -c &");
       }
       else if( nDelta_nsec > 5000 && naviSel == 1)
       {
-        if (res.safetySignCam == 197 && res.speedLimitDistance < 100) {
-          res.speedLimitDistance = 0;
+        if (res.safetySignCam == 197 && res.safetyDistance < 100) {
+          res.safetyDistance = 0;
           res.speedLimit = 0;
           res.safetySignCam = 0;
         }
@@ -139,9 +139,9 @@ int main() {
         {
           res.safetySignCam = 0;
         }
-        else if (res.safetySignCam != 0 && res.safetySignCam != 124 && res.speedLimitDistance < 50 && res.speedLimitDistance > 0)
+        else if (res.safetySignCam != 0 && res.safetySignCam != 124 && res.safetyDistance < 50 && res.safetyDistance > 0)
         {
-          res.speedLimitDistance = 0;
+          res.safetyDistance = 0;
           res.speedLimit = 0;
           res.safetySignCam = 0;
         }
@@ -149,7 +149,7 @@ int main() {
         {
           res.tv_sec = entry.tv_sec;
           res.tv_nsec = tv_nsec;
-          res.speedLimitDistance = 0;
+          res.safetyDistance = 0;
           res.speedLimit = 0;
           res.safetySignCam = 0;
           // system("logcat -c &");
@@ -157,7 +157,7 @@ int main() {
       }
 
       framed.setSpeedLimit( res.speedLimit );  // int;
-      framed.setSpeedLimitDistance( res.speedLimitDistance );  // raw_target_speed_map_dist Float32;
+      framed.setSafetyDistance( res.safetyDistance );  // raw_target_speed_map_dist Float32;
       framed.setSafetySign( res.safetySign ); // int;
       framed.setSafetySignCam( res.safetySignCam ); // int;
       // framed.setRoadCurvature( res.roadCurvature ); // road_curvature Float32;

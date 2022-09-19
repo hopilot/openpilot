@@ -3999,14 +3999,19 @@
         <translation>외부 장치 IP를 설정하여 장치로부터 유용한 데이터(네비 등)를 받아올수 있게 합니다.</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="8143"/>
+        <location filename="../qt/widgets/opkr.cc" line="8147"/>
         <source>SET</source>
         <translation>설정</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="8147"/>
+        <location filename="../qt/widgets/opkr.cc" line="8155"/>
         <source>Input Your External Dev IP</source>
         <translation>외부장치의 IP를 입력하세요</translation>
     </message>
-</context>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="8155"/>
+        <source>Seperate with (,) for multiple IP</source>
+        <translation>여러개 IP 설정시 (,)로 구분하세요</translation>
+    </message>
+    </context>
 </TS>

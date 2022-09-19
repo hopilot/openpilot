@@ -13,7 +13,7 @@
 
 typedef struct LiveNaviDataResult {
       int   speedLimit;  // int;
-      float speedLimitDistance;  // Float32;
+      float safetyDistance;  // Float32;
       int   safetySign;    // int;
       float roadCurvature;    // Float32;
       int   turnInfo;    // Int32;
@@ -71,7 +71,7 @@ float arrival_time( float fDistance, float fSpeed_ms )
 
 void update_event(  LiveNaviDataResult *pEvet, float  dSpeed_ms )
 {
-    float  dEventDistance = pEvet->speedLimitDistance;
+    float  dEventDistance = pEvet->safetyDistance;
     float  dArrivalSec;
 
     if( dEventDistance > 10 ) {}
@@ -157,10 +157,10 @@ int main() {
       
       
       // 2. MAP data Event.
-      traffic_type = traffic_camera( event.safetySign, event.speedLimitDistance );
+      traffic_type = traffic_camera( event.safetySign, event.safetyDistance );
       if( strcmp( entry.tag, "opkrspddist" ) == 0 )  // 1
       {
-        event.speedLimitDistance = atoi( entry.message );
+        event.safetyDistance = atoi( entry.message );
         opkr = 1;
       } 
       else if( strcmp( entry.tag, "opkrspdlimit" ) == 0 ) // 2
@@ -229,7 +229,7 @@ int main() {
       else
       {
          event.mapValid = 0; 
-         event.speedLimitDistance = 0;
+         event.safetyDistance = 0;
          event.speedLimit = 0;
          event.safetySign = 0;
       }
@@ -241,7 +241,7 @@ int main() {
       framed.setId(log_msg.id());
       framed.setTs( event.tv_sec );
       framed.setSpeedLimit( event.speedLimit );  // Float32;
-      framed.setSpeedLimitDistance( event.speedLimitDistance );  // raw_target_speed_map_dist Float32;
+      framed.setSafetyDistance( event.safetyDistance );  // raw_target_speed_map_dist Float32;
       framed.setSafetySign( event.safetySign ); // map_sign Float32;
       framed.setRoadCurvature( event.roadCurvature ); // road_curvature Float32;
 
@@ -272,7 +272,7 @@ int main() {
       MessageBuilder msg2;
       auto framed2 = msg2.initEvent().initLiveMapData();
       framed2.setSpeedLimit( event.speedLimit );  
-      framed2.setSpeedLimitDistance( event.speedLimitDistance );
+      framed2.setSafetyDistance( event.safetyDistance );
       framed2.setSafetySign( event.safetySign );
       framed2.setTurnInfo( event.turnInfo );  
       framed2.setDistanceToTurn( event.distanceToTurn ); 
