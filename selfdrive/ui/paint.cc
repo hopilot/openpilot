@@ -110,7 +110,7 @@ static void ui_draw_line(UIState *s, const line_vertices_data &vd, NVGcolor *col
   nvgFill(s->vg);
 }
 
-static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &lead_data, const vertex_data &vd, int leads) {
+static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &lead_data, const vertex_data &vd) {
   // Draw lead car indicator
   auto [x, y] = vd;
 
@@ -132,20 +132,12 @@ static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &le
   y = std::fmin(s->fb_h - sz * .6, y);
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
 
-  if (leads == 1) {
-    if (s->scene.radarDistance < 149) {
-      draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), COLOR_YELLOW);
-      ui_draw_text(s, x, y + sz/1.5f, "R", 60, COLOR_BLUE, "sans-bold"); //neokii
-    } else {
-      draw_chevron(s, x, y, sz, nvgRGBA(165, 255, 135, fillAlpha), COLOR_GREEN);
-      ui_draw_text(s, x, y + sz/1.5f, "V", 60, COLOR_BLACK, "sans-bold"); //hoya, vision
-    }
-  } else if (leads == 2) {
-    if (s->scene.radarDistance < 149) {
-      draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), COLOR_BLACK);
-    } else {
-      draw_chevron(s, x, y, sz, nvgRGBA(165, 255, 135, fillAlpha), COLOR_BLACK);
-    }
+  if (s->scene.radarDistance < 149) {
+    draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), COLOR_YELLOW);
+    ui_draw_text(s, x, y + sz/1.5f, "R", 60, COLOR_BLUE, "sans-bold"); //neokii
+  } else {
+    draw_chevron(s, x, y, sz, nvgRGBA(165, 255, 135, fillAlpha), COLOR_GREEN);
+    ui_draw_text(s, x, y + sz/1.5f, "V", 60, COLOR_BLACK, "sans-bold"); //hoya, vision
   }
 }
 
@@ -262,11 +254,10 @@ static void ui_draw_world(UIState *s) {
     auto lead_one = (*s->sm)["radarState"].getRadarState().getLeadOne();
     auto lead_two = (*s->sm)["radarState"].getRadarState().getLeadTwo();
     if (lead_one.getStatus()) {
-      draw_lead(s, lead_one, s->scene.lead_vertices[0], 1);
+      draw_lead(s, lead_one, s->scene.lead_vertices[0]);
     }
-    //if (lead_two.getStatus() && (std::abs(lead_one.getDRel() - lead_two.getDRel()) > 3.0)) {
-    if (lead_two.getStatus()) {
-      draw_lead(s, lead_two, s->scene.lead_vertices[1], 2);
+    if (lead_two.getStatus() && (std::abs(lead_one.getDRel() - lead_two.getDRel()) > 3.0)) {
+      draw_lead(s, lead_two, s->scene.lead_vertices[1]);
     }
     if (s->scene.stop_line && s->scene.longitudinalPlan.stopline[12] > 3.0) {
       auto stop_line = (*s->sm)["modelV2"].getModelV2().getStopLine();
