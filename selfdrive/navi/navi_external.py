@@ -39,6 +39,7 @@ def navid_thread(end_event, nv_queue):
         ip_add = Params().get("ExternalDeviceIPNow", encoding="utf8")
         if ip_add is not None:
           ip_bind = True
+          check_connection = True
 
     if ip_bind:
       spd_limit = 0
