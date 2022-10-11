@@ -8,4 +8,5 @@
 7. If Wifi is working, Run OPKR connect and Navi application.
 8. Your OP device will check the connection every 30s.
 9. Once connected, OP device stop checking the connection and receive the Navi data.
-10. Be safe and Enjoy your driving~
+10. Battery Optimization of Android should be off for OPKR connect App to run as background.
+11. Be safe and Enjoy your driving~
