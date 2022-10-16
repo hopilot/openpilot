@@ -538,7 +538,7 @@ class CarController():
           self.cruise_gap_adjusting = False
       if not self.cruise_gap_adjusting:
         if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 and self.try_early_stop and CS.cruiseGapSet != 4.0 and CS.clu_Vanz > 30 and \
-         0 < self.sm['longitudinalPlan'].e2eX[12] < 110 and (self.sm['longitudinalPlan'].stopLine[12] < 110 or CS.lead_objspd < -4):
+         0 < self.sm['longitudinalPlan'].e2eX[12] < 120 and (self.sm['longitudinalPlan'].stopLine[12] < 100 or CS.lead_objspd < -4):
           if not self.try_early_stop_retrieve:
             self.try_early_stop_org_gap = CS.cruiseGapSet
           self.try_early_stop_retrieve = True
@@ -557,7 +557,7 @@ class CarController():
           self.resume_cnt += 1
         elif 0 < CS.lead_distance <= 149 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
          CS.cruiseGapSet != self.try_early_stop_org_gap and \
-         (CS.clu_Vanz <= 15 or (CS.lead_objspd >= 0 and self.sm['longitudinalPlan'].e2eX[12] > 50 and self.sm['longitudinalPlan'].stopLine[12] > 110 and CS.clu_Vanz > 15)):
+         (CS.clu_Vanz <= 20 or (CS.lead_objspd >= 0 and self.sm['longitudinalPlan'].e2eX[12] > 50 and self.sm['longitudinalPlan'].stopLine[12] > 100 and CS.clu_Vanz > 20)):
           if self.switch_timer > 0:
             self.switch_timer -= 1
           else:
@@ -874,11 +874,11 @@ class CarController():
               accel = interp(CS.lead_distance, [14.0, 15.0], [max(accel, aReqValue, faccel), aReqValue])
             elif aReqValue < 0.0 and CS.lead_distance < self.stoppingdist and accel >= aReqValue and lead_objspd <= 0 and self.stopping_dist_adj_enabled:
               if CS.lead_distance < 1.8:
-                accel = self.accel - (DT_CTRL * 5.0)
+                accel = self.accel - (DT_CTRL * 4.0)
               elif CS.lead_distance < self.stoppingdist:
-                accel = self.accel - (DT_CTRL * interp(CS.out.vEgo, [0.5, 2.0], [1.0, 5.0]))
+                accel = self.accel - (DT_CTRL * interp(CS.out.vEgo, [0.0, 0.5, 2.0], [0.1, 1.0, 5.0]))
             elif aReqValue < 0.0 and self.stopping_dist_adj_enabled:
-              stock_weight = interp(abs(lead_objspd), [1.0, 4.0, 6.5, 20.0, 50.0], [0.2, 0.35, 1.0, 0.9, 0.2])
+              stock_weight = interp(abs(lead_objspd), [1.0, 4.0, 7.0, 20.0, 50.0], [0.2, 0.3, 1.0, 0.9, 0.2])
               accel = accel * (1.0 - stock_weight) + aReqValue * stock_weight
               accel = min(accel, -0.5) if CS.lead_distance <= 4.5 and not CS.out.standstill else accel
             elif aReqValue < 0.0:
