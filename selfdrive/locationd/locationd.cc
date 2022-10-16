@@ -22,7 +22,7 @@ const double SANE_GPS_UNCERTAINTY = 1500.0; // m
 
 // TODO: GPS sensor time offsets are empirically calculated
 // They should be replaced with synced time from a real clock
-const double GPS_LOCATION_SENSOR_TIME_OFFSET = 0.630; // s
+// const double GPS_LOCATION_SENSOR_TIME_OFFSET = 0.630; // s
 const double GPS_LOCATION_EXTERNAL_SENSOR_TIME_OFFSET = 0.095; // s
 
 static VectorXd floatlist2vector(const capnp::List<float, capnp::Kind::PRIMITIVE>::Reader& floatlist) {
