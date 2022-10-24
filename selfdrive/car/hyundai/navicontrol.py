@@ -234,7 +234,7 @@ class NaviControl():
               self.onSpeedControl = False
       elif self.decel_on_speedbump and (CS.map_enabled or self.navi_sel == 3) and ((self.liveNaviData.safetySign == 107 and self.navi_sel == 0) \
        or (self.liveNaviData.safetySignCam == 124 and self.navi_sel == 1) or (self.liveNaviData.safetySign == 22 and self.navi_sel == 3)):
-        sb_consider_speed = interp((v_ego_kph - (20 if CS.is_set_speed_in_mph else 30)), [0, 10, 25, 50], [1.2, 1.8, 2.0, 2.1])
+        sb_consider_speed = interp((v_ego_kph - (20 if CS.is_set_speed_in_mph else 30)), [0, 10, 25, 50], [1.5, 1.9, 2.0, 2.1])
         sb_final_decel_start_dist = sb_consider_speed*v_ego_kph
         if self.liveNaviData.safetyDistance < sb_final_decel_start_dist and self.navi_sel == 3:
           cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
