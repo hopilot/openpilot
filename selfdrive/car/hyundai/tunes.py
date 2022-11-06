@@ -120,9 +120,14 @@ def set_lat_tune(tune, name, max_lat_accel=2.5, FRICTION=.1):
     steer_ang_deadzone = float(Decimal(params.get("TorqueAngDeadZone", encoding="utf8")) * Decimal('0.1'))
     tune.init('torque')
     tune.torque.useSteeringAngle = TorqueUseAngle
-    tune.torque.kp = TorqueKp / max_lat_accel # 2.0/2.5 = 0.8
-    tune.torque.kf = TorqueKf / max_lat_accel # 1.0/2.5 = 0.4
-    tune.torque.ki = TorqueKi / max_lat_accel # 0.5/2.5 = 0.2
+    
+
+    tune.torque.friction = TorqueFriction    
+    tune.torque.latAccelFactor = max_lat_accel     
+    tune.torque.latAccelOffset = 0.0      
+    tune.torque.kp = TorqueKp  # / max_lat_accel # 2.0/2.5 = 0.8
+    tune.torque.kf = TorqueKf  # / max_lat_accel # 1.0/2.5 = 0.4
+    tune.torque.ki = TorqueKi  # / max_lat_accel # 0.5/2.5 = 0.2
     tune.torque.friction = TorqueFriction
     tune.torque.steeringAngleDeadzoneDeg = steer_ang_deadzone
   elif name == LatTunes.LQR:
