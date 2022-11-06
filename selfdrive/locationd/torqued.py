@@ -10,8 +10,8 @@ from cereal import car, log
 from common.params import Params
 from common.realtime import Priority,  config_realtime_process, DT_MDL
 from common.filter_simple import FirstOrderFilter
-from system.swaglog import cloudlog
-from system.hardware import TICI
+from selfdrive.swaglog import cloudlog
+from selfdrive.hardware import TICI
 from selfdrive.controls.lib.vehicle_model import ACCELERATION_DUE_TO_GRAVITY
 
 
