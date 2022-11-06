@@ -34,34 +34,33 @@ class LatControlTorque(LatControl):
 
     self.mpc_frame = 0
     self.params = Params()
-    
-    self.kf = self.torque_params.kf
+
 
     self.pid = PIDController(self.torque_params.kp, self.torque_params.ki,
-                             k_f=self.kf, pos_limit=self.steer_max, neg_limit=-self.steer_max)
+                             k_f=self.torque_params.kf, pos_limit=self.steer_max, neg_limit=-self.steer_max)
     self.torque_from_lateral_accel = CI.torque_from_lateral_accel()                             
-    self.get_steer_feedforward = CI.get_steer_feedforward_function()
     self.use_steering_angle = self.torque_params.useSteeringAngle
-    self.friction = self.torque_params.friction
     self.steering_angle_deadzone_deg = self.torque_params.steeringAngleDeadzoneDeg
 
     self.live_tune_enabled = False
-
     self.lt_timer = 0
 
   def live_tune(self, CP):
-    self.torque_params = CP.lateralTuning.torque    
     self.mpc_frame += 1
     if self.mpc_frame % 300 == 0:
+      self.torque_params = CP.lateralTuning.torque          
       self.max_lat_accel = float(Decimal(self.params.get("TorqueMaxLatAccel", encoding="utf8")) * Decimal('0.1'))
-      self.kp = float(Decimal(self.params.get("TorqueKp", encoding="utf8")) * Decimal('0.1')) / self.max_lat_accel
-      self.kf = float(Decimal(self.params.get("TorqueKf", encoding="utf8")) * Decimal('0.1')) / self.max_lat_accel
-      self.ki = float(Decimal(self.params.get("TorqueKi", encoding="utf8")) * Decimal('0.1')) / self.max_lat_accel
-      self.friction = float(Decimal(self.params.get("TorqueFriction", encoding="utf8")) * Decimal('0.001'))
+      self.torque_params.kp = float(Decimal(self.params.get("TorqueKp", encoding="utf8")) * Decimal('0.1'))  # / self.max_lat_accel
+      self.torque_params.kf = float(Decimal(self.params.get("TorqueKf", encoding="utf8")) * Decimal('0.1'))  #/ self.max_lat_accel
+      self.torque_params.ki = float(Decimal(self.params.get("TorqueKi", encoding="utf8")) * Decimal('0.1'))  # / self.max_lat_accel
+      self.torque_params.friction = float(Decimal(self.params.get("TorqueFriction", encoding="utf8")) * Decimal('0.001'))
       self.use_steering_angle = self.params.get_bool('TorqueUseAngle')
       self.steering_angle_deadzone_deg = float(Decimal(self.params.get("TorqueAngDeadZone", encoding="utf8")) * Decimal('0.1'))
-      self.pid = PIDController(self.kp, self.ki,
-                              k_f=self.kf, pos_limit=1.0, neg_limit=-1.0)
+
+      self.pid = PIDController(self.torque_params.kp, self.torque_params.ki,
+                             k_f=self.torque_params.kf, pos_limit=self.steer_max, neg_limit=-self.steer_max)
+
+
         
       self.mpc_frame = 0
 
