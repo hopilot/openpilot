@@ -55,7 +55,7 @@ def send_thread(s, flock):
 
 
 def connect():
-  config_realtime_process(3, 55)
+  #config_realtime_process(3, 55)
 
   serials = {}
   flashing_lock = threading.Lock()
