@@ -1531,7 +1531,7 @@ static void ui_draw_vision_header(UIState *s) {
     }
     if (s->scene.navi_select == 0 || s->scene.navi_select == 1 || s->scene.navi_select == 2 || s->scene.mapbox_running) {
       draw_safetysign(s);
-    } else if (s->scene.navi_select == 3 && s->scene.mapSign != 21) {
+    } else if (s->scene.navi_select == 3 && (s->scene.mapSign != 20 && s->scene.mapSign != 21)) {
       draw_safetysign(s);
     }
     draw_compass(s);
