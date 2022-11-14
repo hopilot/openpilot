@@ -484,10 +484,19 @@ static void ui_draw_vision_maxspeed_org(UIState *s) {
   float maxspeed = round(s->scene.controls_state.getVCruise());
   float cruise_speed = round(s->scene.vSetDis);
   const bool is_cruise_set = maxspeed != 0 && maxspeed != SET_SPEED_NA;
-  if (s->scene.cruiseAccStatus) {
-    s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.ctrl_speed+1.5);
+
+  if (s->scene.cruiseAccStatus ) {
+    if (s->scene.navi_select != 3 || (s->scene.navi_select == 3 && (s->scene.mapSign != 20 && s->scene.mapSign != 21))) {
+      s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.ctrl_speed+1.5);
+    } else {
+      s->scene.is_speed_over_limit = false;
+    }
   } else {
-    s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.limitSpeedCamera+1.5);
+    if (s->scene.navi_select != 3 || (s->scene.navi_select == 3 && (s->scene.mapSign != 20 && s->scene.mapSign != 21))) {
+      s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.limitSpeedCamera+1.5);
+    } else {
+      s->scene.is_speed_over_limit = false;
+    }
   }
   //if (is_cruise_set && !s->scene.is_metric) { maxspeed *= 0.6225; }
 
@@ -548,9 +557,17 @@ static void ui_draw_vision_cruise_speed(UIState *s) {
   //if (is_cruise_set && !s->scene.is_metric) { maxspeed *= 0.6225; }
   float cruise_speed = round(s->scene.vSetDis);
   if (s->scene.cruiseAccStatus) {
-    s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.ctrl_speed+1.5);
+    if (s->scene.navi_select != 3 || (s->scene.navi_select == 3 && (s->scene.mapSign != 20 && s->scene.mapSign != 21))) {
+      s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.ctrl_speed+1.5);
+    } else {
+      s->scene.is_speed_over_limit = false;
+    }
   } else {
-    s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.limitSpeedCamera+1.5);
+    if (s->scene.navi_select != 3 || (s->scene.navi_select == 3 && (s->scene.mapSign != 20 && s->scene.mapSign != 21))) {
+      s->scene.is_speed_over_limit = s->scene.limitSpeedCamera > 21 && ((s->scene.car_state.getVEgo() * (s->scene.is_metric ? 3.6 : 2.2369363)) > s->scene.limitSpeedCamera+1.5);
+    } else {
+      s->scene.is_speed_over_limit = false;
+    }
   }
 
   const Rect rect = {bdr_s, bdr_s, 184, 202};
