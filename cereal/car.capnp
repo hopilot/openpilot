@@ -154,6 +154,8 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     unSleepMode @131;
     speedBump @132;
     sccDriverOverride @133;
+    doNotDisturb @134;
+    chimeAtResume @135;
   }
 }
 
@@ -439,6 +441,7 @@ struct CarControl {
       promptRepeat @7;
       promptDistracted @8;
       warning @9;
+      dingdong @10;
     }
   }
 

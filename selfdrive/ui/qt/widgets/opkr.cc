@@ -8165,3 +8165,75 @@ void ExternalDeviceIP::refresh() {
   auto strs = QString::fromStdString(params.get("ExternalDeviceIP"));
   edit.setText(QString::fromStdString(strs.toStdString()));
 }
+
+DoNotDisturbMode::DoNotDisturbMode() : AbstractControl(tr("DoNotDisturb Mode"), tr("Off Event notification, Screen and Sound of Device. You can enable this touching Left-Top Box like a button on onroad screen."), "../assets/offroad/icon_shell.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  btnminus.setText("◀");
+  btnplus.setText("▶");
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("DoNotDisturbMode"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value <= -1) {
+      value = 3;
+    }
+    QString values = QString::number(value);
+    params.put("DoNotDisturbMode", values.toStdString());
+    refresh();
+  });
+  
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("DoNotDisturbMode"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value >= 4) {
+      value = 0;
+    }
+    QString values = QString::number(value);
+    params.put("DoNotDisturbMode", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void DoNotDisturbMode::refresh() {
+  QString option = QString::fromStdString(params.get("DoNotDisturbMode"));
+  if (option == "0") {
+    label.setText(tr("NotUse"));
+    QUIState::ui_state.scene.do_not_disturb_mode = 0;
+  } else if (option == "1") {
+    label.setText(tr("SCROffOnly"));
+    QUIState::ui_state.scene.do_not_disturb_mode = 1;
+  } else if (option == "2") {
+    label.setText(tr("SNDOffOnly"));
+    QUIState::ui_state.scene.do_not_disturb_mode = 2;
+  } else {
+    label.setText(tr("BothOff"));
+    QUIState::ui_state.scene.do_not_disturb_mode = 3;
+  }
+}

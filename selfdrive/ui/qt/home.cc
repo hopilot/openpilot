@@ -418,12 +418,12 @@ void HomeWindow::mousePressEvent(QMouseEvent* e)
     return;
   }
   // OPKR REC
-  if (QUIState::ui_state.scene.started && !sidebar->isVisible() && !QUIState::ui_state.scene.map_on_top && !QUIState::ui_state.scene.comma_stock_ui && rec_btn.ptInRect(e->x(), e->y()) && !QUIState::ui_state.scene.mapbox_running) {
+  if (QUIState::ui_state.scene.started && !sidebar->isVisible() && !QUIState::ui_state.scene.map_on_top && QUIState::ui_state.scene.comma_stock_ui != 1 && rec_btn.ptInRect(e->x(), e->y()) && !QUIState::ui_state.scene.mapbox_running) {
     QUIState::ui_state.scene.touched = true;
     return;
   }
   // Laneless mode
-  if (QUIState::ui_state.scene.started && !sidebar->isVisible() && !QUIState::ui_state.scene.map_on_top && QUIState::ui_state.scene.end_to_end && !QUIState::ui_state.scene.comma_stock_ui && laneless_btn.ptInRect(e->x(), e->y()) && !QUIState::ui_state.scene.mapbox_running) {
+  if (QUIState::ui_state.scene.started && !sidebar->isVisible() && !QUIState::ui_state.scene.map_on_top && QUIState::ui_state.scene.end_to_end && QUIState::ui_state.scene.comma_stock_ui != 1 && laneless_btn.ptInRect(e->x(), e->y()) && !QUIState::ui_state.scene.mapbox_running) {
     QUIState::ui_state.scene.laneless_mode = QUIState::ui_state.scene.laneless_mode + 1;
     if (QUIState::ui_state.scene.laneless_mode > 2) {
       QUIState::ui_state.scene.laneless_mode = 0;
@@ -449,11 +449,24 @@ void HomeWindow::mousePressEvent(QMouseEvent* e)
   }
   // Stock UI Toggle
   if (QUIState::ui_state.scene.started && !sidebar->isVisible() && !QUIState::ui_state.scene.map_on_top && stockui_btn.ptInRect(e->x(), e->y())) {
-    QUIState::ui_state.scene.comma_stock_ui = !QUIState::ui_state.scene.comma_stock_ui;
-    if (QUIState::ui_state.scene.comma_stock_ui) {
-      Params().putBool("CommaStockUI", true);
+    QUIState::ui_state.scene.comma_stock_ui = QUIState::ui_state.scene.comma_stock_ui + 1;
+    if (QUIState::ui_state.do_not_disturb_mode) {
+      if (QUIState::ui_state.scene.comma_stock_ui > 2) {
+        QUIState::ui_state.scene.comma_stock_ui = 0;
+      }
     } else {
-      Params().putBool("CommaStockUI", false);
+      if (QUIState::ui_state.scene.comma_stock_ui > 1 ) {
+        QUIState::ui_state.scene.comma_stock_ui = 0;
+      }
+    }
+
+    if (QUIState::ui_state.scene.comma_stock_ui == 0) {
+      Params().put("CommaStockUI", "0", 1);
+    } else if (QUIState::ui_state.scene.comma_stock_ui == 1) {
+      Params().put("CommaStockUI", "1", 1);
+    } else if (QUIState::ui_state.scene.comma_stock_ui == 2) {
+      QUIState::ui_state.scene.nTime = 200; //10s
+      Params().put("CommaStockUI", "2", 1);
     }
     return;
   }

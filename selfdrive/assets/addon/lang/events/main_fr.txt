@@ -187,3 +187,6 @@ LKAS activé
 Mise en veille désactivée
 Ralentissement avant dos-d'âne
 Vitesse du régulateur modifiée par le conducteur
+Ne pas perturber le mode d'allumage
+Touchez la boîte en haut à gauche pour éteindre
+Carillon pour le départ

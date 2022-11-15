@@ -1,5 +1,8 @@
 ☞ Use two fingers to scroll down ☜
 
+2022-11-15
+- Do Not Disturb Mode(Off Screen and Sound)
+- Depart Chime based on E2E Model
 2022-09-07
 - Early Slowdown with Gap 4
 - Fix darkscreen on Settings

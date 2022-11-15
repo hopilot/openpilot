@@ -212,6 +212,11 @@ class CarController():
     self.ed_rd_diff_on = False
     self.ed_rd_diff_on_timer = 0
 
+    self.e2e_standstill_enable = self.params.get_bool("DepartChimeAtResume")
+    self.e2e_standstill = False
+    self.e2e_standstill_stat = False
+    self.e2e_standstill_timer = 0
+
     self.str_log2 = 'MultiLateral'
     if CP.lateralTuning.which() == 'pid':
       self.str_log2 = 'T={:0.2f}/{:0.3f}/{:0.2f}/{:0.5f}'.format(CP.lateralTuning.pid.kpV[1], CP.lateralTuning.pid.kiV[1], CP.lateralTuning.pid.kdV[0], CP.lateralTuning.pid.kf)
@@ -632,6 +637,22 @@ class CarController():
           self.auto_res_limit_timer += 1
         if self.auto_res_delay_timer < self.auto_res_delay:
           self.auto_res_delay_timer += 1
+      if self.e2e_standstill_enable:
+        if self.e2e_standstill:
+          self.e2e_standstill_timer += 1
+          self.e2e_standstill = False if self.e2e_standstill_timer > 200 else True
+        elif CS.clu_Vanz > 0:
+          self.e2e_standstill = False
+          self.e2e_standstill_stat = False
+          self.e2e_standstill_timer = 0
+        elif self.e2e_standstill_stat and self.sm['longitudinalPlan'].e2eX[12] > 30 and self.sm['longitudinalPlan'].stopLine[12] < 10 and CS.clu_Vanz == 0:
+          self.e2e_standstill = True
+          self.e2e_standstill_stat = False
+          self.e2e_standstill_timer = 0
+        elif 0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and self.sm['longitudinalPlan'].stopLine[12] < 100 and CS.clu_Vanz == 0.0:
+          self.e2e_standstill_timer += 1
+          self.e2e_standstill_stat = True if self.e2e_standstill_timer > 500 else False
+
     if CS.brakeHold and not self.autohold_popup_switch:
       self.autohold_popup_timer = 100
       self.autohold_popup_switch = True

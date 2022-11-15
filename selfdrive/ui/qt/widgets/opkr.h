@@ -921,6 +921,30 @@ public:
   }
 };
 
+class TorqueUseAngle : public ToggleControl {
+  Q_OBJECT
+
+public:
+  TorqueUseAngle() : ToggleControl(tr("UseAngle"), tr("Use Steer Angle On/Off"), "../assets/offroad/icon_shell.png", Params().getBool("TorqueUseAngle")) {
+    QObject::connect(this, &TorqueUseAngle::toggleFlipped, [=](int state) {
+      bool status = state ? true : false;
+      Params().putBool("TorqueUseAngle", status);
+    });
+  }
+};
+
+class DepartChimeAtResume : public ToggleControl {
+  Q_OBJECT
+
+public:
+  DepartChimeAtResume() : ToggleControl(tr("Depart Chime at Resume"), tr("Use Chime for Resume. This can notify for you to get start while not using SCC."), "../assets/offroad/icon_shell.png", Params().getBool("DepartChimeAtResume")) {
+    QObject::connect(this, &DepartChimeAtResume::toggleFlipped, [=](int state) {
+      bool status = state ? true : false;
+      Params().putBool("DepartChimeAtResume", status);
+    });
+  }
+};
+
 // openpilot preview
 class OpenpilotView : public AbstractControl {
   Q_OBJECT
@@ -1669,18 +1693,6 @@ private:
   Params params;
   
   void refresh();
-};
-
-class TorqueUseAngle : public ToggleControl {
-  Q_OBJECT
-
-public:
-  TorqueUseAngle() : ToggleControl("UseAngle", "Use Steer Angle On/Off", "../assets/offroad/icon_shell.png", Params().getBool("TorqueUseAngle")) {
-    QObject::connect(this, &TorqueUseAngle::toggleFlipped, [=](int state) {
-      bool status = state ? true : false;
-      Params().putBool("TorqueUseAngle", status);
-    });
-  }
 };
 
 class TorqueMaxLatAccel : public AbstractControl {
@@ -2594,6 +2606,21 @@ public:
 private:
   QPushButton btn;
   QLineEdit edit;
+  Params params;
+  
+  void refresh();
+};
+
+class DoNotDisturbMode : public AbstractControl {
+  Q_OBJECT
+
+public:
+  DoNotDisturbMode();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
   Params params;
   
   void refresh();

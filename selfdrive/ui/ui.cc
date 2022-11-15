@@ -556,6 +556,8 @@ static void update_status(UIState *s) {
     s->scene.animated_rpm = params.getBool("AnimatedRPM");
     s->scene.stop_line = params.getBool("ShowStopLine");
     s->scene.lateralControlMethod = std::stoi(params.get("LateralControlMethod"));
+    s->scene.do_not_disturb_mode = std::stoi(params.get("DoNotDisturbMode"));
+    s->scene.depart_chime_at_resume = params.getBool("DepartChimeAtResume");
 
     if (s->scene.autoScreenOff > 0) {
       s->scene.nTime = s->scene.autoScreenOff * 60 * UI_FREQ;
@@ -568,7 +570,7 @@ static void update_status(UIState *s) {
     } else {
       s->scene.nTime = -1;
     }
-    s->scene.comma_stock_ui = params.getBool("CommaStockUI");
+    s->scene.comma_stock_ui = std::stoi(params.get("CommaStockUI"));
     s->scene.opkr_livetune_ui = params.getBool("OpkrLiveTunePanelEnable");
     s->scene.batt_less = params.getBool("OpkrBattLess");
     s->scene.read_params_once = true;
@@ -662,7 +664,15 @@ void Device::updateBrightness(const UIState &s) {
     }
   }
 
-  if (s.scene.autoScreenOff != -3 && s.scene.touched2) {
+  if (s.scene.comma_stock_ui == 2 && (s.scene.do_not_disturb_mode == 1 || s.scene.do_not_disturb_mode == 3)) {
+    if (s.scene.touched2) {
+      sleep_time = 10 * UI_FREQ;
+    } else if (sleep_time > 0) {
+      sleep_time--;
+    } else if (s.scene.started && sleep_time == -1) {
+      sleep_time = 10 * UI_FREQ;
+    }
+  } else if (s.scene.autoScreenOff != -3 && s.scene.touched2) {
     sleep_time = s.scene.nTime;
   } else if (s.scene.controls_state.getAlertSize() != cereal::ControlsState::AlertSize::NONE && s.scene.autoScreenOff != -3) {
     sleep_time = s.scene.nTime;
@@ -674,6 +684,8 @@ void Device::updateBrightness(const UIState &s) {
 
   int brightness = brightness_filter.update(clipped_brightness);
   if (!awake) {
+    brightness = 0;
+  } else if ((s.scene.comma_stock_ui == 2 && (s.scene.do_not_disturb_mode == 1 || s.scene.do_not_disturb_mode == 3)) && s.scene.started && sleep_time == 0) {
     brightness = 0;
   } else if (s.scene.started && sleep_time == 0 && s.scene.autoScreenOff != -3) {
     if (s.scene.brightness_off < 4) {

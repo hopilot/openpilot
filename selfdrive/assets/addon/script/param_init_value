@@ -155,3 +155,5 @@ StopAtStopSign:0
 VarCruiseSpeedFactor:5
 OPKRSpeedBump:0
 OPKREarlyStop:1
+DoNotDisturbMode:0
+DepartChimeAtResume:0

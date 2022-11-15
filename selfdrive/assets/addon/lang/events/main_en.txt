@@ -187,3 +187,6 @@ LKAS turned On
 UnSleep Mode turned On
 Slowing Down for SpeedBump
 SCC Set Speed Driver Override
+Do Not Disturb Mode On
+Touch Top-Left Box to turn Off
+Chime for Depart

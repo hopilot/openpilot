@@ -270,7 +270,7 @@ void screen_toggle_lock() {
 }
 
 void dashcam(UIState *s) {
-  if (!s->scene.comma_stock_ui) {
+  if (s->scene.comma_stock_ui != 1) {
     screen_draw_button(s);
   }
   if (s->scene.touched) {

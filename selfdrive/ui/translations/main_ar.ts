@@ -105,17 +105,17 @@
 <context>
     <name>OffroadHome</name>
     <message>
-        <location filename="../qt/home.cc" line="568"/>
+        <location filename="../qt/home.cc" line="587"/>
         <source>UPDATE</source>
         <translation>تحديث</translation>
     </message>
     <message>
-        <location filename="../qt/home.cc" line="659"/>
+        <location filename="../qt/home.cc" line="678"/>
         <source>ALERTS</source>
         <translation>تنبيه</translation>
     </message>
     <message>
-        <location filename="../qt/home.cc" line="659"/>
+        <location filename="../qt/home.cc" line="678"/>
         <source>ALERT</source>
         <translation>تنبيه</translation>
     </message>

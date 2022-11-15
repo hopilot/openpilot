@@ -226,6 +226,7 @@ class Controls:
     self.auto_enable_speed = max(1, int(Params().get("AutoEnableSpeed", encoding="utf8"))) if int(Params().get("AutoEnableSpeed", encoding="utf8")) > -1 else int(Params().get("AutoEnableSpeed", encoding="utf8"))
     self.e2e_long_alert_prev = True
     self.unsleep_mode_alert_prev = True
+    self.donotdisturb_mode_alert_prev = True
     self.stock_navi_info_enabled = Params().get_bool("StockNaviSpeedEnabled")
     self.ignore_can_error_on_isg = Params().get_bool("IgnoreCANErroronISG")
     self.ready_timer = 0
@@ -362,6 +363,12 @@ class Controls:
         self.unsleep_mode_alert_prev = not self.unsleep_mode_alert_prev
       elif not Params().get_bool("OpkrMonitoringMode"):
         self.unsleep_mode_alert_prev = True
+      # DoNotDisturb Mode Alert
+      if Params().get_bool("DoNotDisturbMode") and self.donotdisturb_mode_alert_prev:
+        self.events.add(EventName.doNotDisturb)
+        self.donotdisturb_mode_alert_prev = not self.donotdisturb_mode_alert_prev
+      elif not Params().get_bool("DoNotDisturbMode"):
+        self.donotdisturb_mode_alert_prev = True
       self.second = 0.0
 
     # if log.PandaState.FaultType.relayMalfunction in pandaState.faults:

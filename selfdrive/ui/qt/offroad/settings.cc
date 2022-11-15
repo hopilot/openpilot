@@ -460,7 +460,6 @@ QWidget *network_panel(QWidget *parent) {
 
 UIPanel::UIPanel(QWidget *parent) : QFrame(parent) {
   QVBoxLayout *layout = new QVBoxLayout(this);
-
   layout->setContentsMargins(50, 0, 50, 0);
   layout->setSpacing(30);
 
@@ -471,6 +470,7 @@ UIPanel::UIPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new BrightnessControl());
   layout->addWidget(new AutoScreenOff());
   layout->addWidget(new BrightnessOffControl());
+  layout->addWidget(new DoNotDisturbMode());  
   layout->addWidget(new GetOffAlert());
   layout->addWidget(new BatteryChargingControlToggle());
   layout->addWidget(new ChargingMin());
@@ -517,7 +517,6 @@ UIPanel::UIPanel(QWidget *parent) : QFrame(parent) {
 
 DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   QVBoxLayout *layout = new QVBoxLayout(this);
-
   layout->setContentsMargins(50, 0, 50, 0);
   layout->setSpacing(30);
 
@@ -526,6 +525,7 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new RESCountatStandstill());
   layout->addWidget(new CruiseGapAdjustToggle());
   layout->addWidget(new StandstillResumeAltToggle());
+  layout->addWidget(new DepartChimeAtResume());
   layout->addWidget(new VariableCruiseToggle());
   layout->addWidget(new VariableCruiseLevel());
   layout->addWidget(new CruisemodeSelInit());
