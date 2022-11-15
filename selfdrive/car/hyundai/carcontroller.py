@@ -903,7 +903,7 @@ class CarController():
               elif CS.lead_distance < self.stoppingdist:
                 accel = self.accel - (DT_CTRL * interp(CS.out.vEgo, [0.0, 1.0, 2.0], [0.05, 1.0, 5.0]))
             elif aReqValue < 0.0 and self.stopping_dist_adj_enabled:
-              ed_rd_diff = abs(self.lead_0.dRel - CS.lead_distance) > 3.0
+              ed_rd_diff = abs(self.dRel - CS.lead_distance) > 3.0
               if ed_rd_diff and not self.ed_rd_diff_on:
                 self.ed_rd_diff_on = True
                 self.ed_rd_diff_on_timer = 400
