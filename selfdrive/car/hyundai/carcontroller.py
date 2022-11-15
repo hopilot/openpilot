@@ -918,7 +918,7 @@ class CarController():
                 if aReqValue <= accel:
                   stock_weight = min(1.0, interp(CS.out.vEgo, [7.0, 30.0], [stock_weight, stock_weight*5.0]))
                 elif aReqValue > accel:
-                  stock_weight = interp(abs(lead_objspd), [1.0, 5.0, 10.0, 15.0], [0.8, 0.2, 0.8, 0.2])
+                  stock_weight = interp(abs(lead_objspd), [1.0, 10.0], [0.9, 0.1])
               accel = accel * (1.0 - stock_weight) + aReqValue * stock_weight
               accel = min(accel, -0.5) if CS.lead_distance <= 4.5 and not CS.out.standstill else accel
             elif aReqValue < 0.0:
