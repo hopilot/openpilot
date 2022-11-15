@@ -209,6 +209,9 @@ class CarController():
     self.try_early_stop_retrieve = False
     self.try_early_stop_org_gap = 4.0
 
+    self.ed_rd_diff_on = False
+    self.ed_rd_diff_on_timer = 0
+
     self.str_log2 = 'MultiLateral'
     if CP.lateralTuning.which() == 'pid':
       self.str_log2 = 'T={:0.2f}/{:0.3f}/{:0.2f}/{:0.5f}'.format(CP.lateralTuning.pid.kpV[1], CP.lateralTuning.pid.kiV[1], CP.lateralTuning.pid.kdV[0], CP.lateralTuning.pid.kf)
@@ -879,9 +882,17 @@ class CarController():
               elif CS.lead_distance < self.stoppingdist:
                 accel = self.accel - (DT_CTRL * interp(CS.out.vEgo, [0.0, 1.0, 2.0], [0.05, 1.0, 5.0]))
             elif aReqValue < 0.0 and self.stopping_dist_adj_enabled:
-              if lead_objspd >= 0:
-                stock_weight = interp(abs(lead_objspd), [1.0, 10.0], [0.5, 0.8])
+              ed_rd_diff = abs(self.lead_0.dRel - CS.lead_distance) > 3.0
+              if ed_rd_diff and not self.ed_rd_diff_on:
+                self.ed_rd_diff_on = True
+                self.ed_rd_diff_on_timer = 400
+                stock_weight = 1.0
+              elif self.ed_rd_diff_on_timer: # damping btw ED and RD for 4 secs.
+                stock_weight = interp(self.ed_rd_diff_on_timer, [0, 400], [0.1, 1.0])
+                self.ed_rd_diff_on_timer -= 1
               else:
+                self.ed_rd_diff_on = False
+                self.ed_rd_diff_on_timer = 0
                 stock_weight = interp(abs(lead_objspd), [1.0, 4.0, 8.0, 20.0, 50.0], [0.2, 0.3, 1.0, 0.9, 0.2])
                 if aReqValue <= accel:
                   stock_weight = min(1.0, interp(CS.out.vEgo, [7.0, 30.0], [stock_weight, stock_weight*5.0]))
