@@ -61,7 +61,9 @@ void Sound::update() {
       //   s->setVolume(0.0);
       // } else if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) > 0.03) {
       //   s->setVolume(std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01);
-      if ((QUIState::ui_state.scene.nVolumeBoost * 0.01) < -0.03) {
+      if (QUIState::ui_state.scene.comma_stock_ui == 2 && (QUIState::ui_state.scene.do_not_disturb_mode == 2 || QUIState::ui_state.scene.do_not_disturb_mode == 3)) {
+        s->setVolume(0.0);
+      } else if ((QUIState::ui_state.scene.nVolumeBoost * 0.01) < -0.03) {
         s->setVolume(0.0);
       } else if ((QUIState::ui_state.scene.nVolumeBoost * 0.01) > 0.03) {
         s->setVolume(QUIState::ui_state.scene.nVolumeBoost * 0.01);
@@ -71,11 +73,7 @@ void Sound::update() {
     }
   }
 
-  if (QUIState::ui_state.scene.comma_stock_ui == 2 && (QUIState::ui_state.scene.do_not_disturb_mode == 0 || QUIState::ui_state.scene.do_not_disturb_mode == 1)) {
-    setAlert(Alert::get(sm, started_frame));
-  } else if (QUIState::ui_state.scene.comma_stock_ui != 2) {
-    setAlert(Alert::get(sm, started_frame));
-  }
+  setAlert(Alert::get(sm, started_frame));
 }
 
 void Sound::setAlert(const Alert &alert) {

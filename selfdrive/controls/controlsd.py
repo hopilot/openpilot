@@ -364,10 +364,10 @@ class Controls:
       elif not Params().get_bool("OpkrMonitoringMode"):
         self.unsleep_mode_alert_prev = True
       # DoNotDisturb Mode Alert
-      if Params().get_bool("CommaStockUI") == "2" and self.donotdisturb_mode_alert_prev:
+      if Params().get("CommaStockUI", encoding="utf8") == "2" and self.donotdisturb_mode_alert_prev:
         self.events.add(EventName.doNotDisturb)
         self.donotdisturb_mode_alert_prev = not self.donotdisturb_mode_alert_prev
-      elif not Params().get_bool("CommaStockUI") == "2":
+      elif not Params().get("CommaStockUI", encoding="utf8") == "2":
         self.donotdisturb_mode_alert_prev = True
       self.second = 0.0
 
