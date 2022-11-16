@@ -71,7 +71,9 @@ void Sound::update() {
     }
   }
 
-  if (QUIState::ui_state.scene.do_not_disturb_mode != 2 || QUIState::ui_state.scene.do_not_disturb_mode != 3) {
+  if (QUIState::ui_state.scene.comma_stock_ui == 2 && (QUIState::ui_state.scene.do_not_disturb_mode == 0 || QUIState::ui_state.scene.do_not_disturb_mode == 1)) {
+    setAlert(Alert::get(sm, started_frame));
+  } else if (QUIState::ui_state.scene.comma_stock_ui != 2) {
     setAlert(Alert::get(sm, started_frame));
   }
 }

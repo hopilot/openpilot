@@ -79,12 +79,18 @@ void MainWindow::openSettings() {
   if (QUIState::ui_state.scene.autoScreenOff != -3) {
     QUIState::ui_state.scene.brightness_off = 100;
   }
+  if (QUIState::ui_state.scene.do_not_disturb_mode > 0) {
+    QUIState::ui_state.scene.do_not_disturb_mode = 0;
+  }
   main_layout->setCurrentWidget(settingsWindow);
 }
 
 void MainWindow::closeSettings() {
   if (QUIState::ui_state.scene.brightness_off == 100) {
     QUIState::ui_state.scene.brightness_off = std::stoi(Params().get("OpkrUIBrightnessOff"));
+  }
+  if (QUIState::ui_state.scene.do_not_disturb_mode == 0) {
+    QUIState::ui_state.scene.do_not_disturb_mode = std::stoi(Params().get("DoNotDisturbMode"));
   }
   main_layout->setCurrentWidget(homeWindow);
 
