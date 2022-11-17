@@ -648,7 +648,7 @@ class CarController():
         try:
           if self.e2e_standstill:
             self.e2e_standstill_timer += 1
-            if self.e2e_standstill_timer > 200:
+            if self.e2e_standstill_timer > 100:
               self.e2e_standstill = False
               self.e2e_standstill_timer = 0
           elif CS.clu_Vanz > 0:
