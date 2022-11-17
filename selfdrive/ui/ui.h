@@ -116,6 +116,7 @@ typedef enum UIStatus {
   STATUS_ENGAGED,
   STATUS_WARNING,
   STATUS_ALERT,
+  STATUS_DND,
 } UIStatus;
 
 const QColor bg_colors [] = {
@@ -123,6 +124,7 @@ const QColor bg_colors [] = {
   [STATUS_ENGAGED] = QColor(0x17, 0x86, 0x44, 0x96),
   [STATUS_WARNING] = QColor(0xDA, 0x6F, 0x25, 0x96),
   [STATUS_ALERT] = QColor(0xC9, 0x22, 0x31, 0x96),
+  [STATUS_DND] = QColor(0x32, 0x32, 0x32, 0x96),
 };
 
 typedef struct {

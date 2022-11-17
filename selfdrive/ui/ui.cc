@@ -446,7 +446,11 @@ static void update_status(UIState *s) {
     } else if (alert_status == cereal::ControlsState::AlertStatus::CRITICAL) {
       s->status = STATUS_ALERT;
     } else {
-      s->status = controls_state.getEnabled() ? STATUS_ENGAGED : STATUS_DISENGAGED;
+      if (s->scene.comma_stock_ui == 2) {
+        s->status = controls_state.getEnabled() ? STATUS_DND : STATUS_DND;
+      } else {
+        s->status = controls_state.getEnabled() ? STATUS_ENGAGED : STATUS_DISENGAGED;
+      }
     }
   }
 

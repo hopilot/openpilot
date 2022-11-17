@@ -50,6 +50,10 @@ void Sound::update() {
     setAlert({});
     return;
   }
+  if (QUIState::ui_state.scene.comma_stock_ui == 2 && QUIState::ui_state.scene.do_not_disturb_mode > 1) {
+    setAlert({});
+    return;
+  }
 
   // scale volume with speed
   if (sm.updated("carState")) {
@@ -57,16 +61,10 @@ void Sound::update() {
     volume = QAudio::convertVolume(volume, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale);
     volume = util::map_val(volume, 0.f, 1.f, Hardware::MIN_VOLUME, Hardware::MAX_VOLUME);
     for (auto &[s, loops] : sounds) {
-      // if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) < -0.03) {
-      //   s->setVolume(0.0);
-      // } else if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) > 0.03) {
-      //   s->setVolume(std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01);
-      if (QUIState::ui_state.scene.comma_stock_ui == 2 && (QUIState::ui_state.scene.do_not_disturb_mode == 2 || QUIState::ui_state.scene.do_not_disturb_mode == 3)) {
+      if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) < -0.03) {
         s->setVolume(0.0);
-      } else if ((QUIState::ui_state.scene.nVolumeBoost * 0.01) < -0.03) {
-        s->setVolume(0.0);
-      } else if ((QUIState::ui_state.scene.nVolumeBoost * 0.01) > 0.03) {
-        s->setVolume(QUIState::ui_state.scene.nVolumeBoost * 0.01);
+      } else if ((std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01) > 0.03) {
+        s->setVolume(std::stof(Params().get("OpkrUIVolumeBoost")) * 0.01);
       } else {
         s->setVolume(std::round(100 * volume) / 100);
       }
