@@ -213,6 +213,7 @@ class CarController():
     self.ed_rd_diff_on_timer = 0
 
     self.e2e_standstill_enable = self.params.get_bool("DepartChimeAtResume")
+    self.e2e_standstill_enable_ok = False
     self.e2e_standstill = False
     self.e2e_standstill_stat = False
     self.e2e_standstill_timer = 0
@@ -637,7 +638,7 @@ class CarController():
           self.auto_res_limit_timer += 1
         if self.auto_res_delay_timer < self.auto_res_delay:
           self.auto_res_delay_timer += 1
-      if self.e2e_standstill_enable:
+      if enabled and self.e2e_standstill_enable_ok and self.e2e_standstill_enable:
         if self.e2e_standstill:
           self.e2e_standstill_timer += 1
           if self.e2e_standstill_timer > 200:
@@ -658,6 +659,8 @@ class CarController():
             self.e2e_standstill_stat = True
         else:
           self.e2e_standstill_timer = 0
+      elif not self.e2e_standstill_enable_ok and CS.clu_Vanz > 0:
+        self.elf.e2e_standstill_enable_ok = True
 
     if CS.brakeHold and not self.autohold_popup_switch:
       self.autohold_popup_timer = 100
