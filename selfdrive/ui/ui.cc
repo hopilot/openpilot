@@ -447,7 +447,7 @@ static void update_status(UIState *s) {
       s->status = STATUS_ALERT;
     } else {
       if (s->scene.comma_stock_ui == 2) {
-        s->status = controls_state.getEnabled() ? STATUS_DND : STATUS_DND;
+        s->status = controls_state.getEnabled() ? STATUS_DND : STATUS_DISENGAGED;
       } else {
         s->status = controls_state.getEnabled() ? STATUS_ENGAGED : STATUS_DISENGAGED;
       }
@@ -458,7 +458,7 @@ static void update_status(UIState *s) {
   static bool started_prev = false;
   if (s->scene.started != started_prev) {
     if (s->scene.started) {
-      s->status = STATUS_DND;
+      s->status = STATUS_DISENGAGED;
       s->scene.started_frame = s->sm->frame;
       s->wide_camera = Hardware::TICI() ? Params().getBool("EnableWideCamera") : false;
     }
