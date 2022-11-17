@@ -413,7 +413,7 @@ class LongitudinalMpc:
     elif x[N] < 100 and stopline[N] < 100:
       self.on_stopping = True
       self.on_stopping_timer = 0
-      x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle*2, (stopline*0.25)+(x*0.75)])
+      x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle*2, (stopline*0.2)+(x*0.7)])
     elif x[N] < 100 and self.on_stopping:
       self.on_stopping_timer = 0
       x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle*2, x])
@@ -425,7 +425,6 @@ class LongitudinalMpc:
         self.on_stopping = False
         self.on_stopping_timer = 0
         x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle])
-
     else:
       self.on_stopping = False
       self.on_stopping_timer = 0
