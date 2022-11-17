@@ -640,7 +640,9 @@ class CarController():
       if self.e2e_standstill_enable:
         if self.e2e_standstill:
           self.e2e_standstill_timer += 1
-          self.e2e_standstill = False if self.e2e_standstill_timer > 200 else True
+          if self.e2e_standstill_timer > 200:
+            self.e2e_standstill = False
+            self.e2e_standstill_timer = 0
         elif CS.clu_Vanz > 0:
           self.e2e_standstill = False
           self.e2e_standstill_stat = False
@@ -649,9 +651,11 @@ class CarController():
           self.e2e_standstill = True
           self.e2e_standstill_stat = False
           self.e2e_standstill_timer = 0
-        elif 0 < self.sm['longitudinalPlan'].e2eX[12] < 100 and self.sm['longitudinalPlan'].stopLine[12] < 100 and CS.clu_Vanz == 0.0:
+        elif 0 < self.sm['longitudinalPlan'].e2eX[12] < 85 and self.sm['longitudinalPlan'].stopLine[12] < 85 and CS.clu_Vanz == 0.0:
           self.e2e_standstill_timer += 1
-          self.e2e_standstill_stat = True if self.e2e_standstill_timer > 500 else False
+          self.e2e_standstill_stat = True if self.e2e_standstill_timer > 100 else False
+        else:
+          self.e2e_standstill_timer = 0
 
     if CS.brakeHold and not self.autohold_popup_switch:
       self.autohold_popup_timer = 100

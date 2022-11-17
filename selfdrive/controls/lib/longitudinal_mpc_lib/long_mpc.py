@@ -230,6 +230,7 @@ class LongitudinalMpc:
     self.stop_prob = 0.0
 
     self.on_stopping = False
+    self.on_stopping_timer = 0
 
   def reset(self):
     # self.solver = AcadosOcpSolverCython(MODEL_NAME, ACADOS_SOLVER_TYPE, N)
@@ -411,11 +412,23 @@ class LongitudinalMpc:
       x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle, x])
     elif x[N] < 100 and stopline[N] < 100:
       self.on_stopping = True
-      x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle*2, (stopline*0.2)+(x*0.8)])
+      self.on_stopping_timer = 0
+      x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle*2, (stopline*0.25)+(x*0.75)])
     elif x[N] < 100 and self.on_stopping:
+      self.on_stopping_timer = 0
       x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle*2, x])
+    elif x[N] >= 100 and self.on_stopping:
+      self.on_stopping_timer += 1
+      if self.on_stopping_timer < 300:
+        x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle*2, x])
+      else:
+        self.on_stopping = False
+        self.on_stopping_timer = 0
+        x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle])
+
     else:
       self.on_stopping = False
+      self.on_stopping_timer = 0
       x_obstacles = np.column_stack([lead_0_obstacle, lead_1_obstacle, cruise_obstacle])
 
     self.source = SOURCES[np.argmin(x_obstacles[N])]
