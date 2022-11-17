@@ -466,6 +466,8 @@ void HomeWindow::mousePressEvent(QMouseEvent* e)
       Params().put("CommaStockUI", "1", 1);
     } else if (QUIState::ui_state.scene.comma_stock_ui == 2) {
       Params().put("CommaStockUI", "2", 1);
+      QUIState::ui_state.scene.touched2 = true;
+      QTimer::singleShot(500, []() { QUIState::ui_state.scene.touched2 = false; });
     }
     return;
   }
