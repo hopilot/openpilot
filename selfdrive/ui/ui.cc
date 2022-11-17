@@ -458,7 +458,7 @@ static void update_status(UIState *s) {
   static bool started_prev = false;
   if (s->scene.started != started_prev) {
     if (s->scene.started) {
-      s->status = STATUS_DISENGAGED;
+      s->status = STATUS_DND;
       s->scene.started_frame = s->sm->frame;
       s->wide_camera = Hardware::TICI() ? Params().getBool("EnableWideCamera") : false;
     }
