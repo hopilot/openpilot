@@ -941,7 +941,7 @@ class CarController():
                   self.vrel_delta_timer = 0
                   stock_weight = min(1.0, interp(CS.out.vEgo, [7.0, 30.0], [stock_weight, stock_weight*5.0]))
                 elif aReqValue > accel:
-                  if self.vrel_delta > 10 and self.vrel_delta_timer == 0:
+                  if self.vrel_delta > 5 and self.vrel_delta_timer == 0:
                     self.vrel_delta_timer = 300
                     stock_weight = 1.0
                   elif self.vrel_delta_timer > 0:
