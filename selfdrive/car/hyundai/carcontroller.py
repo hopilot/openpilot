@@ -212,6 +212,10 @@ class CarController():
     self.ed_rd_diff_on = False
     self.ed_rd_diff_on_timer = 0
 
+    self.vrel_delta = 0
+    self.vrel_delta_prev = 0
+    self.vrel_delta_timer = 0
+
     self.e2e_standstill_enable = self.params.get_bool("DepartChimeAtResume")
     self.e2e_standstill = False
     self.e2e_standstill_stat = False
@@ -897,6 +901,8 @@ class CarController():
           if 0 < CS.lead_distance <= 149:
             stock_weight = 0.0
             self.smooth_start = False
+            self.vrel_delta = abs(lead_objspd) - abs(self.vrel_delta_prev)
+            self.vrel_delta_prev = abs(lead_objspd)
             if accel > 0 and self.change_accel_fast and CS.out.vEgo < 11.:
               if aReqValue >= accel:
                 self.change_accel_fast = False
@@ -932,9 +938,18 @@ class CarController():
                 self.ed_rd_diff_on_timer = 0
                 stock_weight = interp(abs(lead_objspd), [1.0, 4.0, 8.0, 20.0, 50.0], [0.2, 0.3, 1.0, 0.9, 0.2])
                 if aReqValue <= accel:
+                  self.vrel_delta_timer = 0
                   stock_weight = min(1.0, interp(CS.out.vEgo, [7.0, 30.0], [stock_weight, stock_weight*5.0]))
                 elif aReqValue > accel:
-                  stock_weight = interp(abs(lead_objspd), [1.0, 10.0], [0.9, 0.1])
+                  if self.vrel_delta > 10 and self.vrel_delta_timer == 0:
+                    self.vrel_delta_timer = 300
+                    stock_weight = 1.0
+                  elif self.vrel_delta_timer > 0:
+                    self.vrel_delta_timer -= 1
+                    stock_weight = interp(self.vrel_delta_timer, [0, 300], [0.1, 1.0])
+                  else:
+                    self.vrel_delta_timer = 0
+                    stock_weight = interp(abs(lead_objspd), [1.0, 10.0], [0.9, 0.1])
               accel = accel * (1.0 - stock_weight) + aReqValue * stock_weight
               accel = min(accel, -0.5) if CS.lead_distance <= 4.5 and not CS.out.standstill else accel
             elif aReqValue < 0.0:
