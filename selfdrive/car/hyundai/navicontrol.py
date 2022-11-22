@@ -247,7 +247,8 @@ class NaviControl():
           self.onSpeedBumpControl = True
         else:
           self.onSpeedBumpControl = False
-      elif (CS.map_enabled or self.navi_sel == 3) and self.liveNaviData.speedLimit > 21 and self.liveNaviData.safetySign not in (4, 7, 16, 20, 21):  # navi app speedlimit
+      elif (CS.map_enabled or self.navi_sel == 3) and self.liveNaviData.speedLimit > 21 \
+       and ((self.liveNaviData.safetySignCam not in (4, 7, 16) and self.navi_sel != 3) or (self.liveNaviData.safetySign not in (20, 21) and self.navi_sel == 3)):  # navi app speedlimit
         self.onSpeedBumpControl = False
         self.map_speed_dist = max(0, self.liveNaviData.safetyDistance - 30)
         self.map_speed = self.liveNaviData.speedLimit
@@ -393,7 +394,7 @@ class NaviControl():
           self.cut_in_run_timer -= 1
         elif self.cut_in:
           self.cut_in_run_timer = 1000
-        d_ratio = interp(CS.clu_Vanz, [50, 110], [0.3, 0.25])
+        d_ratio = interp(CS.clu_Vanz, [40, 110], [0.3, 0.25])
         if self.cut_in_run_timer and dRel < CS.clu_Vanz * d_ratio: # keep decel when cut_in, max running time 10sec
           self.cutInControl = True
           var_speed = min(CS.CP.vFutureA, navi_speed)

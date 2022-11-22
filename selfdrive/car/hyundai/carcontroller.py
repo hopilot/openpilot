@@ -905,7 +905,7 @@ class CarController():
             stock_weight = 0.0
             self.smooth_start = False
             self.vrel_delta_timer2 += 1
-            if self.vrel_delta_timer2 > 10:
+            if self.vrel_delta_timer2 > 5:
               self.vrel_delta_timer2 = 0
               self.vrel_delta = (self.vRel*3.6) - self.vrel_delta_prev
               self.vrel_delta_prev = self.vRel*3.6
@@ -956,8 +956,8 @@ class CarController():
                   stock_weight = min(1.0, interp(CS.out.vEgo, [7.0, 30.0], [stock_weight, stock_weight*5.0]))
                 elif aReqValue > accel:
                   if self.vrel_delta < -5 and self.vrel_delta_timer == 0:
-                    self.vrel_delta_timer = min(300, int(CS.clu_Vanz*3))
-                    self.vrel_delta_timer3 = min(300, int(CS.clu_Vanz*3))
+                    self.vrel_delta_timer = min(300, int(self.dRel*7))
+                    self.vrel_delta_timer3 = min(300, int(self.dRel*7))
                     stock_weight = 1.0
                   elif self.vrel_delta_timer > 0:
                     self.vrel_delta_timer -= 1
