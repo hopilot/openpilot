@@ -239,6 +239,9 @@ class NaviControl():
         if self.liveNaviData.safetyDistance < sb_final_decel_start_dist and self.navi_sel == 3:
           cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
           self.onSpeedBumpControl = True
+        elif self.liveNaviData.safetyDistance >= sb_final_decel_start_dist and self.navi_sel == 3:
+          cruise_set_speed_kph == 30 if CS.is_set_speed_in_mph else 50
+          self.onSpeedBumpControl = False
         elif self.navi_sel in (0,1):
           cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
           self.onSpeedBumpControl = True
