@@ -936,8 +936,8 @@ class CarController():
             elif aReqValue < 0.0 and self.stopping_dist_adj_enabled:
               if self.NC.cutInControl and not self.ed_rd_diff_on:
                 self.ed_rd_diff_on = True
-                self.ed_rd_diff_on_timer = min(400, abs(int(self.dRel * 15)))
-                self.ed_rd_diff_on_timer2 = min(400, abs(int(self.dRel * 15)))
+                self.ed_rd_diff_on_timer = min(400, abs(int(self.dRel * 13)))
+                self.ed_rd_diff_on_timer2 = min(400, abs(int(self.dRel * 13)))
                 stock_weight = 1.0
               elif self.ed_rd_diff_on_timer: # damping btw ED and RD for few secs.
                 stock_weight = interp(self.ed_rd_diff_on_timer, [0, self.ed_rd_diff_on_timer2], [0.1, 1.0])
