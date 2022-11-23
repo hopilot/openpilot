@@ -708,6 +708,12 @@
         <translation>로컬과 원격 커밋이 일치합니다. 업데이트가 필요 없습니다.</translation>
     </message>
     <message>
+        <location filename="../qt/offroad/settings.cc" line="325"/>
+        <location filename="../qt/offroad/settings.cc" line="336"/>
+        <source>Device will be updated and rebooted. Do you want to proceed?</source>
+        <translation>장치가 업데이트 되고 재부팅 됩니다. 진행하시겠습니까?</translation>
+    </message>
+    <message>
         <location filename="../qt/offroad/settings.cc" line="344"/>
         <source>UNINSTALL</source>
         <translation>제거</translation>

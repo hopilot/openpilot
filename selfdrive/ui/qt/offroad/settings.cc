@@ -310,7 +310,6 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
     QString commit_remote = QString::fromStdString(Params().get("GitCommitRemote").substr(0, 10));
     QString empty = "";
     desc += tr("LOCAL: %1  REMOTE: %2%3%4 ").arg(commit_local, commit_remote, empty, empty);
-    
     if (!last_ping.length()) {
       desc += tr("Network connection is missing or unstable. Check the connection.");
       ConfirmationDialog::alert(desc, this);
@@ -323,7 +322,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
         fileInfo.setFile("/data/OPKR_Updates.txt");
         const std::string txt = util::read_file("/data/OPKR_Updates.txt");
         if (UpdateInfoDialog::confirm(desc + "\n" + QString::fromStdString(txt), this)) {
-          std::system("/data/openpilot/selfdrive/assets/addon/script/gitpull.sh");
+          if (ConfirmationDialog::confirm(tr("Device will be updated and rebooted. Do you want to proceed?"), this)) {std::system("/data/openpilot/selfdrive/assets/addon/script/gitpull.sh");}
         }
       } else {
         QString cmd1 = "wget https://raw.githubusercontent.com/openpilotkr/openpilot/"+QString::fromStdString(params.get("GitBranch"))+"/OPKR_Updates.txt -O /data/OPKR_Updates.txt";
@@ -334,7 +333,7 @@ SoftwarePanel::SoftwarePanel(QWidget* parent) : ListWidget(parent) {
           fileInfo.setFile("/data/OPKR_Updates.txt");
           const std::string txt = util::read_file("/data/OPKR_Updates.txt");
           if (UpdateInfoDialog::confirm(desc + "\n" + QString::fromStdString(txt), this)) {
-            std::system("/data/openpilot/selfdrive/assets/addon/script/gitpull.sh");
+            if (ConfirmationDialog::confirm(tr("Device will be updated and rebooted. Do you want to proceed?"), this)) {std::system("/data/openpilot/selfdrive/assets/addon/script/gitpull.sh");}
           }
         }
       }
