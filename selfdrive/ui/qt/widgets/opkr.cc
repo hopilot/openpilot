@@ -8362,7 +8362,7 @@ CruiseGapBySpd::CruiseGapBySpd() : AbstractControl("", "", "") {
     int value = list[0].toInt();
     value = value + 1;
     if (value >= 5) {
-      value = 0;
+      value = 1;
     }
     QString values = QString::number(value);
     list[0] = values;
@@ -8376,7 +8376,7 @@ CruiseGapBySpd::CruiseGapBySpd() : AbstractControl("", "", "") {
     int value = list[1].toInt();
     value = value + 1;
     if (value >= 5) {
-      value = 0;
+      value = 1;
     }
     QString values = QString::number(value);
     list[1] = values;
@@ -8390,7 +8390,7 @@ CruiseGapBySpd::CruiseGapBySpd() : AbstractControl("", "", "") {
     int value = list[2].toInt();
     value = value + 1;
     if (value >= 5) {
-      value = 0;
+      value = 1;
     }
     QString values = QString::number(value);
     list[2] = values;
@@ -8404,7 +8404,7 @@ CruiseGapBySpd::CruiseGapBySpd() : AbstractControl("", "", "") {
     int value = list[3].toInt();
     value = value + 1;
     if (value >= 5) {
-      value = 0;
+      value = 1;
     }
     QString values = QString::number(value);
     list[3] = values;
