@@ -1,5 +1,7 @@
 ☞ Use two fingers to scroll down ☜
 
+2022-11-23
+- Changeable Cruise Gap by Speed
 2022-11-15
 - Do Not Disturb Mode(Off Screen and Sound)
 - Depart Chime based on E2E Model
