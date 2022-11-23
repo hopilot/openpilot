@@ -1134,6 +1134,7 @@ class CarController():
       # self.to_avoid_lkas_fault_max_frame = int(self.params.get("AvoidLKASFaultMaxFrame", encoding="utf8"))
       # self.e2e_long_enabled = self.params.get_bool("E2ELong")
       # self.stopsign_enabled = self.params.get_bool("StopAtStopSign")
+      self.gap_by_spd_on = self.params.get_bool("CruiseGapBySpdOn")
       if self.params.get_bool("OpkrLiveTunePanelEnable"):
         if CS.CP.lateralTuning.which() == 'pid':
           self.str_log2 = 'T={:0.2f}/{:0.3f}/{:0.1f}/{:0.5f}'.format(float(Decimal(self.params.get("PidKp", encoding="utf8"))*Decimal('0.01')), \
