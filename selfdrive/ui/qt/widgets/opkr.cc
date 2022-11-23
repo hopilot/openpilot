@@ -8331,10 +8331,10 @@ CruiseGapBySpd::CruiseGapBySpd() : AbstractControl("", "", "") {
   btnplus2.setFixedSize(70, 100);
   btnminus3.setFixedSize(70, 100);
   btnplus3.setFixedSize(70, 100);
-  btn1.setFixedSize(150, 100);
-  btn2.setFixedSize(150, 100);
-  btn3.setFixedSize(150, 100);
-  btn4.setFixedSize(150, 100);
+  btn1.setFixedSize(90, 100);
+  btn2.setFixedSize(90, 100);
+  btn3.setFixedSize(90, 100);
+  btn4.setFixedSize(90, 100);
 
   hlayout->addWidget(&btn1);
   hlayout->addWidget(&btnminus1);
