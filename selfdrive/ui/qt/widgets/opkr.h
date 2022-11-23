@@ -945,6 +945,18 @@ public:
   }
 };
 
+class CruiseGapBySpdOn : public ToggleControl {
+  Q_OBJECT
+
+public:
+  CruiseGapBySpdOn() : ToggleControl(tr("Cruise Gap Change by Speed"), tr("Cruise Gap is changeable by vehicle speed."), "../assets/offroad/icon_shell.png", Params().getBool("CruiseGapBySpdOn")) {
+    QObject::connect(this, &CruiseGapBySpdOn::toggleFlipped, [=](int state) {
+      bool status = state ? true : false;
+      Params().putBool("CruiseGapBySpdOn", status);
+    });
+  }
+};
+
 // openpilot preview
 class OpenpilotView : public AbstractControl {
   Q_OBJECT
@@ -2624,4 +2636,39 @@ private:
   Params params;
   
   void refresh();
+};
+
+class CruiseGapBySpd : public AbstractControl {
+  Q_OBJECT
+
+public:
+  CruiseGapBySpd();
+
+private:
+  QPushButton btnplus1;
+  QLabel label1;
+  QPushButton btnminus1;
+
+  QPushButton btnplus2;
+  QLabel label2;
+  QPushButton btnminus2;
+
+  QPushButton btnplus3;
+  QLabel label3;
+  QPushButton btnminus3;
+
+  QPushButton btn1;
+  QPushButton btn2;
+  QPushButton btn3;
+  QPushButton btn4;
+  Params params;
+  
+  void refresh1();
+  void refresh2();
+  void refresh3();
+  void refresh4();
+
+  void refresh5();
+  void refresh6();
+  void refresh7();
 };

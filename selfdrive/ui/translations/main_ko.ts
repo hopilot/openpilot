@@ -4073,4 +4073,17 @@
         <translation>둘다끄기</translation>
     </message>
 </context>
+<context>
+    <name>CruiseGapBySpdOn</name>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="952"/>
+        <source>Cruise Gap Change by Speed</source>
+        <translation>속도 기반 크루즈갭 사용</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="952"/>
+        <source>Cruise Gap is changeable by vehicle speed.</source>
+        <translation>차량속도에 따른 크루즈갭 변경기능을 사용합니다.(변경 임계속도값 근처 버퍼(5km/h) 적용 포함)</translation>
+    </message>
+</context>
 </TS>

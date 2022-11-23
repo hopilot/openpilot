@@ -573,12 +573,12 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new ToAvoidLKASFaultToggle());
   layout->addWidget(new ToAvoidLKASFault());
   layout->addWidget(new SpeedCameraOffsetToggle());
-
+  layout->addWidget(new CruiseGapBySpdOn());
+  layout->addWidget(new CruiseGapBySpd());
 }
 
 DeveloperPanel::DeveloperPanel(QWidget *parent) : QFrame(parent) {
   QVBoxLayout *layout = new QVBoxLayout(this);
-
   layout->setContentsMargins(50, 0, 50, 0);
   layout->setSpacing(30);
 

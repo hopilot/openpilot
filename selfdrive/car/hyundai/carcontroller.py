@@ -126,7 +126,7 @@ class CarController():
     self.yRel = 0
 
     self.cruise_gap_prev = 0
-    self.cruise_gap_set_init = 0
+    self.cruise_gap_set_init = False
     self.cruise_gap_adjusting = False
     self.standstill_fault_reduce_timer = 0
     self.standstill_res_button = False
@@ -186,6 +186,17 @@ class CarController():
 
     self.user_specific_feature = int(self.params.get("UserSpecificFeature", encoding="utf8"))
     self.gap_cnt = 0
+
+    self.gap_by_spd_on = self.params.get_bool("CruiseGapBySpdOn")
+    self.gap_by_spd_spd = list(map(int, Params().get("CruiseGapBySpdSpd", encoding="utf8").split(',')))
+    self.gap_by_spd_gap = list(map(int, Params().get("CruiseGapBySpdGap", encoding="utf8").split(',')))
+    self.gap_by_spd_on_buffer1 = 0
+    self.gap_by_spd_on_buffer2 = 0
+    self.gap_by_spd_on_buffer3 = 0
+    self.gap_by_spd_gap1 = False
+    self.gap_by_spd_gap2 = False
+    self.gap_by_spd_gap3 = False
+    self.gap_by_spd_gap4 = False
 
     self.radar_disabled_conf = self.params.get_bool("RadarDisable")
     self.prev_cruiseButton = 0
@@ -506,11 +517,11 @@ class CarController():
               self.last_resume_frame = frame
           self.standstill_fault_reduce_timer += 1
         # gap save after 1sec
-        elif 100 < self.standstill_fault_reduce_timer and self.cruise_gap_prev == 0 and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj: 
+        elif 100 < self.standstill_fault_reduce_timer and self.cruise_gap_prev == 0 and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj and not self.gap_by_spd_on: 
           self.cruise_gap_prev = CS.cruiseGapSet
-          self.cruise_gap_set_init = 1
+          self.cruise_gap_set_init = True
         # gap adjust to 1 for fast start
-        elif 110 < self.standstill_fault_reduce_timer and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj:
+        elif 110 < self.standstill_fault_reduce_timer and CS.cruiseGapSet != 1.0 and self.opkr_autoresume and self.opkr_cruisegap_auto_adj and not self.gap_by_spd_on:
           can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
             else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
           self.resume_cnt += 1
@@ -533,11 +544,11 @@ class CarController():
       self.cut_in_control = self.NC.cutInControl
       self.driver_scc_set_control = self.NC.driverSccSetControl
       btn_signal = self.NC.update(CS, path_plan)
-      if self.opkr_cruisegap_auto_adj:
+      if self.opkr_cruisegap_auto_adj and not self.gap_by_spd_on:
         # gap restore
         if self.switch_timer > 0:
           self.switch_timer -= 1
-        elif self.dRel > 15 and self.vRel*3.6 < 5 and self.cruise_gap_prev != CS.cruiseGapSet and self.cruise_gap_set_init == 1 and self.opkr_autoresume:
+        elif self.dRel > 15 and self.vRel*3.6 < 5 and self.cruise_gap_prev != CS.cruiseGapSet and self.cruise_gap_set_init and self.opkr_autoresume:
           can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
             else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
           self.cruise_gap_adjusting = True
@@ -546,7 +557,7 @@ class CarController():
             self.resume_cnt = 0
             self.switch_timer = randint(30, 36)
         elif self.cruise_gap_prev == CS.cruiseGapSet and CS.cruiseGapSet != 1.0 and self.opkr_autoresume:
-          self.cruise_gap_set_init = 0
+          self.cruise_gap_set_init = False
           self.cruise_gap_prev = 0
           self.cruise_gap_adjusting = False
         else:
@@ -597,6 +608,59 @@ class CarController():
               self.gap_cnt = 0
               self.switch_timer = randint(30, 36)
           elif CS.cruiseGapSet != 1.0 and 0 < CS.clu_Vanz <= 60:
+            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
+            self.gap_cnt += 1
+            if self.gap_cnt >= randint(6, 8):
+              self.gap_cnt = 0
+              self.switch_timer = randint(30, 36)
+        elif self.gap_by_spd_on and not self.try_early_stop_retrieve and not self.cruise_gap_set_init:
+          if self.switch_timer > 0:
+            self.switch_timer -= 1
+          elif CS.cruiseGapSet != self.gap_by_spd_gap[0] and ((CS.clu_Vanz < self.gap_by_spd_spd[0]+self.gap_by_spd_on_buffer1) or self.gap_by_spd_gap1):
+            self.gap_by_spd_gap1 = True
+            self.gap_by_spd_gap2 = False
+            self.gap_by_spd_gap3 = False
+            self.gap_by_spd_gap4 = False
+            self.gap_by_spd_on_buffer1 = 0
+            self.gap_by_spd_on_buffer2 = 0
+            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
+            self.gap_cnt += 1
+            if self.gap_cnt >= randint(6, 8):
+              self.gap_cnt = 0
+              self.switch_timer = randint(30, 36)
+          elif CS.cruiseGapSet != self.gap_by_spd_gap[1] and ((self.gap_by_spd_spd[0] <= CS.clu_Vanz < self.gap_by_spd_spd[1]+self.gap_by_spd_on_buffer2) or self.gap_by_spd_gap2):
+            self.gap_by_spd_gap1 = False
+            self.gap_by_spd_gap2 = True
+            self.gap_by_spd_gap3 = False
+            self.gap_by_spd_gap4 = False
+            self.gap_by_spd_on_buffer1 = -5
+            self.gap_by_spd_on_buffer3 = 0
+            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
+            self.gap_cnt += 1
+            if self.gap_cnt >= randint(6, 8):
+              self.gap_cnt = 0
+              self.switch_timer = randint(30, 36)
+          elif CS.cruiseGapSet != self.gap_by_spd_gap[2] and ((self.gap_by_spd_spd[1] <= CS.clu_Vanz < self.gap_by_spd_spd[2]+self.gap_by_spd_on_buffer3) or self.gap_by_spd_gap3):
+            self.gap_by_spd_gap1 = False
+            self.gap_by_spd_gap2 = False
+            self.gap_by_spd_gap3 = True
+            self.gap_by_spd_gap4 = False
+            self.gap_by_spd_on_buffer2 = -5
+            can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
+            self.gap_cnt += 1
+            if self.gap_cnt >= randint(6, 8):
+              self.gap_cnt = 0
+              self.switch_timer = randint(30, 36)
+          elif CS.cruiseGapSet != self.gap_by_spd_gap[3] and ((self.gap_by_spd_spd[2] <= CS.clu_Vanz) or self.gap_by_spd_gap4):
+            self.gap_by_spd_gap1 = False
+            self.gap_by_spd_gap2 = False
+            self.gap_by_spd_gap3 = False
+            self.gap_by_spd_gap4 = True
+            self.gap_by_spd_on_buffer3 = -5
             can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST)) if not self.longcontrol \
               else can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.GAP_DIST, clu11_speed, CS.CP.sccBus))
             self.gap_cnt += 1
