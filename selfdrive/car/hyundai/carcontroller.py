@@ -676,6 +676,10 @@ class CarController():
       self.cruise_gap_adjusting = False
       self.standstill_res_button = False
       self.auto_res_starting = False
+      self.gap_by_spd_gap1 = False
+      self.gap_by_spd_gap2 = False
+      self.gap_by_spd_gap3 = False
+      self.gap_by_spd_gap4 = False
 
     if not enabled:
       self.cruise_init = False
@@ -690,6 +694,10 @@ class CarController():
     elif CS.cruise_buttons == 3:
       self.try_early_stop_retrieve = False
       self.try_early_stop_org_gap = CS.cruiseGapSet
+      self.gap_by_spd_gap1 = False
+      self.gap_by_spd_gap2 = False
+      self.gap_by_spd_gap3 = False
+      self.gap_by_spd_gap4 = False
     elif CS.cruise_active:
       self.cruise_init = True
       self.cancel_counter = 0

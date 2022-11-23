@@ -523,6 +523,8 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new AutoResumeToggle());
   layout->addWidget(new RESCountatStandstill());
   layout->addWidget(new CruiseGapAdjustToggle());
+  layout->addWidget(new CruiseGapBySpdOn());
+  layout->addWidget(new CruiseGapBySpd());
   layout->addWidget(new StandstillResumeAltToggle());
   layout->addWidget(new DepartChimeAtResume());
   layout->addWidget(new VariableCruiseToggle());
@@ -572,8 +574,6 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new ToAvoidLKASFaultToggle());
   layout->addWidget(new ToAvoidLKASFault());
   layout->addWidget(new SpeedCameraOffsetToggle());
-  layout->addWidget(new CruiseGapBySpdOn());
-  layout->addWidget(new CruiseGapBySpd());
 }
 
 DeveloperPanel::DeveloperPanel(QWidget *parent) : QFrame(parent) {
