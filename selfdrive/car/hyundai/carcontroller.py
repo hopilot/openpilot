@@ -1037,6 +1037,8 @@ class CarController():
               dRel1 = self.dRel if self.dRel > 0 else CS.lead_distance
               if ((CS.lead_distance - dRel1 > 3.0) or self.NC.cutInControl) and self.stopping_dist_adj_enabled and accel < 0:
                 accel = accel
+                if aReqValue < accel:
+                  accel = interp(lead_objspd, [-1, 0, 5], [aReqValue, aReqValue, accel])
               else:
                 accel = aReqValue
             elif aReqValue < 0.0 and CS.lead_distance < self.stoppingdist and accel >= aReqValue and lead_objspd <= 0 and self.stopping_dist_adj_enabled:
@@ -1048,6 +1050,8 @@ class CarController():
               dRel2 = self.dRel if self.dRel > 0 else CS.lead_distance
               if ((CS.lead_distance - dRel2 > 3.0) or self.NC.cutInControl) and accel < 0:
                 stock_weight = 0.
+                if aReqValue < accel:
+                  stock_weight = interp(lead_objspd, [-1, 0, 5], [1.0, 1.0, 0.0])
               elif ((dRel2 - CS.lead_distance > 3.0) or self.NC.cutInControl) and not self.ed_rd_diff_on:
                 self.ed_rd_diff_on = True
                 self.ed_rd_diff_on_timer = min(400, int(self.dRel * 10))
