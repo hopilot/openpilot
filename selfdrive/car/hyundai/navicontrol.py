@@ -39,6 +39,7 @@ class NaviControl():
     self.map_speed = 0
     self.onSpeedControl = False
     self.onSpeedBumpControl = False
+    self.onSpeedBumpControl2 = False
     self.curvSpeedControl = False
     self.cutInControl = False
     self.driverSccSetControl = False
@@ -239,17 +240,22 @@ class NaviControl():
         if self.liveNaviData.safetyDistance < sb_final_decel_start_dist and self.navi_sel == 3:
           cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
           self.onSpeedBumpControl = True
+          self.onSpeedBumpControl2 = False
         elif self.liveNaviData.safetyDistance >= sb_final_decel_start_dist and self.navi_sel == 3:
           cruise_set_speed_kph == 30 if CS.is_set_speed_in_mph else 50
           self.onSpeedBumpControl = False
+          self.onSpeedBumpControl2 = True
         elif self.navi_sel in (0,1):
           cruise_set_speed_kph == 20 if CS.is_set_speed_in_mph else 30
           self.onSpeedBumpControl = True
+          self.onSpeedBumpControl2 = False
         else:
           self.onSpeedBumpControl = False
+          self.onSpeedBumpControl2 = False
       elif (CS.map_enabled or self.navi_sel == 3) and self.liveNaviData.speedLimit > 21 \
        and ((self.liveNaviData.safetySignCam not in (4, 7, 16) and self.navi_sel != 3) or (self.liveNaviData.safetySign not in (20, 21) and self.navi_sel == 3)):  # navi app speedlimit
         self.onSpeedBumpControl = False
+        self.onSpeedBumpControl2 = False
         self.map_speed_dist = max(0, self.liveNaviData.safetyDistance - 30)
         self.map_speed = self.liveNaviData.speedLimit
         if self.map_speed_dist > 1250:
@@ -285,6 +291,7 @@ class NaviControl():
           self.onSpeedControl = False
       elif CS.safety_sign > 21 and self.stock_navi_info_enabled and not (CS.map_enabled or self.navi_sel == 3):  # cat stock navi speedlimit
         self.onSpeedBumpControl = False
+        self.onSpeedBumpControl2 = False
         self.map_speed_dist = max(0, CS.safety_dist - int(interp(CS.safety_sign, [30,110], [20,70])))
         self.map_speed = CS.safety_sign
         if CS.safety_block_sl < 150:
@@ -326,6 +333,7 @@ class NaviControl():
         self.map_speed_dist = 0
         self.map_speed_block = False
         self.onSpeedBumpControl = False
+        self.onSpeedBumpControl2 = False
     else:
       spdTarget = cruise_set_speed_kph
       self.onSpeedControl = False
@@ -333,6 +341,7 @@ class NaviControl():
       self.map_speed_dist = 0
       self.map_speed_block = False
       self.onSpeedBumpControl = False
+      self.onSpeedBumpControl2 = False
 
     # elif safetyDistance >= 50:
     #   if speedLimit <= 60:
@@ -381,6 +390,9 @@ class NaviControl():
       if CS.out.brakeLights and CS.out.vEgo == 0:
         self.faststart = True
         var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 50)
+      elif self.onSpeedBumpControl2:
+        var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 50)
+        self.t_interval = 7
       elif self.onSpeedBumpControl:
         var_speed = min(navi_speed, 20 if CS.is_set_speed_in_mph else 30)
         self.t_interval = 7
