@@ -1007,7 +1007,7 @@ class CarController():
             stock_weight = 0.0
             self.smooth_start = False
             self.vrel_delta_timer2 += 1
-            if self.vrel_delta_timer2 > 5:
+            if self.vrel_delta_timer2 > 10:
               self.vrel_delta_timer2 = 0
               self.vrel_delta = (self.vRel*3.6) - self.vrel_delta_prev
               self.vrel_delta_prev = self.vRel*3.6
@@ -1026,8 +1026,9 @@ class CarController():
               pass
             elif aReqValue >= 0.0:
               # accel = interp(CS.lead_distance, [14.0, 15.0], [max(accel, aReqValue, faccel), aReqValue])
-              if self.NC.cutInControl and self.stopping_dist_adj_enabled and accel < 0:
-                accel = -0.05
+              dRel1 = self.dRel if self.dRel > 0 else CS.lead_distance
+              if ((CS.lead_distance - dRel1 > 3.0) or self.NC.cutInControl) and self.stopping_dist_adj_enabled and accel < 0:
+                accel = accel
               else:
                 accel = aReqValue
             elif aReqValue < 0.0 and CS.lead_distance < self.stoppingdist and accel >= aReqValue and lead_objspd <= 0 and self.stopping_dist_adj_enabled:
@@ -1036,10 +1037,13 @@ class CarController():
               elif CS.lead_distance < self.stoppingdist:
                 accel = self.accel - (DT_CTRL * interp(CS.out.vEgo, [0.0, 1.0, 2.0], [0.05, 1.0, 5.0]))
             elif aReqValue < 0.0 and self.stopping_dist_adj_enabled:
-              if self.NC.cutInControl and not self.ed_rd_diff_on:
+              dRel2 = self.dRel if self.dRel > 0 else CS.lead_distance
+              if ((CS.lead_distance - dRel2 > 3.0) or self.NC.cutInControl) and accel < 0:
+                stock_weight = 0.
+              elif ((dRel2 - CS.lead_distance > 3.0) or self.NC.cutInControl) and not self.ed_rd_diff_on:
                 self.ed_rd_diff_on = True
-                self.ed_rd_diff_on_timer = min(400, abs(int(self.dRel * 13)))
-                self.ed_rd_diff_on_timer2 = min(400, abs(int(self.dRel * 13)))
+                self.ed_rd_diff_on_timer = min(400, int(self.dRel * 10))
+                self.ed_rd_diff_on_timer2 = min(400, int(self.dRel * 10))
                 stock_weight = 1.0
               elif self.ed_rd_diff_on_timer: # damping btw ED and RD for few secs.
                 stock_weight = interp(self.ed_rd_diff_on_timer, [0, self.ed_rd_diff_on_timer2], [0.1, 1.0])
@@ -1058,8 +1062,8 @@ class CarController():
                   stock_weight = min(1.0, interp(CS.out.vEgo, [7.0, 30.0], [stock_weight, stock_weight*5.0]))
                 elif aReqValue > accel:
                   if self.vrel_delta < -5 and self.vrel_delta_timer == 0:
-                    self.vrel_delta_timer = min(300, int(self.dRel*7))
-                    self.vrel_delta_timer3 = min(300, int(self.dRel*7))
+                    self.vrel_delta_timer = min(400, int(self.dRel*10))
+                    self.vrel_delta_timer3 = min(400, int(self.dRel*10))
                     stock_weight = 1.0
                   elif self.vrel_delta_timer > 0:
                     self.vrel_delta_timer -= 1
