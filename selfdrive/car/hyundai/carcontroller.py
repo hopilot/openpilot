@@ -690,6 +690,14 @@ class CarController():
             self.gap_by_spd_gap2 = False
             self.gap_by_spd_gap3 = False
             self.gap_by_spd_gap4 = False
+          elif 0 < CS.lead_distance <= 149 and not self.cruise_gap_set_init and self.try_early_stop and self.try_early_stop_retrieve and \
+           CS.cruiseGapSet == self.try_early_stop_org_gap and \
+           (CS.clu_Vanz <= 20 or (CS.lead_objspd >= 0 and self.sm['longitudinalPlan'].e2eX[12] > 50 and self.sm['longitudinalPlan'].stopLine[12] > 100 and CS.clu_Vanz > 20)):
+            self.try_early_stop_retrieve = False
+            self.gap_by_spd_gap1 = False
+            self.gap_by_spd_gap2 = False
+            self.gap_by_spd_gap3 = False
+            self.gap_by_spd_gap4 = False
           else:
             self.resume_cnt = 0
             self.gap_by_spd_gap1 = False

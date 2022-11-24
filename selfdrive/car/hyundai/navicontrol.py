@@ -390,7 +390,7 @@ class NaviControl():
       if CS.out.brakeLights and CS.out.vEgo == 0:
         self.faststart = True
         var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 50)
-      elif self.onSpeedBumpControl2:
+      elif self.onSpeedBumpControl2 and not self.lead_0.status:
         var_speed = min(navi_speed, 30 if CS.is_set_speed_in_mph else 50)
         self.t_interval = 7
       elif self.onSpeedBumpControl:
