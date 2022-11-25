@@ -20,11 +20,8 @@ from decimal import Decimal
 # friction in the steering wheel that needs to be overcome to
 # move it at all, this is compensated for too.
 
-LOW_SPEED_FACTOR = 200
-
-
-FRICTION_THRESHOLD = 0.2
-
+LOW_SPEED_X = [0, 10, 20, 30]
+LOW_SPEED_Y = [23, 22, 15, 5] #[15, 13, 10, 5]
 
 class LatControlTorque(LatControl):
   def __init__(self, CP, CI):
@@ -70,7 +67,7 @@ class LatControlTorque(LatControl):
     self.torque_params.latAccelOffset = latAccelOffset
     self.torque_params.friction = friction
 
-  def update(self, active, CS, CP, VM, params, last_actuators, desired_curvature, desired_curvature_rate, llk):
+  def update(self, active, CS, CP, VM, params, last_actuators, steer_limited, desired_curvature, desired_curvature_rate, llk):
     self.lt_timer += 1
     if self.lt_timer > 100:
       self.lt_timer = 0
@@ -83,6 +80,7 @@ class LatControlTorque(LatControl):
     if CS.vEgo < MIN_STEER_SPEED or not active:
       output_torque = 0.0
       pid_log.active = False
+      angle_steers_des = 0.0      
     else:
       if self.use_steering_angle:
         actual_curvature = -VM.calc_curvature(math.radians(CS.steeringAngleDeg - params.angleOffsetDeg), CS.vEgo, params.roll)
@@ -99,9 +97,9 @@ class LatControlTorque(LatControl):
       actual_lateral_accel = actual_curvature * CS.vEgo ** 2
       lateral_accel_deadzone = curvature_deadzone * CS.vEgo ** 2
 
-      setpoint = desired_lateral_accel + LOW_SPEED_FACTOR * desired_curvature
-      measurement = actual_lateral_accel + LOW_SPEED_FACTOR * actual_curvature
-
+      low_speed_factor = interp(CS.vEgo, LOW_SPEED_X, LOW_SPEED_Y)**2
+      setpoint = desired_lateral_accel + low_speed_factor * desired_curvature
+      measurement = actual_lateral_accel + low_speed_factor * actual_curvature
       error = setpoint - measurement
       gravity_adjusted_lateral_accel = desired_lateral_accel - params.roll * ACCELERATION_DUE_TO_GRAVITY
       pid_log.error = self.torque_from_lateral_accel(error, self.torque_params, error,
@@ -110,9 +108,7 @@ class LatControlTorque(LatControl):
                                           desired_lateral_accel - actual_lateral_accel,
                                           lateral_accel_deadzone, friction_compensation=True)
 
-
-
-      freeze_integrator = CS.steeringRateLimited or CS.steeringPressed or CS.vEgo < 5
+      freeze_integrator = steer_limited or CS.steeringPressed or CS.vEgo < 5
       output_torque = self.pid.update(error,
                                       feedforward=ff,
                                       speed=CS.vEgo,
@@ -124,9 +120,12 @@ class LatControlTorque(LatControl):
       pid_log.d = self.pid.d
       pid_log.f = self.pid.f
       pid_log.output = -output_torque
-      pid_log.saturated = self._check_saturation(self.steer_max - abs(output_torque) < 1e-3, CS)
+      pid_log.saturated = self._check_saturation(self.steer_max - abs(output_torque) < 1e-3, CS, steer_limited)
       pid_log.actualLateralAccel = actual_lateral_accel
       pid_log.desiredLateralAccel = desired_lateral_accel
 
-    # TODO left is positive in this convention
-    return -output_torque, 0.0, pid_log
+      # Neokii
+      angle_steers_des = math.degrees(VM.get_steer_from_curvature(-desired_curvature, CS.vEgo, params.roll)) + params.angleOffsetDeg      
+
+    #TODO left is positive in this convention
+    return -output_torque, angle_steers_des, pid_log

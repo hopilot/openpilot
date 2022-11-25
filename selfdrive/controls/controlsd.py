@@ -181,7 +181,9 @@ class Controls:
     self.logged_comm_issue = False
     self.button_timers = {ButtonEvent.Type.decelCruise: 0, ButtonEvent.Type.accelCruise: 0}
     self.last_actuators = car.CarControl.Actuators.new_message()
-
+    self.steer_limited = False
+    self.log1 = ""
+    
     # TODO: no longer necessary, aside from process replay
     self.sm['liveParameters'].valid = True
 
@@ -695,8 +697,9 @@ class Controls:
       torque_params = self.sm['liveTorqueParameters']
       if self.sm.all_checks(['liveTorqueParameters']) and torque_params.useParams:
         self.LaC.update_live_torque_params(torque_params.latAccelFactorFiltered, torque_params.latAccelOffsetFiltered, torque_params.frictionCoefficientFiltered)
+        self.log1 = 'LiveTorque[BP={:.0f}]: LAF={:.3f},LAO={:.3f},FC={:.3f}'.format(torque_params.totalBucketPoints, torque_params.latAccelFactorFiltered, torque_params.latAccelOffsetFiltered, torque_params.frictionCoefficientFiltered)
+        trace1.printf0( '{}'.format(self.log1) )
         #str_log1 = 'LV={:.0f} LAF={:.2f} FC={:.3f} LAO={:.3f} LAG={}'.format( torque_params.liveValid, torque_params.latAccelFactorFiltered, torque_params.frictionCoefficientFiltered, torque_params.latAccelOffsetFiltered, self.rk._debug_dt )
-
 
     self.steerRatio_to_send = sr
 
@@ -724,7 +727,7 @@ class Controls:
                                                                              lat_plan.psis,
                                                                              lat_plan.curvatures,
                                                                              lat_plan.curvatureRates)
-      actuators.steer, actuators.steeringAngleDeg, lac_log = self.LaC.update(lat_active, CS, self.CP, self.VM, params, self.last_actuators,
+      actuators.steer, actuators.steeringAngleDeg, lac_log = self.LaC.update(lat_active, CS, self.CP, self.VM, params, self.last_actuators, self.steer_limited,
                                                                              desired_curvature, desired_curvature_rate, self.sm['liveLocationKalman'])
       self.desired_angle_deg = actuators.steeringAngleDeg
     else:
@@ -786,6 +789,7 @@ class Controls:
   def publish_logs(self, CS, start_time, actuators, lac_log):
     """Send actuators and hud commands to the car, send controlsstate and MPC logging"""
 
+    self.log_alertTextMsg0 = trace1.global_alertTextMsg0
     self.log_alertTextMsg1 = trace1.global_alertTextMsg1
     self.log_alertTextMsg2 = trace1.global_alertTextMsg2
     self.log_alertTextMsg3 = trace1.global_alertTextMsg3
@@ -885,12 +889,14 @@ class Controls:
         self.last_actuators, can_sends, self.safety_speed, self.lkas_temporary_off = self.CI.apply(CC)
         self.pm.send('sendcan', can_list_to_can_capnp(can_sends, msgtype='sendcan', valid=CS.canValid))
         CC.actuatorsOutput = self.last_actuators
+        self.steer_limited = abs(CC.actuators.steer - CC.actuatorsOutput.steer) > 1e-2
     else:
       if not self.read_only and self.initialized:
         # send car controls over can
         self.last_actuators, can_sends, self.safety_speed, self.lkas_temporary_off = self.CI.apply(CC)
         self.pm.send('sendcan', can_list_to_can_capnp(can_sends, msgtype='sendcan', valid=CS.canValid))
         CC.actuatorsOutput = self.last_actuators
+        self.steer_limited = abs(CC.actuators.steer - CC.actuatorsOutput.steer) > 1e-2
 
     force_decel = (self.sm['driverMonitoringState'].awarenessStatus < 0.) or \
                   (self.state == State.softDisabling)
@@ -932,6 +938,7 @@ class Controls:
     controlsState.startMonoTime = int(start_time * 1e9)
     controlsState.forceDecel = bool(force_decel)
     controlsState.canErrorCounter = self.can_rcv_error_counter
+    controlsState.alertTextMsg0 = self.log_alertTextMsg0
     controlsState.alertTextMsg1 = self.log_alertTextMsg1
     controlsState.alertTextMsg2 = self.log_alertTextMsg2
     controlsState.alertTextMsg3 = self.log_alertTextMsg3

@@ -584,6 +584,7 @@ struct ControlsState @0x97ff69c53601abf1 {
   canErrorCounter @57 :UInt32;
 
   # atom
+  alertTextMsg0  @77 :Text;
   alertTextMsg1  @61 :Text;
   alertTextMsg2  @62 :Text;
   alertTextMsg3  @63 :Text;

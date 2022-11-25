@@ -244,6 +244,18 @@ class CarController():
       self.str_log2 = 'T={:04.0f}/{:05.3f}/{:07.5f}'.format(CP.lateralTuning.lqr.scale, CP.lateralTuning.lqr.ki, CP.lateralTuning.lqr.dcGain)
     elif CP.lateralTuning.which() == 'torque':
       self.str_log2 = 'T={:0.2f}/{:0.2f}/{:0.2f}/{:0.3f}'.format(CP.lateralTuning.torque.kp, CP.lateralTuning.torque.kf, CP.lateralTuning.torque.ki, CP.lateralTuning.torque.friction)
+    else : #'MultiLateral'
+      max_lat_accel = float(Decimal(self.params.get("TorqueMaxLatAccel", encoding="utf8"))*Decimal('0.1'))
+      self.str_log2 = 'T={:3.1f}/{:0.2f}/{:0.2f}/{:0.2f}/{:0.2f} Q={:04.0f}/{:05.3f}/{:07.5f} P={:0.2f}/{:0.3f}/{:0.1f}/{:0.5f}'.format( \
+        max_lat_accel, float(Decimal(self.params.get("TorqueKp", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
+          float(Decimal(self.params.get("TorqueKf", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
+          float(Decimal(self.params.get("TorqueKi", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
+          float(Decimal(self.params.get("TorqueFriction", encoding="utf8")) * Decimal('0.001')), \
+        float(Decimal(self.params.get("Scale", encoding="utf8"))*Decimal('1.0')), \
+          float(Decimal(self.params.get("LqrKi", encoding="utf8"))*Decimal('0.001')), float(Decimal(self.params.get("DcGain", encoding="utf8"))*Decimal('0.00001')), \
+        float(Decimal(self.params.get("PidKp", encoding="utf8"))*Decimal('0.01')), \
+          float(Decimal(self.params.get("PidKi", encoding="utf8"))*Decimal('0.001')), float(Decimal(self.params.get("PidKd", encoding="utf8"))*Decimal('0.01')), \
+          float(Decimal(self.params.get("PidKf", encoding="utf8"))*Decimal('0.00001')))
 
     self.sm = messaging.SubMaster(['controlsState', 'radarState', 'longitudinalPlan'])
 
@@ -1155,8 +1167,9 @@ class CarController():
       self.scc12cnt = CS.scc12init["CR_VSM_Alive"]
       self.scc11cnt = CS.scc11init["AliveCounterACC"]
 
-    str_log1 = 'MD={}  BS={:1.0f}/{:1.0f}  CV={:03.0f}/{:0.4f}  TQ={:03.0f}/{:03.0f}  VF={:03.0f}  ST={:03.0f}/{:01.0f}/{:01.0f}  FR={:03.0f}'.format(
-      CS.out.cruiseState.modeSel, CS.CP.mdpsBus, CS.CP.sccBus, self.model_speed, abs(self.sm['controlsState'].curvature), abs(new_steer), abs(CS.out.steeringTorque), v_future, self.p.STEER_MAX, self.p.STEER_DELTA_UP, self.p.STEER_DELTA_DOWN, self.timer1.sampleTime())
+    # str_log1 = 'MD={}  BS={:1.0f}/{:1.0f}  CV={:03.0f}/{:0.4f}  TQ={:03.0f}/{:03.0f}/{:03.0f}  ST={:03.0f}/{:01.0f}/{:01.0f}  FR={:03.0f}'.format(
+    #   CS.out.cruiseState.modeSel, CS.CP.mdpsBus, CS.CP.sccBus, self.model_speed, abs(self.sm['controlsState'].curvature), abs(new_steer), abs(CS.out.steeringTorque), abs(apply_steer), self.p.STEER_MAX, self.p.STEER_DELTA_UP, self.p.STEER_DELTA_DOWN, self.timer1.sampleTime())
+    str_log1 = 'CV={:03.0f} VF={:03.0f} TQ={:03.0f} SMax={:03.0f}'.format(self.model_speed, v_future, abs(new_steer), self.p.STEER_MAX)
     if CS.out.cruiseState.accActive:
       str_log2 = 'AQ={:+04.2f}  VF={:03.0f}/{:03.0f}  TS={:03.0f}  SS/VS={:03.0f}/{:03.0f}  RD/LD={:04.1f}/{:03.1f}  CG={:1.0f}  FR={:03.0f}'.format(
        self.aq_value if self.longcontrol else CS.scc12["aReqValue"], v_future, v_future_a, self.NC.ctrl_speed , setSpeed, round(CS.VSetDis), CS.lead_distance, self.last_lead_distance, CS.cruiseGapSet, self.timer1.sampleTime())
@@ -1195,11 +1208,26 @@ class CarController():
            float(Decimal(self.params.get("LqrKi", encoding="utf8"))*Decimal('0.001')), float(Decimal(self.params.get("DcGain", encoding="utf8"))*Decimal('0.00001')))
         elif CS.CP.lateralTuning.which() == 'torque':
           max_lat_accel = float(Decimal(self.params.get("TorqueMaxLatAccel", encoding="utf8"))*Decimal('0.1'))
-          self.str_log2 = 'T={:0.2f}/{:0.2f}/{:0.2f}/{:0.3f}'.format(float(Decimal(self.params.get("TorqueKp", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
+          self.str_log2 = 'T={:3.1f}/{:0.2f}/{:0.2f}/{:0.2f}/{:0.2f}'.format(max_lat_accel, float(Decimal(self.params.get("TorqueKp", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
            float(Decimal(self.params.get("TorqueKf", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, float(Decimal(self.params.get("TorqueKi", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
            float(Decimal(self.params.get("TorqueFriction", encoding="utf8")) * Decimal('0.001')))
+        else: #'Hybrid'
+          max_lat_accel = float(Decimal(self.params.get("TorqueMaxLatAccel", encoding="utf8"))*Decimal('0.1'))
+          self.str_log2 = 'T={:3.1f}/{:0.2f}/{:0.2f}/{:0.2f}/{:0.2f} Q={:04.0f}/{:05.3f}/{:07.5f} P={:0.2f}/{:0.3f}/{:0.1f}/{:0.5f}'.format( \
+            max_lat_accel, float(Decimal(self.params.get("TorqueKp", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
+             float(Decimal(self.params.get("TorqueKf", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
+             float(Decimal(self.params.get("TorqueKi", encoding="utf8"))*Decimal('0.1'))/max_lat_accel, \
+             float(Decimal(self.params.get("TorqueFriction", encoding="utf8")) * Decimal('0.001')), \
+            float(Decimal(self.params.get("Scale", encoding="utf8"))*Decimal('1.0')), \
+             float(Decimal(self.params.get("LqrKi", encoding="utf8"))*Decimal('0.001')), float(Decimal(self.params.get("DcGain", encoding="utf8"))*Decimal('0.00001')), \
+            float(Decimal(self.params.get("PidKp", encoding="utf8"))*Decimal('0.01')), \
+             float(Decimal(self.params.get("PidKi", encoding="utf8"))*Decimal('0.001')), float(Decimal(self.params.get("PidKd", encoding="utf8"))*Decimal('0.01')), \
+             float(Decimal(self.params.get("PidKf", encoding="utf8"))*Decimal('0.00001')))
 
-    trace1.printf1('{}  {}'.format(str_log1, self.str_log2))
+    if CS.CP.lateralTuning.which() == 'pid' or 'indi' or 'lqr' or 'torque':
+      trace1.printf1('{}  {}'.format(str_log1, self.str_log2))
+    else :
+      trace1.printf1('{}'.format(self.str_log2))
 
     # 20 Hz LFA MFA message
     if frame % 5 == 0 and self.car_fingerprint in FEATURES["send_lfahda_mfa"]:

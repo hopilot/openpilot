@@ -23,7 +23,7 @@ TorqueFromLateralAccelCallbackType = Callable[[float, car.CarParams.LateralTorqu
 MAX_CTRL_SPEED = 161 * CV.KPH_TO_MS  # 144 + 4 = 92 mph
 ACCEL_MAX = 2.0
 ACCEL_MIN = -4.0
-FRICTION_THRESHOLD = 0.2
+FRICTION_THRESHOLD = 0.3
 
 # generic car and radar interfaces
 

@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-from common.numpy_fast import clip
+from common.numpy_fast import clip, interp
 from common.realtime import DT_CTRL
 from cereal import log
 from selfdrive.controls.lib.latcontrol import LatControl, MIN_STEER_SPEED
@@ -51,7 +51,7 @@ class LatControlLQR(LatControl):
         
       self.mpc_frame = 0
 
-  def update(self, active, CS, CP, VM, params, last_actuators, desired_curvature, desired_curvature_rate, llk):
+  def update(self, active, CS, CP, VM, params, last_actuators, steer_limited, desired_curvature, desired_curvature_rate, llk):
     self.ll_timer += 1
     if self.ll_timer > 100:
       self.ll_timer = 0
@@ -102,11 +102,12 @@ class LatControlLQR(LatControl):
           self.i_lqr = i
 
       output_steer = lqr_output + self.i_lqr
+      output_steer *= interp(abs((desired_angle + angle_steers_k) / 2.), [10., 45., 90.], [1, 1.1, 1.2]) #Neokii
       output_steer = clip(output_steer, -self.steer_max, self.steer_max)
 
     lqr_log.steeringAngleDeg = angle_steers_k
     lqr_log.i = self.i_lqr
     lqr_log.output = output_steer
     lqr_log.lqrOutput = lqr_output
-    lqr_log.saturated = self._check_saturation(self.steer_max - abs(output_steer) < 1e-3, CS)
+    lqr_log.saturated = self._check_saturation(self.steer_max - abs(output_steer) < 1e-3, CS, steer_limited)
     return output_steer, desired_angle, lqr_log

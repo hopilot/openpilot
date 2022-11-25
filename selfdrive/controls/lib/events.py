@@ -184,7 +184,7 @@ class EngagementAlert(Alert):
     super().__init__("", "",
                      AlertStatus.normal, AlertSize.none,
                      Priority.MID, VisualAlert.none,
-                     audible_alert, .2),
+                     audible_alert, 3.),
 
 
 class NormalPermanentAlert(Alert):
@@ -729,7 +729,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       tr(98),
       "",
       AlertStatus.normal, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, .5),
+      Priority.LOW, VisualAlert.none, AudibleAlert.rescruise, 1.0),
   },
 
   EventName.curvSpeedDown: {
@@ -745,7 +745,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       tr(100),
       "",
       AlertStatus.normal, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, .5),
+      Priority.LOW, VisualAlert.none, AudibleAlert.warningSoft, 2.),
   },
 
   EventName.outOfSpace: {
