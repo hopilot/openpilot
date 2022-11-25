@@ -3,7 +3,7 @@ import gc
 import os
 import time
 import multiprocessing
-from typing import Optional
+from typing import Optional, List, Union
 
 from common.clock import sec_since_boot  # pylint: disable=no-name-in-module, import-error
 from selfdrive.hardware import PC, TICI
@@ -37,15 +37,17 @@ def set_realtime_priority(level: int) -> None:
     os.sched_setscheduler(0, os.SCHED_FIFO, os.sched_param(level))  # type: ignore[attr-defined]
 
 
-def set_core_affinity(core: int) -> None:
+def set_core_affinity(cores: List[int]) -> None:
   if not PC:
-    os.sched_setaffinity(0, [core,])   # type: ignore[attr-defined]
+    os.sched_setaffinity(0, cores)  # pylint: disable=no-member
 
 
-def config_realtime_process(core: int, priority: int) -> None:
+
+def config_realtime_process(cores: Union[int, List[int]], priority: int) -> None:
   gc.disable()
   set_realtime_priority(priority)
-  set_core_affinity(core)
+  c = cores if isinstance(cores, list) else [cores, ]
+  set_core_affinity(c)
 
 
 class Ratekeeper:

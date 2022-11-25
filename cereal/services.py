@@ -36,6 +36,7 @@ services = {
   "sendcan": (True, 100., 139),
   "logMessage": (True, 0.),
   "liveCalibration": (True, 4., 4),
+  "liveTorqueParameters": (True, 4., 1),  
   "androidLog": (True, 0.),
   "carState": (True, 100., 10),
   "carControl": (True, 100., 10),
