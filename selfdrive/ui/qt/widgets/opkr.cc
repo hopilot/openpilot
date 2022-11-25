@@ -3640,8 +3640,8 @@ SteerDeltaUp::SteerDeltaUp() : AbstractControl("", "", "") {
     if (value > value1) {
       value = value1;
       ConfirmationDialog::alert(tr("The value cannot exceed maximum DeltaUp value") + "(" + str1 + ")", this);
-    } else if (value >= 7) {
-      value = 7;
+    } else if (value >= 6) {
+      value = 6;
     }
     QString values = QString::number(value);
     params.put("SteerDeltaUpBaseAdj", values.toStdString());
@@ -3770,8 +3770,8 @@ SteerDeltaDown::SteerDeltaDown() : AbstractControl("", "", "") {
     if (value > value1) {
       value = value1;
       ConfirmationDialog::alert(tr("The value cannot exceed maximum DeltaDown value") + "(" + str1 + ")", this);
-    } else if (value >= 15) {
-      value = 15;
+    } else if (value >= 7) {
+      value = 7;
     }
     QString values = QString::number(value);
     params.put("SteerDeltaDownBaseAdj", values.toStdString());
@@ -3787,8 +3787,8 @@ SteerDeltaDown::SteerDeltaDown() : AbstractControl("", "", "") {
     if (value < value1) {
       value = value1;
       ConfirmationDialog::alert(tr("The value cannot be less than DeltaDown default value") + "(" + str1 + ")", this);
-    } else if (value <= 7) {
-      value = 7;
+    } else if (value <= 5) {
+      value = 5;
     }
     QString values = QString::number(value);
     params.put("SteerDeltaDownAdj", values.toStdString());
@@ -3799,8 +3799,8 @@ SteerDeltaDown::SteerDeltaDown() : AbstractControl("", "", "") {
     auto str = QString::fromStdString(params.get("SteerDeltaDownAdj"));
     int value = str.toInt();
     value = value + 1;
-    if (value >= 15) {
-      value = 15;
+    if (value >= 10) {
+      value = 10;
     }
     QString values = QString::number(value);
     params.put("SteerDeltaDownAdj", values.toStdString());
@@ -4747,7 +4747,7 @@ TorqueKf::TorqueKf() : AbstractControl(tr("Kf"), tr("Adjust Kf"), "../assets/off
     refresh();
   });
   
- QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("TorqueKf"));
     auto str1 = QString::fromStdString(params.get("TorqueMaxLatAccel"));
     int value = str.toInt();
@@ -4815,7 +4815,7 @@ TorqueKi::TorqueKi() : AbstractControl(tr("Ki"), tr("Adjust Ki"), "../assets/off
     refresh();
   });
   
- QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("TorqueKi"));
     auto str1 = QString::fromStdString(params.get("TorqueMaxLatAccel"));
     int value = str.toInt();
@@ -4883,7 +4883,7 @@ TorqueFriction::TorqueFriction() : AbstractControl(tr("Friction"), tr("Adjust Fr
     refresh();
   });
   
- QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
     auto str = QString::fromStdString(params.get("TorqueFriction"));
     int value = str.toInt();
     value = value + 5;

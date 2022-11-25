@@ -19,6 +19,8 @@
 #include "selfdrive/common/params.h"
 #include "selfdrive/common/util.h"
 
+#define UI_FEATURE_BRAKE 1
+#define UI_FEATURE_AUTOHOLD 1
 #define COLOR_BLACK nvgRGBA(0, 0, 0, 255)
 #define COLOR_BLACK_ALPHA(x) nvgRGBA(0, 0, 0, x)
 #define COLOR_WHITE nvgRGBA(255, 255, 255, 255)
@@ -60,20 +62,21 @@ typedef struct Rect {
   }
 } Rect;
 
-const Rect map_overlay_btn = {0, 465, 150, 150};
-const Rect map_return_btn = {1770, 465, 150, 150};
-const Rect map_btn = {1425, 905, 140, 140};
+// const Rect map_overlay_btn = {0, 465, 150, 150}; //left middle side end
+const Rect map_overlay_btn = {860, 440, 200, 200}; //center area
+const Rect map_return_btn = {1720, 440, 200, 200}; 
+const Rect map_btn = {1340, 900, 200, 180};
 const Rect mapbox_btn = {465, 905, 140, 140};
-const Rect rec_btn = {1745, 905, 140, 140};
-const Rect laneless_btn = {1585, 905, 140, 140};
-const Rect monitoring_btn = {50, 770, 140, 150};
+const Rect rec_btn = {1540, 15, 200, 180};
+const Rect laneless_btn = {1540, 900, 200, 180};
+const Rect monitoring_btn = {50, 830, 140, 140};
 const Rect ml_btn = {1265, 905, 140, 140};
 const Rect stockui_btn = {15, 15, 184, 202};
 const Rect tuneui_btn = {1720, 15, 184, 202};
-const Rect livetunepanel_left_above_btn = {470, 570, 210, 170};
-const Rect livetunepanel_right_above_btn = {1240, 570, 210, 170};
-const Rect livetunepanel_left_btn = {470, 745, 210, 170};
-const Rect livetunepanel_right_btn = {1240, 745, 210, 170};
+const Rect livetunepanel_left_btn = {400, 730, 250, 200};
+const Rect livetunepanel_right_btn = {1250, 730, 250, 200};
+const Rect livetunepanel_left_above_btn = {400, 500, 250, 200};
+const Rect livetunepanel_right_above_btn = {1250, 500, 250, 200};
 const Rect speedlimit_btn = {220, 15, 190, 190};
 
 struct Alert {
@@ -116,14 +119,20 @@ typedef enum UIStatus {
   STATUS_ENGAGED,
   STATUS_WARNING,
   STATUS_ALERT,
-  STATUS_DND,
+  STATUS_MANUAL,
+  STATUS_BRAKE,
+  STATUS_CRUISE,  
+  STATUS_DND,  
 } UIStatus;
 
 const QColor bg_colors [] = {
-  [STATUS_DISENGAGED] =  QColor(0x17, 0x33, 0x49, 0xc8),
+  [STATUS_DISENGAGED] = QColor(0x17, 0x33, 0x49, 0x96),
   [STATUS_ENGAGED] = QColor(0x17, 0x86, 0x44, 0x96),
   [STATUS_WARNING] = QColor(0xDA, 0x6F, 0x25, 0x96),
   [STATUS_ALERT] = QColor(0xC9, 0x22, 0x31, 0x96),
+  [STATUS_MANUAL] = QColor(0x77, 0x77, 0x77, 0x77),
+  [STATUS_BRAKE] = QColor(0xCC, 0x32, 0x00, 0x96),
+  [STATUS_CRUISE] = QColor(0x00, 0x64, 0xC8, 0x96),
   [STATUS_DND] = QColor(0x32, 0x32, 0x32, 0x96),
 };
 
@@ -141,12 +150,14 @@ typedef struct UIScene {
   mat3 view_from_calib;
   bool world_objects_visible;
 
+  std::string alertTextMsg0;
   std::string alertTextMsg1;
   std::string alertTextMsg2;
   std::string alertTextMsg3;
   float alert_blinking_rate;
   cereal::PandaState::PandaType pandaType;
 
+  bool steeringPress;
   bool brakePress;
   bool gasPress;
   bool brakeHold;
@@ -174,6 +185,8 @@ typedef struct UIScene {
   int tpms_blinkingrate = 120;
   int blindspot_blinkingrate = 120;
   int car_valid_status_changed = 0;
+  int blindspot_blinkingrate2 = 120;
+  int car_valid_status_changed2 = 0;
   float angleSteers;
   float desired_angle_steers;
   float steerRatio;
@@ -184,11 +197,6 @@ typedef struct UIScene {
   bool batteryCharging;
   char batteryStatus[64];
   int fanSpeed;
-  int tpmsUnit;
-  float tpmsPressureFl;
-  float tpmsPressureFr;
-  float tpmsPressureRl;
-  float tpmsPressureRr;
   int lateralControlMethod;
   float radarDistance;
   bool standStill;
@@ -238,6 +246,8 @@ typedef struct UIScene {
   bool mapbox_running;
   int navi_select;
   bool tmux_error_check = false;
+  float currentGear;
+  float gearStep;
   bool speedlimit_signtype;
   bool sl_decel_off;
   bool osm_off_spdlimit;
@@ -254,6 +264,7 @@ typedef struct UIScene {
   int gear_step;
   float charge_meter;
   float multi_lat_selected;
+  bool run_ext_navi = false;  
   int do_not_disturb_mode;
   bool depart_chime_at_resume;
   int comma_stock_ui;

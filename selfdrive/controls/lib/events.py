@@ -729,7 +729,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       tr(98),
       "",
       AlertStatus.normal, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.rescruise, 1.0),
+      Priority.LOW, VisualAlert.none, AudibleAlert.prompt, 1.0),
   },
 
   EventName.curvSpeedDown: {
@@ -745,7 +745,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, AlertCallbackType]]] = {
       tr(100),
       "",
       AlertStatus.normal, AlertSize.small,
-      Priority.LOW, VisualAlert.none, AudibleAlert.warningSoft, 2.),
+      Priority.LOW, VisualAlert.none, AudibleAlert.warning, 1.),
   },
 
   EventName.outOfSpace: {

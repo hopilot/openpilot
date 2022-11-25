@@ -44,11 +44,11 @@ static int get_path_length_idx(const cereal::ModelDataV2::XYZTData::Reader &line
   return max_idx;
 }
 
-static void update_leads(UIState *s, const cereal::RadarState::Reader &radar_state, std::optional<cereal::ModelDataV2::XYZTData::Reader> line) {
+static void update_leads(UIState *s, const cereal::RadarState::Reader &radar_state, const cereal::ModelDataV2::XYZTData::Reader &line) {
   for (int i = 0; i < 2; ++i) {
     auto lead_data = (i == 0) ? radar_state.getLeadOne() : radar_state.getLeadTwo();
     if (lead_data.getStatus()) {
-      float z = line ? (*line).getZ()[get_path_length_idx(*line, lead_data.getDRel())] : 0.0;
+      float z = line.getZ()[get_path_length_idx(line, lead_data.getDRel())];
       calib_frame_to_full_frame(s, lead_data.getDRel(), -lead_data.getYRel(), z + 1.22, &s->scene.lead_vertices[i]);
     }
   }
@@ -68,24 +68,8 @@ static void update_line_data(const UIState *s, const cereal::ModelDataV2::XYZTDa
   assert(pvd->cnt <= std::size(pvd->v));
 }
 
-
-static void update_blindspot_data(const UIState *s, int lr, const cereal::ModelDataV2::XYZTData::Reader &line,
-                             float y_off,  float z_off, line_vertices_data *pvd, int max_idx ) {
-
-  float  y_off1, y_off2;
-
-  if( lr == 0 )
-  {
-    y_off1 = y_off;
-    y_off2 = -0.01;
-  }
-  else
-  {
-      y_off1 = 0.01;
-      y_off2 = y_off;  
-  }
-     
-
+static void update_blindspot_data(const UIState *s, const cereal::ModelDataV2::XYZTData::Reader &line,
+                             float y_off1, float y_off2, float z_off, line_vertices_data *pvd, int max_idx ) {
   const auto line_x = line.getX(), line_y = line.getY(), line_z = line.getZ();
   vertex_data *v = &pvd->v[0];
   for (int i = 0; i <= max_idx; i++) {
@@ -97,7 +81,6 @@ static void update_blindspot_data(const UIState *s, int lr, const cereal::ModelD
   pvd->cnt = v - pvd->v;
   assert(pvd->cnt <= std::size(pvd->v));
 }
-
 
 static void update_stop_line_data(const UIState *s, const cereal::ModelDataV2::StopLineData::Reader &line,
                                   float x_off, float y_off, float z_off, line_vertices_data *pvd) {
@@ -123,7 +106,7 @@ static void update_model(UIState *s, const cereal::ModelDataV2::Reader &model) {
   int max_idx = get_path_length_idx(lane_lines[0], max_distance);
   for (int i = 0; i < std::size(scene.lane_line_vertices); i++) {
     scene.lane_line_probs[i] = lane_line_probs[i];
-    update_line_data(s, lane_lines[i], 0.025 * scene.lane_line_probs[i], 0, &scene.lane_line_vertices[i], max_idx);
+    update_line_data(s, lane_lines[i], 0.05 * scene.lane_line_probs[i], 0, &scene.lane_line_vertices[i], max_idx);
   }
 
   // update road edges
@@ -131,7 +114,7 @@ static void update_model(UIState *s, const cereal::ModelDataV2::Reader &model) {
   const auto road_edge_stds = model.getRoadEdgeStds();
   for (int i = 0; i < std::size(scene.road_edge_vertices); i++) {
     scene.road_edge_stds[i] = road_edge_stds[i];
-    update_line_data(s, road_edges[i], 0.025, 0, &scene.road_edge_vertices[i], max_idx);
+    update_line_data(s, road_edges[i], 0.2, 0, &scene.road_edge_vertices[i], max_idx);
   }
 
   // update path
@@ -141,14 +124,14 @@ static void update_model(UIState *s, const cereal::ModelDataV2::Reader &model) {
     max_distance = std::clamp((float)(lead_d - fmin(lead_d * 0.35, 10.)), 0.0f, max_distance);
   }
   max_idx = get_path_length_idx(model_position, max_distance);
-  update_line_data(s, model_position, 0.9, 1.22, &scene.track_vertices, max_idx);
+  update_line_data(s, model_position, 1.0, 1.22, &scene.track_vertices, max_idx);
 
    // update blindspot line
-  for (int i = 0; i < std::size(scene.lane_blindspot_vertices); i++) {
-    scene.lane_blindspot_probs[i] = lane_line_probs[i];
-    update_blindspot_data(s, i, lane_lines[i+1], 2.8, 0, &scene.lane_blindspot_vertices[i], max_idx);
-  }   
+  scene.lane_blindspot_probs[0] = lane_line_probs[1];
+  update_blindspot_data(s, lane_lines[1], 2.8 * scene.lane_blindspot_probs[0], 0, 0, &scene.lane_blindspot_vertices[0], max_idx);
 
+  scene.lane_blindspot_probs[1] = lane_line_probs[2];
+  update_blindspot_data(s, lane_lines[2], 0, 2.8 * scene.lane_blindspot_probs[1], 0, &scene.lane_blindspot_vertices[1], max_idx);
 
   // update stop lines
   if (scene.stop_line) {
@@ -191,6 +174,7 @@ static void update_state(UIState *s) {
       scene.multi_lat_selected = scene.controls_state.getLateralControlState().getAtomState().getSelected();
     }
 
+    scene.alertTextMsg0 = scene.controls_state.getAlertTextMsg0(); //debug0
     scene.alertTextMsg1 = scene.controls_state.getAlertTextMsg1(); //debug1
     scene.alertTextMsg2 = scene.controls_state.getAlertTextMsg2(); //debug2
     scene.alertTextMsg3 = scene.controls_state.getAlertTextMsg3(); //debug3
@@ -216,19 +200,17 @@ static void update_state(UIState *s) {
     if (scene.leftBlinker!=cs_data.getLeftBlinker() || scene.rightBlinker!=cs_data.getRightBlinker()) {
       scene.blinker_blinkingrate = 120;
     }
+    scene.steeringPress = cs_data.getSteeringPressed();
     scene.brakePress = cs_data.getBrakePressed();
     scene.gasPress = cs_data.getGasPressed();
     scene.brakeLights = cs_data.getBrakeLights();
+    scene.currentGear = cs_data.getCurrentGear();
+    scene.gearStep = cs_data.getGearStep();
     scene.getGearShifter = cs_data.getGearShifter();
     scene.leftBlinker = cs_data.getLeftBlinker();
     scene.rightBlinker = cs_data.getRightBlinker();
     scene.leftblindspot = cs_data.getLeftBlindspot();
     scene.rightblindspot = cs_data.getRightBlindspot();
-    scene.tpmsUnit = cs_data.getTpms().getUnit();
-    scene.tpmsPressureFl = cs_data.getTpms().getFl();
-    scene.tpmsPressureFr = cs_data.getTpms().getFr();
-    scene.tpmsPressureRl = cs_data.getTpms().getRl();
-    scene.tpmsPressureRr = cs_data.getTpms().getRr();
     scene.radarDistance = cs_data.getRadarDistance();
     scene.standStill = cs_data.getStandStill();
     scene.vSetDis = cs_data.getVSetDis();
@@ -255,12 +237,8 @@ static void update_state(UIState *s) {
   if (sm.updated("modelV2") && s->vg) {
     update_model(s, sm["modelV2"].getModelV2());
   }
-  if (sm.updated("radarState") && s->vg) {
-    std::optional<cereal::ModelDataV2::XYZTData::Reader> line;
-    if (sm.rcv_frame("modelV2") > 0) {
-      line = sm["modelV2"].getModelV2().getPosition();
-    }
-    update_leads(s, sm["radarState"].getRadarState(), line);
+  if (sm.updated("radarState") && sm.rcv_frame("modelV2") >= s->scene.started_frame) {
+    update_leads(s, sm["radarState"].getRadarState(), sm["modelV2"].getModelV2().getPosition());
   }
   if (sm.updated("liveCalibration")) {
     scene.world_objects_visible = true;
@@ -311,8 +289,8 @@ static void update_state(UIState *s) {
     }
   }
   if (sm.updated("gpsLocationExternal")) {
-    scene.gpsAccuracy = sm["gpsLocationExternal"].getGpsLocationExternal().getAccuracy();
     auto ge_data = sm["gpsLocationExternal"].getGpsLocationExternal();
+    scene.gpsAccuracy = ge_data.getAccuracy();
     scene.gpsAccuracyUblox = ge_data.getAccuracy();
     scene.altitudeUblox = ge_data.getAltitude();
     scene.bearingUblox = ge_data.getBearingDeg();
@@ -445,6 +423,12 @@ static void update_status(UIState *s) {
       s->status = STATUS_WARNING;
     } else if (alert_status == cereal::ControlsState::AlertStatus::CRITICAL) {
       s->status = STATUS_ALERT;
+    } else if (s->scene.steeringPress) {
+      s->status = STATUS_MANUAL; 
+    } else if (s->scene.brakePress) {
+      s->status = STATUS_BRAKE;      
+    } else if (s->scene.cruiseAccStatus) {
+      s->status = STATUS_CRUISE; 
     } else {
       if (s->scene.comma_stock_ui == 2) {
         s->status = controls_state.getEnabled() ? STATUS_DND : STATUS_DISENGAGED;
@@ -493,21 +477,21 @@ static void update_status(UIState *s) {
       s->scene.navi_on_boot = true;
     }
   }
-  if (!s->scene.move_to_background && (s->sm->frame - s->scene.started_frame > 20*UI_FREQ)) {
+  if (!s->scene.move_to_background && (s->sm->frame - s->scene.started_frame > 5*UI_FREQ)) {
     if (params.getBool("OpkrRunNaviOnBoot") && params.getBool("OpkrMapEnable") && params.getBool("ControlsReady") && (params.get("CarParams").size() > 0)) {
       s->scene.move_to_background = true;
       s->scene.map_on_top = false;
       s->scene.map_on_overlay = true;
       system("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
-    } else if (s->sm->frame - s->scene.started_frame > 30*UI_FREQ) {
+    } else if (s->sm->frame - s->scene.started_frame > 10*UI_FREQ) {
       s->scene.move_to_background = true;
     }
   }
-  if (!s->scene.auto_gitpull && (s->sm->frame - s->scene.started_frame > 15*UI_FREQ)) {
+  if (!s->scene.auto_gitpull && (s->sm->frame - s->scene.started_frame > 5*UI_FREQ)) {
     if (params.getBool("GitPullOnBoot")) {
       s->scene.auto_gitpull = true;
       system("/data/openpilot/selfdrive/assets/addon/script/gitpull.sh &");
-    } else if (s->sm->frame - s->scene.started_frame > 20*UI_FREQ) {
+    } else if (s->sm->frame - s->scene.started_frame > 10*UI_FREQ) {
       s->scene.auto_gitpull = true;
       system("/data/openpilot/selfdrive/assets/addon/script/gitcommit.sh &");
     }
