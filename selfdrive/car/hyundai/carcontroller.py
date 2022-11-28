@@ -135,6 +135,7 @@ class CarController():
     self.standstill_status = 0
     self.standstill_status_timer = 0
     self.switch_timer = 0
+    self.switch_timer2 = 0
     self.auto_res_timer = 0
     self.auto_res_limit_timer = 0
     self.auto_res_limit_sec = int(self.params.get("AutoResLimitTime", encoding="utf8")) * 100
@@ -624,6 +625,7 @@ class CarController():
               if self.resume_cnt >= randint(6, 8):
                 self.resume_cnt = 0
                 self.switch_timer = randint(30, 36)
+              self.switch_timer2 = randint(30, 36)
           elif self.switch_timer > 0 and not self.try_early_stop_retrieve:
             self.switch_timer -= 1
           elif CS.cruiseGapSet != self.gap_by_spd_gap[0] and ((CS.clu_Vanz < self.gap_by_spd_spd[0]+self.gap_by_spd_on_buffer1) or self.gap_by_spd_gap1) and not self.try_early_stop_retrieve:
@@ -677,8 +679,11 @@ class CarController():
               self.resume_cnt = 0
               self.switch_timer = randint(30, 36)
           elif btn_signal != None:
-            can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.clu11, btn_signal)) if not self.longcontrol \
-            else can_sends.append(create_clu11(self.packer, frame, CS.clu11, btn_signal, clu11_speed, CS.CP.sccBus))
+            if self.switch_timer2 > 0 and self.try_early_stop_retrieve:
+              self.switch_timer2 -= 1
+            else:
+              can_sends.append(create_clu11(self.packer, self.resume_cnt, CS.clu11, btn_signal)) if not self.longcontrol \
+              else can_sends.append(create_clu11(self.packer, frame, CS.clu11, btn_signal, clu11_speed, CS.CP.sccBus))
             self.resume_cnt += 1
             self.gap_by_spd_gap1 = False
             self.gap_by_spd_gap2 = False
@@ -696,6 +701,7 @@ class CarController():
               if self.resume_cnt >= randint(6, 8):
                 self.resume_cnt = 0
                 self.switch_timer = randint(30, 36)
+              self.switch_timer2 = randint(30, 36)
             if CS.cruiseGapSet == self.try_early_stop_org_gap:
               self.try_early_stop_retrieve = False
             self.gap_by_spd_gap1 = False
