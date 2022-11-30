@@ -251,28 +251,28 @@ CUtilWidget::CUtilWidget( void *p ) : CGroupWidget( tr("Util Program") )
     emit parent->closeSettings();
     std::system(open_settings);
   });
-
   const char* softkey = "am start com.gmd.hidesoftkeys/com.gmd.hidesoftkeys.MainActivity";
   auto softkey_btn = new ButtonControl(tr("SoftKey RUN/SET"), tr("RUN"));
   QObject::connect(softkey_btn, &ButtonControl::clicked, [=]() {
     emit parent->closeSettings();
     std::system(softkey);
   });
-
   auto mixplorer_btn = new ButtonControl(tr("RUN Mixplorer"), tr("RUN"));
   QObject::connect(mixplorer_btn, &ButtonControl::clicked, [=]() {
 	  emit parent->closeSettings();
     std::system("/data/openpilot/selfdrive/assets/addon/script/run_mixplorer.sh");
   });
-
-  
+  auto harness_relay = new ButtonControl(tr("Remove Dash Err on Boot"), tr("RUN"));
+  QObject::connect(harness_relay, &ButtonControl::clicked, [=]() {if (ConfirmationDialog::confirm(tr("Try to run this if you have dash errors on boot. This is caused by relay switch."), this)) {
+    std::system("cp -f /data/openpilot/panda/board/main_relay.c /data/openpilot/panda/board/main.c");
+    std::system("reboot");}});
   pBoxLayout->addWidget( pandaflashingtbtn );
   pBoxLayout->addWidget( pandaflashingtbtn_new );
+  pBoxLayout->addWidget( harness_relay );
   pBoxLayout->addWidget( open_settings_btn );
   pBoxLayout->addWidget( softkey_btn );
-  pBoxLayout->addWidget( mixplorer_btn );  
+  pBoxLayout->addWidget( mixplorer_btn );
 }
-
 CPresetWidget::CPresetWidget() : CGroupWidget( tr("Parameter Preset") ) 
 {
   QVBoxLayout *pBoxLayout = CreateBoxLayout();
