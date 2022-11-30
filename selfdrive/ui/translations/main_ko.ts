@@ -1053,8 +1053,9 @@
         <location filename="../qt/widgets/opkr.cc" line="233"/>
         <location filename="../qt/widgets/opkr.cc" line="241"/>
         <location filename="../qt/widgets/opkr.cc" line="249"/>
-        <location filename="../qt/widgets/opkr.cc" line="256"/>
-        <location filename="../qt/widgets/opkr.cc" line="262"/>
+        <location filename="../qt/widgets/opkr.cc" line="255"/>
+        <location filename="../qt/widgets/opkr.cc" line="260"/>
+        <location filename="../qt/widgets/opkr.cc" line="265"/>
         <source>RUN</source>
         <translation>실행</translation>
     </message>
@@ -1074,14 +1075,24 @@
         <translation>안드로이드 설정 열기</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="256"/>
+        <location filename="../qt/widgets/opkr.cc" line="255"/>
         <source>SoftKey RUN/SET</source>
         <translation>소프트키 실행/설정</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="262"/>
+        <location filename="../qt/widgets/opkr.cc" line="260"/>
         <source>RUN Mixplorer</source>
         <translation>믹스플로러 실행</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="265"/>
+        <source>Remove Dash Err on Boot</source>
+        <translation>부팅시 계기판 경고 제거</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="266"/>
+        <source>Try to run this if you have dash errors on boot. This is caused by relay switch.</source>
+        <translation>부팅 중 계기판 경고가 발생한다면 이것을 실행해보세요. 이는 하네스의 릴레이 스위치와 관련됩니다.</translation>
     </message>
 </context>
 <context>
