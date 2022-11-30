@@ -711,6 +711,7 @@ BO_ 872 LVR11: 8 LVR
  SG_ CF_Lvr_PNStat : 20|2@1+ (1.0,0.0) [0.0|3.0] ""  CLU
  SG_ CF_Lvr_ShtLkStat : 24|4@1+ (1.0,0.0) [0.0|15.0] ""  TCU
  SG_ CF_Lvr_ShfErrInf : 28|20@1+ (1.0,0.0) [0.0|8191.0] ""  CLU,TCU
+ SG_ CF_Lvr_CGear : 32|4@1+ (1.0,0.0) [0.0|15.0] ""  CLU,TCU   
  SG_ CF_Lvr_AC : 48|4@1+ (1.0,0.0) [0.0|15.0] ""  TCU
  SG_ CF_Lvr_CS : 52|4@1+ (1.0,0.0) [0.0|15.0] ""  TCU
 
