@@ -11,16 +11,15 @@ from common.params import Params
 from common.realtime import Priority,  config_realtime_process, DT_MDL
 from common.filter_simple import FirstOrderFilter
 from selfdrive.swaglog import cloudlog
-from selfdrive.hardware import TICI
 from selfdrive.controls.lib.vehicle_model import ACCELERATION_DUE_TO_GRAVITY
 
 
 HISTORY = 5  # secs
 POINTS_PER_BUCKET = 1500
 MIN_POINTS_TOTAL = 4000
-MIN_POINTS_TOTAL_QLOG = 800
+MIN_POINTS_TOTAL_QLOG = 600
 FIT_POINTS_TOTAL = 2000
-FIT_POINTS_TOTAL_QLOG = 800
+FIT_POINTS_TOTAL_QLOG = 600
 MIN_VEL = 15  # m/s
 FRICTION_FACTOR = 1.5  # ~85% of data coverage
 FACTOR_SANITY = 0.3
@@ -112,17 +111,6 @@ class TorqueEstimator:
     self.resets = 0.0
     self.use_params = CP.carName in ALLOWED_CARS
 
-    params = Params()
-
-    TorqueLiveTuning = True # params.get_bool("TorqueLiveTuning")
-    if TorqueLiveTuning is None:
-      self.use_params = False
-    elif  TorqueLiveTuning:
-      self.use_params = True
-    else:
-      self.use_params = False
-
-
     if CP.lateralTuning.which() == 'torque':
       self.offline_friction = CP.lateralTuning.torque.friction
       self.offline_latAccelFactor = CP.lateralTuning.torque.latAccelFactor
@@ -142,7 +130,7 @@ class TorqueEstimator:
     self.max_friction = (1.0 + FRICTION_SANITY) * self.offline_friction
 
     # try to restore cached params
-
+    params = Params()
     params_cache = params.get("LiveTorqueCarParams")
     torque_cache = params.get("LiveTorqueParameters")
     if params_cache is not None and torque_cache is not None:
@@ -162,8 +150,8 @@ class TorqueEstimator:
           cloudlog.info("restored torque params from cache")
       except Exception:
         cloudlog.exception("failed to restore cached torque params")
-        params.remove("LiveTorqueCarParams")
-        params.remove("LiveTorqueParameters")
+        params.delete("LiveTorqueCarParams")
+        params.delete("LiveTorqueParameters")
 
     self.filtered_params = {}
     for param in initial_params:
@@ -271,8 +259,7 @@ class TorqueEstimator:
 
 
 def main(sm=None, pm=None):
-  config_realtime_process([0, 1, 2, 3], 5)
-  #config_realtime_process(5 if TICI else 2, Priority.CTRL_LOW)
+  config_realtime_process(2, Priority.CTRL_LOW)
 
   if sm is None:
     sm = messaging.SubMaster(['carControl', 'carState', 'liveLocationKalman'], poll=['liveLocationKalman'])
@@ -300,11 +287,16 @@ def main(sm=None, pm=None):
 
   while True:
     sm.update()
-    if sm.all_checks():
-      for which in sm.updated.keys():
-        if sm.updated[which]:
-          t = sm.logMonoTime[which] * 1e-9
-          estimator.handle_log(t, which, sm[which])
+#    if sm.all_checks():
+#      for which in sm.updated.keys():
+#        if sm.updated[which]:
+#          t = sm.logMonoTime[which] * 1e-9
+#          estimator.handle_log(t, which, sm[which])
+    for which in sm.updated.keys():
+      if sm.updated[which]:
+        t = sm.logMonoTime[which] * 1e-9
+        estimator.handle_log(t, which, sm[which])
+
 
     # 4Hz driven by liveLocationKalman
     if sm.frame % 5 == 0:
