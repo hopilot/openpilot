@@ -119,28 +119,42 @@ static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &le
   // Draw lead car indicator
   const float speed = std::max(0.0, (*s->sm)["carState"].getCarState().getVEgo()*(s->scene.is_metric ? 3.6 : 2.2369363));
   auto [x, y] = vd;
+
+  auto lead_radar = (*s->sm)["radarState"].getRadarState().getLeadOne();
+  auto lead_one = (*s->sm)["modelV2"].getModelV2().getLeadsV3()[0];
+  bool radar_detected = lead_radar.getStatus() && lead_radar.getRadar();
+  float radar_dist = radar_detected ? lead_radar.getDRel() : 0;
+  float vision_dist = lead_one.getProb() > .5 ? (lead_one.getX()[0] - 0) : 0;
+  float radar_rel_speed = lead_radar.getVRel();
+
   float fillAlpha = 0;
   float speedBuff = 10.;
   float leadBuff = 40.;
   float d_rel = lead_data.getDRel();
   float v_rel = lead_data.getVRel();
-  if (d_rel < leadBuff) {
-    fillAlpha = 255*(1.0-(d_rel/leadBuff));
-    if (v_rel < 0) {
-      fillAlpha += 255*(-1*(v_rel/speedBuff));
-    }
-    fillAlpha = (int)(fmin(fillAlpha, 255));
-  }
+
   char radarDist[32];
-  float radar_dist = s->scene.radarDistance;
+  char radarSpeed[32];
+  // float radar_dist = s->scene.radarDistance;
   // const std::string radarDist_str = std::to_string((int)std::nearbyint(radar_dist));
   // ui_draw_text(s, rect.centerX(), bdr_s+165, radarDist_str.c_str(), 48 * 2.5, COLOR_WHITE, "sans-bold");
   float sz = std::clamp((25 * 54) / (d_rel / 2 + 15), 20.0f, 90.0f) * 2.35;
   x = std::clamp(x, 0.f, s->fb_w - sz / 2);
   y = std::fmin(s->fb_h - sz * .6, y);
+
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
-  snprintf(radarDist, sizeof(radarDist), "%.0fm", radar_dist);
-  if (s->scene.radarDistance < 149) {
+  snprintf(radarDist, sizeof(radarDist), "%.1fm",  radar_detected ? radar_dist : vision_dist);
+  snprintf(radarSpeed, sizeof(radarSpeed), "%.0fkm/h", speed + radar_rel_speed * 3.6);    
+
+  if (radar_detected) {
+    if (d_rel < leadBuff) {
+      fillAlpha = 255*(1.0-(d_rel/leadBuff));
+      if (v_rel < 0) {
+        fillAlpha += 255*(-1*(v_rel/speedBuff));
+      }
+      fillAlpha = (int)(fmin(fillAlpha, 255));
+    }
+
     if (d_rel / speed < 0.5) {
       draw_chevron(s, x, y, sz, nvgRGBA(201, 34, 49, fillAlpha), nvgRGBA(201, 34, 49, fillAlpha));
     } else if (d_rel / speed < 0.8) {
@@ -149,6 +163,7 @@ static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &le
       draw_chevron(s, x, y, sz, nvgRGBA(0, 160, 0, 200), nvgRGBA(0, 160, 0, 200));
     }
     ui_draw_text(s, x, y + sz/1.5f, radarDist, 80, COLOR_WHITE, "sans-bold");
+    ui_draw_text(s, x, y - sz/1.5f, radarSpeed, 80, COLOR_WHITE, "sans-bold");
   } else {
     ui_draw_circle_image_rotation(s, x, y, sz, "custom_lead_vision", nvgRGBA(0, 0, 0, 0), 0.7f, s->scene.bearingUblox); 
   }
@@ -261,7 +276,7 @@ static void ui_draw_world(UIState *s) {
     }
     if (s->scene.stop_line && s->scene.longitudinalPlan.stopline[12] > 3.0) {
       auto stop_line = (*s->sm)["modelV2"].getModelV2().getStopLine();
-      if (stop_line.getProb() > .5) {
+      if (stop_line.getProb() > .3) {
         ui_draw_stop_line(s, stop_line, s->scene.stop_line_vertices);
       }
     }
