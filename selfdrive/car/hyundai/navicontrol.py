@@ -244,7 +244,7 @@ class NaviControl():
           self.onSpeedBumpControl = True
           self.onSpeedBumpControl2 = False
         elif self.liveNaviData.safetyDistance >= sb_final_decel_start_dist and self.navi_sel == 3:
-          cruise_set_speed_kph == 30 if CS.is_set_speed_in_mph else 50
+          cruise_set_speed_kph == 35 if CS.is_set_speed_in_mph else 60
           self.onSpeedBumpControl = False
           self.onSpeedBumpControl2 = True
         elif self.navi_sel in (0,1):
@@ -261,6 +261,8 @@ class NaviControl():
         self.map_speed_dist = max(0, self.liveNaviData.safetyDistance - 30)
         self.map_speed = self.liveNaviData.speedLimit
         if self.map_speed_dist > 1250:
+          self.map_speed_block = True
+        elif 50 < self.map_speed_dist <= 1250 and self.map_speed_block:
           self.map_speed_block = True
         else:
           self.map_speed_block = False
