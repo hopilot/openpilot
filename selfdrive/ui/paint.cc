@@ -262,6 +262,9 @@ static void ui_draw_vision_lane_lines(UIState *s) {
 static void ui_draw_world(UIState *s) {
   nvgScissor(s->vg, 0, 0, s->fb_w, s->fb_h);
 
+  // Draw lane edges and vision/mpc tracks
+  ui_draw_vision_lane_lines(s);
+
   // Draw lead and stop line indicators if openpilot is handling longitudinal
   if (true) {
     auto lead_one = (*s->sm)["radarState"].getRadarState().getLeadOne();
