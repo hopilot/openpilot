@@ -167,6 +167,8 @@ class NaviControl():
       self.liveNaviData = sm['liveNaviData']
     elif self.navi_sel == 3:
       self.liveNaviData = sm['liveENaviData']
+    else:
+      self.liveNaviData = sm['liveNaviData']
     # speedLimit = self.liveNaviData.speedLimit
     # safetyDistance = self.liveNaviData.safetyDistance  #safetyDistance
     # safetySign = self.liveNaviData.safetySign
