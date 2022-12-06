@@ -235,25 +235,26 @@ static void ui_draw_vision_lane_lines(UIState *s) {
       ui_draw_line(s, scene.road_edge_vertices[i], &color, nullptr);
     }
   }
+
+  // paint path
   if (scene.controls_state.getEnabled() && scene.comma_stock_ui != 1) {
     if (steerOverride) {
       track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                    COLOR_BLACK_ALPHA(80), COLOR_BLACK_ALPHA(10));
-    } else {
-      if (!scene.lateralPlan.lanelessModeStatus) {
+                                    COLOR_BLACK_ALPHA(200), COLOR_BLACK_ALPHA(70));
+    } else if (torque_scale > 200) {    
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                     nvgRGBA(red_lvl, green_lvl, 0, 200), COLOR_YELLOW_ALPHA(50)); // nvgRGBA((int)(0.7*red_lvl), (int)(0.7*green_lvl), 0, 1));
-      } else { //laneless status
+                                    nvgRGBA(red_lvl, green_lvl, 0, 200), nvgRGBA(red_lvl, green_lvl, 0, 70)); 
+    } else if (!scene.lateralPlan.lanelessModeStatus) {
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                     nvgRGBA(red_lvl, 50, green_lvl, 200), COLOR_YELLOW_ALPHA(50)); // nvgRGBA((int)(0.7*red_lvl), 50, (int)(0.7*green_lvl), 1));
-      }
+                                    nvgRGBAf(0.3, 0.8, 0.3, 0.8), nvgRGBAf(0.2, 0.6, 0.2, 0.3)); 
+    } else { //laneless status
+        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
+                                    nvgRGBAf(0.1, 0.6, 0.9, 0.8), nvgRGBAf(0.1, 0.5, 0.8, 0.3)); 
     }
-  } else {
-    // Draw yellow vision track when not enable
-    track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
-                                        COLOR_YELLOW_ALPHA(100), COLOR_WHITE_ALPHA(10));
+  } else { // Draw yellow vision track when not enable
+      track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
+                                    COLOR_YELLOW_ALPHA(200), COLOR_YELLOW_ALPHA(70));
   }
-  // paint path
   ui_draw_line(s, scene.track_vertices, nullptr, &track_bg);
 }
 
