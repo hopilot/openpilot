@@ -253,7 +253,7 @@ static void ui_draw_vision_lane_lines(UIState *s) {
     }
   } else { // Draw yellow vision track when not enable
       track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
-                                    COLOR_YELLOW_ALPHA(200), COLOR_YELLOW_ALPHA(70));
+                                    COLOR_YELLOW_ALPHA(200), COLOR_ORANGE_ALPHA(70));
   }
   ui_draw_line(s, scene.track_vertices, nullptr, &track_bg);
 }
