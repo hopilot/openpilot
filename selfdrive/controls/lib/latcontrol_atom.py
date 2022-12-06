@@ -109,10 +109,10 @@ class LatCtrlIndATOM(LatControlINDI):
     self._outer_loop_gain = (INDI.outerLoopGainBP, INDI.outerLoopGainV)
     self._inner_loop_gain = (INDI.innerLoopGainBP, INDI.innerLoopGainV)
 
-    self.RC = 0
-    self.G = 0
-    self.outer_loop_gain = 0
-    self.inner_loop_gain = 0
+    self.RC = interp(self.speed, self._RC[0], self._RC[1])
+    self.G = interp(self.speed, self._G[0], self._G[1])
+    self.outer_loop_gain = interp(self.speed, self._outer_loop_gain[0], self._outer_loop_gain[1])
+    self.inner_loop_gain = interp(self.speed, self._inner_loop_gain[0], self._inner_loop_gain[1])
 
     self.steer_filter = FirstOrderFilter(0., self.RC, DT_CTRL)
 
