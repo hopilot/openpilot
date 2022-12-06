@@ -206,10 +206,6 @@ void NvgWindow::paintGL() {
   CameraViewWidget::paintGL();
   ui_draw(&QUIState::ui_state, width(), height());
 
-  if (s->worldObjectsVisible() ) {
-    drawLaneLines(painter, s);
-  }
-
   double cur_draw_t = millis_since_boot();
   double dt = cur_draw_t - prev_draw_t;
   if (dt > 66) {
