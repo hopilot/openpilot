@@ -753,7 +753,7 @@ class Controls:
       max_torque = abs(self.last_actuators.steer) > 0.99
       if undershooting and turning and good_speed and max_torque:
         self.events.add(EventName.steerSaturated)    
-    elif lac_log.active and lac_log.saturated and not CS.steeringPressed:
+    elif lac_log.active and not CS.steeringPressed:
       dpath_points = lat_plan.dPathPoints
       if len(dpath_points):
         # Check if we deviated from the path
