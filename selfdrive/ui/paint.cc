@@ -240,13 +240,13 @@ static void ui_draw_vision_lane_lines(UIState *s) {
   if (scene.controls_state.getEnabled() && scene.comma_stock_ui != 1) {
     if (steerOverride) {
       track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                    COLOR_BLACK_ALPHA(100), COLOR_BLACK_ALPHA(50));
+                                    COLOR_GREY_ALPHA(100), COLOR_GREY_ALPHA(50));
     } else if (torque_scale > 230) {    
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
                                     nvgRGBA(red_lvl, green_lvl, 0, 200), nvgRGBA(red_lvl, green_lvl, 0, 70)); 
     } else if (!scene.lateralPlan.lanelessModeStatus) {
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                    nvgRGBAf(0.2, 0.8, 0.2, 0.8), nvgRGBAf(0.9, 0.9, 0.1, 0.5)); 
+                                    nvgRGBAf(0.2, 0.8, 0.2, 0.8), nvgRGBAf(0.9, 0.9, 0.1, 0.8)); 
     } else { //laneless status
         track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
                                     nvgRGBAf(0.1, 0.6, 0.9, 0.8), nvgRGBAf(0.1, 0.8, 0.5, 0.5)); 

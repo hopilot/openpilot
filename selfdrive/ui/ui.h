@@ -38,6 +38,7 @@
 #define COLOR_ORANGE_ALPHA(x) nvgRGBA(255, 175, 3, x)
 #define COLOR_YELLOW_ALPHA(x) nvgRGBA(218, 202, 37, x)
 #define COLOR_GREY nvgRGBA(191, 191, 191, 1)
+#define COLOR_GREY_ALPHA(x) nvgRGBA(191, 191, 191, x)
 
 const int bdr_s = 15;
 const int header_h = 420;
