@@ -86,9 +86,8 @@ class Controls:
       ignore = ['driverCameraState', 'managerState'] if SIMULATION else None
       self.sm = messaging.SubMaster(['deviceState', 'pandaStates', 'peripheralState', 'modelV2', 'liveCalibration',
                                      'driverMonitoringState', 'longitudinalPlan', 'lateralPlan', 'liveLocationKalman',
-                                     'managerState', 'liveParameters', 'radarState', 'liveTorqueParameters', 
-                                     'liveNaviData', 'liveENaviData', 'liveMapData', 'updateEvents'] + self.camera_packets + joystick_packet,
-                                     ignore_alive=ignore, ignore_avg_freq=['radarState', 'longitudinalPlan', 'updateEvents'])
+                                     'managerState', 'liveParameters', 'radarState', 'liveTorqueParameters', 'liveNaviData', 'liveENaviData', 'liveMapData'] + self.camera_packets + joystick_packet,
+                                     ignore_alive=ignore, ignore_avg_freq=['radarState', 'longitudinalPlan'])
 
     self.can_sock = can_sock
     if can_sock is None:
@@ -145,6 +144,7 @@ class Controls:
     self.lateral_control_method = 0
     if self.CP.steerControlType == car.CarParams.SteerControlType.angle:
       self.LaC = LatControlAngle(self.CP, self.CI)
+      self.lateral_control_method = 5
     elif self.CP.lateralTuning.which() == 'pid':
       self.LaC = LatControlPID(self.CP, self.CI)
       self.lateral_control_method = 0
@@ -160,9 +160,7 @@ class Controls:
     elif self.CP.lateralTuning.which() == 'atom':
       self.LaC = LatControlATOM(self.CP, self.CI)
       self.lateral_control_method = 4
-    elif self.CP.lateralTuning.which() == 'multi':
-      self.LaC = LatControlATOM(self.CP, self.CI)
-      self.lateral_control_method = 5
+
 
     self.initialized = False
     self.state = State.disabled
@@ -992,9 +990,7 @@ class Controls:
       controlsState.lateralControlState.torqueState = lac_log
     elif lat_tuning == 'atom':
       controlsState.lateralControlState.atomState = lac_log      
-    elif lat_tuning == 'multi':
-      controlsState.lateralControlState.atomState = lac_log     
-
+      
     if lat_tuning == 'torque':
       controlsState.steeringAngleDesiredDeg = lac_log.desiredLateralAccel
     else:
@@ -1016,20 +1012,6 @@ class Controls:
       ce_send.carEvents = car_events
       self.pm.send('carEvents', ce_send)
     self.events_prev = self.events.names.copy()
-
-    # updateEvents  carParams update  #atom
-    updateEvents = self.sm['updateEvents']
-    update_command = False
-    if updateEvents.command != self.update_command:
-      self.update_command = updateEvents.command
-      if updateEvents.version == 1:  # turn
-        update_command = True
-        #print( updateEvents )
-        self.CI.get_tunning_params( self.CP )
-        self.LaC.live_tune( self.CP )
-      else:
-        update_command = True
-        self.CI.get_normal_params( updateEvents.version, self.CP )
 
     # carParams - logged every 50 seconds (> 1 per segment)
     if (self.sm.frame % int(50. / DT_CTRL) == 0):
