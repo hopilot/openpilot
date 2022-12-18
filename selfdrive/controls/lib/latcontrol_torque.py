@@ -21,7 +21,7 @@ from decimal import Decimal
 # move it at all, this is compensated for too.
 
 LOW_SPEED_X = [0, 10, 20, 30]
-LOW_SPEED_Y = [23, 22, 15, 5] #[15, 13, 10, 5]
+LOW_SPEED_Y = [15, 13, 10, 5]
 
 class LatControlTorque(LatControl):
   def __init__(self, CP, CI):
