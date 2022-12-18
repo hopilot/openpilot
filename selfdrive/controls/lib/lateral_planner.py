@@ -5,7 +5,7 @@ from common.realtime import sec_since_boot, DT_MDL
 from common.numpy_fast import interp
 from selfdrive.swaglog import cloudlog
 from selfdrive.controls.lib.lateral_mpc_lib.lat_mpc import LateralMpc
-from selfdrive.controls.lib.drive_helpers import CONTROL_N, LAT_MPC_N
+from selfdrive.controls.lib.drive_helpers import CONTROL_N, LAT_MPC_N, MIN_SPEED
 from selfdrive.controls.lib.lane_planner import LanePlanner
 from selfdrive.controls.lib.desire_helper import DesireHelper
 import cereal.messaging as messaging
@@ -99,11 +99,10 @@ class LateralPlanner:
 
     self.v_cruise_kph = sm['controlsState'].vCruise
     self.stand_still = sm['carState'].standStill
-    self.v_ego = max(1.0, sm['carState'].vEgo)
-    v_ego = sm['carState'].vEgo
+    self.v_ego = max(MIN_SPEED, sm['carState'].vEgo)
+    v_ego = max(MIN_SPEED, sm['carState'].vEgo)
     if sm.frame % 5 == 0:
       self.model_speed = self.curve_speed(sm, v_ego)
-    active = sm['controlsState'].active
     measured_curvature = sm['controlsState'].curvature
 
     # Parse model predictions
