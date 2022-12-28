@@ -2776,8 +2776,8 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6374"/>
-        <source>Vision Only, Vision+Radar, Radar Only, OPKR Custom</source>
-        <translation>الرؤية فقط ، الرؤية + الرادار ، الرادار فقط ،خيارات مخصصة</translation>
+        <source>Vision Only, Radar Only, OPKR Custom</source>
+        <translation>الرؤية فقط ، الرادار فقط ،خيارات مخصصة</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6432"/>
@@ -2786,17 +2786,12 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6434"/>
-        <source>Vision+Radar</source>
-        <translation>رؤية + رادار</translation>
-    </message>
-    <message>
-        <location filename="../qt/widgets/opkr.cc" line="6436"/>
         <source>Radar Only</source>
         <translation>الردار فقط</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="6438"/>
-        <source>OPKR Custom</source>
+        <location filename="../qt/widgets/opkr.cc" line="6436"/>
+        <source>OPKR(Radar+Vision)</source>
         <translation>خيارات مخصصة</translation>
     </message>
 </context>

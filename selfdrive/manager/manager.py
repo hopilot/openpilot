@@ -161,7 +161,7 @@ def manager_init() -> None:
     ("AutoEnableSpeed", "9"),
     ("SafetyCamDecelDistGain", "0"),
     ("OpkrLiveTunePanelEnable", "0"),
-    ("RadarLongHelper", "3"),
+    ("RadarLongHelper", "2"),
     ("GitPullOnBoot", "0"),
     ("LiveSteerRatioPercent", "-5"),
     ("StoppingDistAdj", "0"),
