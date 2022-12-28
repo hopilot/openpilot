@@ -1016,7 +1016,7 @@ class CarController():
             elif aReqValue >= 0.0:
               # accel = interp(CS.lead_distance, [14.0, 15.0], [max(accel, aReqValue, faccel), aReqValue])
               dRel1 = self.dRel if self.dRel > 0 else CS.lead_distance
-              if ((CS.lead_distance - dRel1 > 3.0) or self.NC.cutInControl) and self.stopping_dist_adj_enabled and accel < 0:
+              if ((CS.lead_distance - dRel1 > 3.0) or self.NC.cutInControl) and accel < 0:
                 if aReqValue < accel:
                   accel = interp(lead_objspd, [-1, 0, 5], [aReqValue, aReqValue, accel])
                 else:
@@ -1054,6 +1054,8 @@ class CarController():
                   self.vrel_delta_timer = 0
                   self.vrel_delta_timer3 = 0
                   stock_weight = min(1.0, interp(CS.out.vEgo, [7.0, 30.0], [stock_weight, stock_weight*5.0]))
+                  if not self.stopping_dist_adj_enabled:
+                    stock_weight = min(1.0, interp(CS.lead_distance, [0.0, 10.0], [stock_weight*5.0, stock_weight]))
                 elif aReqValue > accel:
                   if self.vrel_delta < -5 and self.vrel_delta_timer == 0:
                     self.vrel_delta_timer = min(400, int(self.dRel*10))
