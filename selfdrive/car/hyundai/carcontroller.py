@@ -991,7 +991,7 @@ class CarController():
             accel = aReqValue
         elif self.radar_helper_option == 1: # Radar Only
           accel = aReqValue
-        elif self.radar_helper_option == 2: # OPKR Custom(Radar+Vision), more smooth slowdown for cut-in or encountering being decellerated car.
+        elif self.radar_helper_option >= 2: # OPKR Custom(Radar+Vision), more smooth slowdown for cut-in or encountering being decellerated car.
           if 0 < CS.lead_distance <= 149:
             stock_weight = 0.0
             self.smooth_start = False
