@@ -56,8 +56,6 @@ class CarController():
     self.p = CarControllerParams(CP)
     self.packer = CANPacker(dbc_name)
     self.angle_limit_counter = 0
-    self.cut_steer_frames = 0
-    self.cut_steer = False
 
     self.apply_steer_last = 0
     self.car_fingerprint = CP.carFingerprint
@@ -323,25 +321,19 @@ class CarController():
     self.steer_rate_limited = new_steer != apply_steer
 
     if self.to_avoid_lkas_fault_enabled: # Shane and Greg's idea
-      lkas_active = c.active
-      if lkas_active and abs(CS.out.steeringAngleDeg) > self.to_avoid_lkas_fault_max_angle:
+      if c.active and abs(CS.out.steeringAngleDeg) >= self.to_avoid_lkas_fault_max_angle:
         self.angle_limit_counter += 1
       else:
         self.angle_limit_counter = 0
 
+      # Cut steer actuation bit for two frames and hold torque with induced temporary fault
+      torque_fault = c.active and self.angle_limit_counter > self.to_avoid_lkas_fault_max_frame
+      lkas_active = c.active and not torque_fault
+
       # stop requesting torque to avoid 90 degree fault and hold torque with induced temporary fault
       # two cycles avoids race conditions every few minutes
-      if self.angle_limit_counter > self.to_avoid_lkas_fault_max_frame:
-        self.cut_steer = True
-      elif self.cut_steer_frames > 1:
-        self.cut_steer_frames = 0
-        self.cut_steer = False
-
-      cut_steer_temp = False
-      if self.cut_steer:
-        cut_steer_temp = True
+      if self.angle_limit_counter > self.to_avoid_lkas_fault_max_frame + 2:
         self.angle_limit_counter = 0
-        self.cut_steer_frames += 1
     else:
       if self.joystick_debug_mode:
         lkas_active = c.active
@@ -353,16 +345,9 @@ class CarController():
         lkas_active = c.active and abs(CS.out.steeringAngleDeg) < str_angle_limit and CS.out.gearShifter == GearShifter.drive
       else:
         lkas_active = c.active and CS.out.gearShifter == GearShifter.drive
-      if CS.mdps_error_cnt > self.to_avoid_lkas_fault_max_frame:
-        self.cut_steer = True
-      elif self.cut_steer_frames > 1:
-        self.cut_steer_frames = 0
-        self.cut_steer = False
 
-      cut_steer_temp = False
-      if self.cut_steer:
-        cut_steer_temp = True
-        self.cut_steer_frames += 1
+      torque_fault = c.active and CS.mdps_error_cnt > self.to_avoid_lkas_fault_max_frame
+      lkas_active = c.active and not torque_fault
 
     if (( CS.out.leftBlinker and not CS.out.rightBlinker) or ( CS.out.rightBlinker and not CS.out.leftBlinker)) and CS.out.vEgo < LANE_CHANGE_SPEED_MIN and self.opkr_turnsteeringdisable:
       self.lanechange_manual_timer = 50
@@ -447,16 +432,16 @@ class CarController():
     self.scc12_cnt %= 0xF
 
     can_sends.append(create_lkas11(self.packer, frame, self.car_fingerprint, apply_steer, lkas_active and not self.lkas_temp_disabled,
-                                   cut_steer_temp, CS.lkas11, sys_warning, sys_state, enabled, left_lane, right_lane,
+                                   torque_fault, CS.lkas11, sys_warning, sys_state, enabled, left_lane, right_lane,
                                    left_lane_warning, right_lane_warning, 0, self.ldws_fix, self.lkas11_cnt))
 
     if CS.CP.sccBus: # send lkas11 bus 1 or 2 if scc bus is
       can_sends.append(create_lkas11(self.packer, frame, self.car_fingerprint, apply_steer, lkas_active and not self.lkas_temp_disabled,
-                                   cut_steer_temp, CS.lkas11, sys_warning, sys_state, enabled, left_lane, right_lane,
+                                   torque_fault, CS.lkas11, sys_warning, sys_state, enabled, left_lane, right_lane,
                                    left_lane_warning, right_lane_warning, CS.CP.sccBus, self.ldws_fix, self.lkas11_cnt))
     if CS.CP.mdpsBus: # send lkas11 bus 1 if mdps is bus 1
       can_sends.append(create_lkas11(self.packer, frame, self.car_fingerprint, apply_steer, lkas_active and not self.lkas_temp_disabled,
-                                   cut_steer_temp, CS.lkas11, sys_warning, sys_state, enabled, left_lane, right_lane,
+                                   torque_fault, CS.lkas11, sys_warning, sys_state, enabled, left_lane, right_lane,
                                    left_lane_warning, right_lane_warning, 1, self.ldws_fix, self.lkas11_cnt))
       if frame % 2: # send clu11 to mdps if it is not on bus 0
         can_sends.append(create_clu11(self.packer, frame, CS.clu11, Buttons.NONE, enabled_speed, CS.CP.mdpsBus))
