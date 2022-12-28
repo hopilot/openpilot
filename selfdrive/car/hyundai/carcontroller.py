@@ -234,6 +234,7 @@ class CarController():
     self.e2e_standstill = False
     self.e2e_standstill_stat = False
     self.e2e_standstill_timer = 0
+    self.e2e_standstill_count = 0
 
     self.str_log2 = 'MultiLateral'
     if CP.lateralTuning.which() == 'pid':
@@ -731,6 +732,7 @@ class CarController():
       self.e2e_standstill = False
       self.e2e_standstill_stat = False
       self.e2e_standstill_timer = 0
+      self.e2e_standstill_count = 0
     if CS.cruise_buttons == 4:
       self.cancel_counter += 1
       self.auto_res_starting = False
@@ -750,6 +752,7 @@ class CarController():
       self.e2e_standstill = False
       self.e2e_standstill_stat = False
       self.e2e_standstill_timer = 0
+      self.e2e_standstill_count = 0
       if self.res_speed_timer > 0:
         self.res_speed_timer -= 1
         self.auto_res_starting = False
@@ -778,10 +781,14 @@ class CarController():
             self.e2e_standstill = False
             self.e2e_standstill_stat = False
             self.e2e_standstill_timer = 0
+            self.e2e_standstill_count = 0
           elif self.e2e_standstill_stat and self.sm['longitudinalPlan'].e2eX[12] > 30 and self.sm['longitudinalPlan'].stopLine[12] < 10 and CS.clu_Vanz == 0:
             self.e2e_standstill = True
             self.e2e_standstill_stat = False
             self.e2e_standstill_timer = 0
+            self.e2e_standstill_count += 1
+            if self.e2e_standstill_count > 2:
+              self.e2e_standstill = False
           elif 0 < self.sm['longitudinalPlan'].e2eX[12] < 10 and self.sm['longitudinalPlan'].stopLine[12] < 10 and CS.clu_Vanz == 0:
             self.e2e_standstill_timer += 1
             if self.e2e_standstill_timer > 300:
@@ -963,7 +970,7 @@ class CarController():
         radar_recog = (0 < CS.lead_distance <= 149)
         if self.joystick_debug_mode:
           accel = actuators.accel
-        elif self.radar_helper_option == 0:
+        elif self.radar_helper_option == 0: # Vision Only
           if 0 < CS.lead_distance <= 4.0: # use radar by force to stop anyway below 4.0m if lead car is detected.
             stock_weight = interp(CS.lead_distance, [2.5, 4.0], [1., 0.])
             accel = accel * (1. - stock_weight) + aReqValue * stock_weight
@@ -982,41 +989,9 @@ class CarController():
           else:
             self.stopped = False
             accel = aReqValue
-        elif self.radar_helper_option == 1:
-          if 0 < CS.lead_distance <= 149:
-            # neokii's logic, opkr mod
-            stock_weight = 0.0
-            if aReqValue > 0.0:
-              stock_weight = interp(CS.lead_distance, [3.5, 8.0, 13.0, 25.0], [0.5, 1.0, 1.0, 0.0])
-            elif aReqValue < 0.0 and self.stopping_dist_adj_enabled:
-              stock_weight = interp(CS.lead_distance, [4.5, 8.0, 20.0, 25.0], [0.2, 1.0, 1.0, 0.0])
-            elif aReqValue < 0.0:
-              stock_weight = interp(CS.lead_distance, [3.5, 25.0], [1.0, 0.0])
-            else:
-              stock_weight = 0.0
-            accel = accel * (1.0 - stock_weight) + aReqValue * stock_weight
-          else:
-            if 0 < CS.lead_distance <= 4.0: # use radar by force to stop anyway below 4.0m if lead car is detected.
-              stock_weight = interp(CS.lead_distance, [2.5, 4.0], [1., 0.])
-              accel = accel * (1. - stock_weight) + aReqValue * stock_weight
-            elif 0.1 < self.dRel < 6.0 and self.vRel < 0:
-              accel = self.accel - (DT_CTRL * interp(CS.out.vEgo, [0.9, 3.0], [1.0, 3.0]))
-              self.stopped = False
-            elif 0.1 < self.dRel < 6.0:
-              accel = min(-0.5, faccel*0.3)
-              if stopping:
-                self.stopped = True
-              else:
-                self.stopped = False
-            elif 0.1 < self.dRel:
-              self.stopped = False
-              pass
-            else:
-              self.stopped = False
-              accel = aReqValue
-        elif self.radar_helper_option == 2:
+        elif self.radar_helper_option == 1: # Radar Only
           accel = aReqValue
-        elif self.radar_helper_option == 3:
+        elif self.radar_helper_option == 2: # OPKR Custom(Radar+Vision), more smooth slowdown for cut-in or encountering being decellerated car.
           if 0 < CS.lead_distance <= 149:
             stock_weight = 0.0
             self.smooth_start = False
@@ -1053,7 +1028,7 @@ class CarController():
                 accel = self.accel - (DT_CTRL * 4.0)
               elif CS.lead_distance < self.stoppingdist:
                 accel = self.accel - (DT_CTRL * interp(CS.out.vEgo, [0.0, 1.0, 2.0], [0.05, 1.0, 5.0]))
-            elif aReqValue < 0.0 and self.stopping_dist_adj_enabled:
+            elif aReqValue < 0.0:
               dRel2 = self.dRel if self.dRel > 0 else CS.lead_distance
               if ((CS.lead_distance - dRel2 > 3.0) or self.NC.cutInControl) and accel < 0:
                 stock_weight = 0.3
@@ -1093,9 +1068,9 @@ class CarController():
                     stock_weight = interp(abs(lead_objspd), [1.0, 10.0], [1.0, 0.0])
               accel = accel * (1.0 - stock_weight) + aReqValue * stock_weight
               accel = min(accel, -0.5) if CS.lead_distance <= 4.5 and not CS.out.standstill else accel
-            elif aReqValue < 0.0:
-              stock_weight = interp(CS.lead_distance, [6.0, 10.0, 18.0, 25.0, 32.0], [1.0, 0.85, 1.0, 0.4, 1.0])
-              accel = accel * (1.0 - stock_weight) + aReqValue * stock_weight
+            # elif aReqValue < 0.0:
+            #   stock_weight = interp(CS.lead_distance, [6.0, 10.0, 18.0, 25.0, 32.0], [1.0, 0.85, 1.0, 0.4, 1.0])
+            #   accel = accel * (1.0 - stock_weight) + aReqValue * stock_weight
             else:
               stock_weight = 0.0
               self.change_accel_fast = False

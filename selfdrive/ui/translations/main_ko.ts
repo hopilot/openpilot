@@ -2800,8 +2800,8 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6374"/>
-        <source>Vision Only, Vision+Radar, Radar Only, OPKR Custom</source>
-        <translation>비전전용, 비전+레이더, 레이더전용, OPKR 커스텀</translation>
+        <source>Vision Only, Radar Only, OPKR(Radar+Vision)</source>
+        <translation>비전전용, 레이더전용, OPKR(레이더+비전)</translation>
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6432"/>
@@ -2810,18 +2810,13 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="6434"/>
-        <source>Vision+Radar</source>
-        <translation>비전+레이더</translation>
-    </message>
-    <message>
-        <location filename="../qt/widgets/opkr.cc" line="6436"/>
         <source>Radar Only</source>
         <translation>레이더전용</translation>
     </message>
     <message>
-        <location filename="../qt/widgets/opkr.cc" line="6438"/>
-        <source>OPKR Custom</source>
-        <translation>OPKR 커스텀</translation>
+        <location filename="../qt/widgets/opkr.cc" line="6436"/>
+        <source>OPKR(Radar+Vision)</source>
+        <translation>OPKR(레이더+비전)</translation>
     </message>
 </context>
 <context>
