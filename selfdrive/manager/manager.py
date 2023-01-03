@@ -237,6 +237,8 @@ def manager_init() -> None:
     ("CruiseGapBySpdOn", "0"),
     ("CruiseGapBySpdSpd", "25,65,130"),
     ("CruiseGapBySpdGap", "1,2,3,4"),
+    ("CruiseSetwithRoadLimitSpeedEnabled", "0"),
+    ("CruiseSetwithRoadLimitSpeedOffset", "0"),
    ]
   if not PC:
     default_params.append(("LastUpdateTime", datetime.datetime.utcnow().isoformat().encode('utf8')))

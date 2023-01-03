@@ -957,6 +957,18 @@ public:
   }
 };
 
+class CruiseSetwithRoadLimitSpeed : public ToggleControl {
+  Q_OBJECT
+
+public:
+  CruiseSetwithRoadLimitSpeed() : ToggleControl(tr("CruiseSet with RoadLimitSpeed"), tr("Cruise Set with RoadLimitSpeed(Ext Navi)"), "../assets/offroad/icon_shell.png", Params().getBool("CruiseSetwithRoadLimitSpeedEnabled")) {
+    QObject::connect(this, &CruiseSetwithRoadLimitSpeed::toggleFlipped, [=](int state) {
+      bool status = state ? true : false;
+      Params().putBool("CruiseSetwithRoadLimitSpeedEnabled", status);
+    });
+  }
+};
+
 // openpilot preview
 class OpenpilotView : public AbstractControl {
   Q_OBJECT
@@ -2671,4 +2683,19 @@ private:
   void refresh5();
   void refresh6();
   void refresh7();
+};
+
+class CruiseSetwithRoadLimitSpeedOffset : public AbstractControl {
+  Q_OBJECT
+
+public:
+  CruiseSetwithRoadLimitSpeedOffset();
+
+private:
+  QPushButton btnplus;
+  QPushButton btnminus;
+  QLabel label;
+  Params params;
+  
+  void refresh();
 };

@@ -8544,3 +8544,62 @@ void CruiseGapBySpd::refresh7() {
   QStringList list = QString::fromStdString(params.get("CruiseGapBySpdSpd")).split(",");
   label3.setText(list[2]);
 }
+
+CruiseSetwithRoadLimitSpeedOffset::CruiseSetwithRoadLimitSpeedOffset() : AbstractControl(tr("CruiseSet RoadLimitSpd Ofs"), tr("CruiseSet with RoadLimitSpeed Offset Value. This will add offset to navi road limit speed."), "../assets/offroad/icon_shell.png") {
+
+  label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  label.setStyleSheet("color: #e0e879");
+  hlayout->addWidget(&label);
+
+  btnminus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnplus.setStyleSheet(R"(
+    padding: 0;
+    border-radius: 50px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #E4E4E4;
+    background-color: #393939;
+  )");
+  btnminus.setFixedSize(150, 100);
+  btnplus.setFixedSize(150, 100);
+  btnminus.setText("－");
+  btnplus.setText("＋");
+  hlayout->addWidget(&btnminus);
+  hlayout->addWidget(&btnplus);
+
+  QObject::connect(&btnminus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("CruiseSetwithRoadLimitSpeedOffset"));
+    int value = str.toInt();
+    value = value - 1;
+    if (value <= -1) {
+      value = 0;
+    }
+    QString values = QString::number(value);
+    params.put("CruiseSetwithRoadLimitSpeedOffset", values.toStdString());
+    refresh();
+  });
+  
+  QObject::connect(&btnplus, &QPushButton::clicked, [=]() {
+    auto str = QString::fromStdString(params.get("CruiseSetwithRoadLimitSpeedOffset"));
+    int value = str.toInt();
+    value = value + 1;
+    if (value >= 50) {
+      value = 50;
+    }
+    QString values = QString::number(value);
+    params.put("CruiseSetwithRoadLimitSpeedOffset", values.toStdString());
+    refresh();
+  });
+  refresh();
+}
+
+void CruiseSetwithRoadLimitSpeedOffset::refresh() {
+  label.setText(QString::fromStdString(params.get("CruiseSetwithRoadLimitSpeedOffset")));
+}

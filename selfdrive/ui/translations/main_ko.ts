@@ -4098,4 +4098,30 @@
         <translation>차량속도에 따른 크루즈갭 변경기능을 사용합니다.(변경 임계속도값 근처 버퍼(5km/h) 적용 포함)</translation>
     </message>
 </context>
+<context>
+    <name>CruiseSetwithRoadLimitSpeed</name>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="964"/>
+        <source>CruiseSet with RoadLimitSpeed</source>
+        <translation>도로제한속도 크루즈셋</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.h" line="964"/>
+        <source>Cruise Set with RoadLimitSpeed(Ext Navi)</source>
+        <translation>크루즈 세팅 속도를 도로제한속도+Offset 값을 넘지 않도록 설정합니다.</translation>
+    </message>
+</context>
+<context>
+    <name>CruiseSetwithRoadLimitSpeedOffset</name>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="8548"/>
+        <source>CruiseSet RoadLimitSpd Ofs</source>
+        <translation>크루즈 도로제한속도 오프셋</translation>
+    </message>
+    <message>
+        <location filename="../qt/widgets/opkr.cc" line="8548"/>
+        <source>CruiseSet with RoadLimitSpeed Offset Value. This will add offset value to navi road limit speed.</source>
+        <translation>크루즈속도를 도로제한속도에 오프셋 값을 더해 최대 제한 속도를 설정합니다.</translation>
+    </message>
+</context>
 </TS>

@@ -513,12 +513,10 @@ UIPanel::UIPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new RTShieldToggle());
   layout->addWidget(new OSMOfflineUseToggle());
 }
-
 DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   QVBoxLayout *layout = new QVBoxLayout(this);
   layout->setContentsMargins(50, 0, 50, 0);
   layout->setSpacing(30);
-
   // OPKR
   layout->addWidget(new AutoResumeToggle());
   layout->addWidget(new RESCountatStandstill());
@@ -529,6 +527,8 @@ DrivingPanel::DrivingPanel(QWidget *parent) : QFrame(parent) {
   layout->addWidget(new DepartChimeAtResume());
   layout->addWidget(new VariableCruiseToggle());
   layout->addWidget(new VariableCruiseLevel());
+  layout->addWidget(new CruiseSetwithRoadLimitSpeed());
+  layout->addWidget(new CruiseSetwithRoadLimitSpeedOffset());
   layout->addWidget(new CruisemodeSelInit());
   layout->addWidget(new LaneChangeSpeed());
   layout->addWidget(new LaneChangeDelay());
