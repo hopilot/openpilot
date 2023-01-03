@@ -1785,6 +1785,10 @@ struct LiveENaviData {
   distanceToTurn @4 :Float32;
   safetySignCam @5 :Int32;
   connectionAlive @6 :Bool;
+  roadLimitSpeed @7 :Int32;
+  posRoadName @8 :Text;
+  isHighway @9 :Bool;
+  isTunnel @10 :Bool;
 }
 
 struct LiveMapDataDEPRECATED {

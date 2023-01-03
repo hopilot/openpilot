@@ -114,6 +114,8 @@ class Controls:
     self.batt_less = params.get_bool("OpkrBattLess")
     self.variable_cruise = params.get_bool('OpkrVariableCruise')
     self.cruise_over_maxspeed = params.get_bool('CruiseOverMaxSpeed')
+    self.cruise_road_limit_spd_enabled = params.get_bool('CruiseSetwithRoadLimitSpeedEnabled')
+    self.cruise_road_limit_spd_offset = int(params.get("CruiseSetwithRoadLimitSpeedOffset", encoding="utf8"))
     self.stock_lkas_on_disengaged_status = params.get_bool('StockLKASEnabled')
     self.no_mdps_mods = params.get_bool('NoSmartMDPS')
 
@@ -353,6 +355,7 @@ class Controls:
       self.map_enabled = Params().get_bool("OpkrMapEnable")
       self.live_sr = Params().get_bool("OpkrLiveSteerRatio")
       self.live_sr_percent = int(Params().get("LiveSteerRatioPercent", encoding="utf8"))
+      self.cruise_road_limit_spd_enabled = Params().get_bool("CruiseSetwithRoadLimitSpeedEnabled")
       # E2ELongAlert
       if Params().get_bool("E2ELong") and self.e2e_long_alert_prev:
         self.events.add(EventName.e2eLongAlert)
@@ -568,6 +571,9 @@ class Controls:
         if self.osm_speedlimit_enabled:
           self.osm_off_spdlimit_init = True
           self.osm_speedlimit = round(self.sm['liveMapData'].speedLimit)
+      elif self.variable_cruise and self.cruise_road_limit_spd_enabled and int(self.v_cruise_kph) != (int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset) and 1 < int(self.sm['liveENaviData'].roadLimitSpeed) < 150:
+        self.v_cruise_kph = int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset
+        self.v_cruise_kph_last = self.v_cruise_kph
       elif CS.driverAcc and self.variable_cruise and self.cruise_over_maxspeed and t_speed <= self.v_cruise_kph < round(CS.vEgo*m_unit):
         self.v_cruise_kph = round(CS.vEgo*m_unit)
         self.v_cruise_kph_last = self.v_cruise_kph
