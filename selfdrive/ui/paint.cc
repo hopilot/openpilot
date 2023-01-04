@@ -354,6 +354,8 @@ static void ui_draw_debug(UIState *s) {
         if (scene.liveENaviData.eopkrsafetydist) ui_print(s, ui_viz_rx, ui_viz_ry+640, "DS:%.0f", scene.liveENaviData.eopkrsafetydist);
         if (scene.liveENaviData.eopkrturninfo) ui_print(s, ui_viz_rx, ui_viz_ry+680, "TI:%d", scene.liveENaviData.eopkrturninfo);
         if (scene.liveENaviData.eopkrdisttoturn) ui_print(s, ui_viz_rx, ui_viz_ry+720, "DT:%.0f", scene.liveENaviData.eopkrdisttoturn);
+        if (scene.liveENaviData.eopkrroadlimitspeed > 0 && scene.liveENaviData.eopkrroadlimitspeed < 200) ui_print(s, ui_viz_rx, ui_viz_ry+760, "RS:%d", scene.liveENaviData.eopkrroadlimitspeed);
+        if (scene.liveENaviData.eopkrishighway || scene.liveENaviData.eopkristunnel) ui_print(s, ui_viz_rx, ui_viz_ry+720, "H:%d/T:%d", scene.liveENaviData.eopkrishighway, scene.liveENaviData.eopkristunnel);
       } else if (scene.map_is_running) {
         if (scene.liveNaviData.opkrroadsign) ui_print(s, ui_viz_rx, ui_viz_ry+560, "RS:%d", scene.liveNaviData.opkrroadsign);
         if (scene.liveNaviData.opkrspeedsign) ui_print(s, ui_viz_rx, ui_viz_ry+600, "CS:%d", scene.liveNaviData.opkrspeedsign);

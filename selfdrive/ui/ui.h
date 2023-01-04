@@ -332,9 +332,13 @@ typedef struct UIScene {
     int eopkrspeedlimit;
     float eopkrsafetydist;
     int eopkrsafetysign;
-    int   eopkrturninfo;
+    int eopkrturninfo;
     float eopkrdisttoturn;
     bool eopkrconalive;
+    int eopkrroadlimitspeed;
+    std::string eopkrposroadname;
+    bool eopkrishighway;
+    bool eopkristunnel;
   } liveENaviData;
 
   struct _LiveMapData

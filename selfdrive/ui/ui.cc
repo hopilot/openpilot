@@ -374,6 +374,10 @@ static void update_state(UIState *s) {
     scene.liveENaviData.eopkrturninfo = lme_data.getTurnInfo();
     scene.liveENaviData.eopkrdisttoturn = lme_data.getDistanceToTurn();
     scene.liveENaviData.eopkrconalive = lme_data.getConnectionAlive();
+    scene.liveENaviData.eopkrroadlimitspeed = lme_data.getRoadLimitSpeed();
+    scene.liveENaviData.eopkrposroadname = lme_data.getPosRoadName();
+    scene.liveENaviData.eopkrishighway = lme_data.getIsHighway();
+    scene.liveENaviData.eopkristunnel = lme_data.getIsTunnel();
   }
   if (sm.updated("liveMapData")) {
     scene.live_map_data = sm["liveMapData"].getLiveMapData();
