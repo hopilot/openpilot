@@ -234,7 +234,7 @@ class CarController():
     self.e2e_standstill = False
     self.e2e_standstill_stat = False
     self.e2e_standstill_timer = 0
-    self.e2e_standstill_count = 0
+    self.e2e_standstill_timer_buf = 0
 
     self.str_log2 = 'MultiLateral'
     if CP.lateralTuning.which() == 'pid':
@@ -732,7 +732,7 @@ class CarController():
       self.e2e_standstill = False
       self.e2e_standstill_stat = False
       self.e2e_standstill_timer = 0
-      self.e2e_standstill_count = 0
+      self.e2e_standstill_timer_buf = 0
     if CS.cruise_buttons == 4:
       self.cancel_counter += 1
       self.auto_res_starting = False
@@ -752,7 +752,7 @@ class CarController():
       self.e2e_standstill = False
       self.e2e_standstill_stat = False
       self.e2e_standstill_timer = 0
-      self.e2e_standstill_count = 0
+      self.e2e_standstill_timer_buf = 0
       if self.res_speed_timer > 0:
         self.res_speed_timer -= 1
         self.auto_res_starting = False
@@ -781,21 +781,20 @@ class CarController():
             self.e2e_standstill = False
             self.e2e_standstill_stat = False
             self.e2e_standstill_timer = 0
-            self.e2e_standstill_count = 0
+            self.e2e_standstill_timer_buf = 0
           elif self.e2e_standstill_stat and self.sm['longitudinalPlan'].e2eX[12] > 30 and self.sm['longitudinalPlan'].stopLine[12] < 10 and CS.clu_Vanz == 0:
             self.e2e_standstill = True
             self.e2e_standstill_stat = False
             self.e2e_standstill_timer = 0
-            self.e2e_standstill_count += 1
-            if self.e2e_standstill_count > 2:
-              self.e2e_standstill = False
+            self.e2e_standstill_timer_buf += 100
           elif 0 < self.sm['longitudinalPlan'].e2eX[12] < 10 and self.sm['longitudinalPlan'].stopLine[12] < 10 and CS.clu_Vanz == 0:
             self.e2e_standstill_timer += 1
-            if self.e2e_standstill_timer > 300:
+            if self.e2e_standstill_timer > (300 + self.e2e_standstill_timer_buf):
               self.e2e_standstill_timer = 101
               self.e2e_standstill_stat = True
           else:
             self.e2e_standstill_timer = 0
+            self.e2e_standstill_timer_buf = 0
         except:
           pass
 
