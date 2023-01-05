@@ -581,8 +581,7 @@ class Controls:
         if self.osm_speedlimit_enabled:
           self.osm_off_spdlimit_init = True
           self.osm_speedlimit = round(self.sm['liveMapData'].speedLimit)
-      elif self.variable_cruise and self.cruise_road_limit_spd_enabled and int(self.v_cruise_kph) != (int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset) and \ 
-       1 < int(self.sm['liveENaviData'].roadLimitSpeed) < 150 and self.cruise_road_limit_spd_enabled_cnt == 2:
+      elif self.variable_cruise and self.cruise_road_limit_spd_enabled and int(self.v_cruise_kph) != (int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset) and 1 < int(self.sm['liveENaviData'].roadLimitSpeed) < 150 and self.cruise_road_limit_spd_enabled_cnt == 2:
         self.v_cruise_kph = int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset
         self.v_cruise_kph_last = self.v_cruise_kph
       elif CS.driverAcc and self.variable_cruise and self.cruise_over_maxspeed and t_speed <= self.v_cruise_kph < round(CS.vEgo*m_unit):
