@@ -124,8 +124,8 @@ def navid_thread(end_event, nv_queue):
       navi_msg.liveENaviData.currentLinkAngle = int(current_link_angle)
       navi_msg.liveENaviData.nextLinkAngle = int(next_link_angle)
       navi_msg.liveENaviData.posRoadName = str(pos_road_name)
-      navi_msg.liveENaviData.isHighway = bool(is_highway)
-      navi_msg.liveENaviData.isTunnel = bool(is_tunnel)
+      navi_msg.liveENaviData.isHighway = bool(int(is_highway))
+      navi_msg.liveENaviData.isTunnel = bool(int(is_tunnel))
       pm.send('liveENaviData', navi_msg)
 
     count += 1
