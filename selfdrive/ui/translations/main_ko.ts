@@ -4120,7 +4120,7 @@
     </message>
     <message>
         <location filename="../qt/widgets/opkr.cc" line="8548"/>
-        <source>CruiseSet with RoadLimitSpeed Offset Value. This will add offset value to navi road limit speed.</source>
+        <source>CruiseSet with RoadLimitSpeed Offset Value. This will add offset to navi road limit speed.</source>
         <translation>크루즈속도를 도로제한속도에 오프셋 값을 더해 최대 제한 속도를 설정합니다.</translation>
     </message>
 </context>
