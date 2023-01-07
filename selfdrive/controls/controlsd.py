@@ -119,7 +119,7 @@ class Controls:
     self.stock_lkas_on_disengaged_status = params.get_bool('StockLKASEnabled')
     self.no_mdps_mods = params.get_bool('NoSmartMDPS')
 
-    self.cruise_road_limit_spd_enabled_cnt = 2
+    self.cruise_road_limit_spd_switch = True
 
     # detect sound card presence and ensure successful init
     sounds_available = HARDWARE.get_sound_card_online()
@@ -543,17 +543,11 @@ class Controls:
     if not self.CP.pcmCruise:
       self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled)
     elif self.CP.pcmCruise and CS.cruiseState.enabled:
-      if CS.cruiseButtons == Buttons.SET_DECEL and self.cruise_road_limit_spd_enabled_cnt == 0:
-        self.cruise_road_limit_spd_enabled_cnt = 1
-      elif CS.cruiseButtons == Buttons.RES_ACCEL and self.cruise_road_limit_spd_enabled_cnt == 1:
-        self.cruise_road_limit_spd_enabled_cnt = 2
-
       if self.variable_cruise and CS.cruiseState.modeSel != 0 and self.CP.vCruisekph > t_speed:
         self.v_cruise_kph = self.CP.vCruisekph
         self.v_cruise_kph_last = self.v_cruise_kph
       elif CS.cruiseButtons == Buttons.RES_ACCEL and self.variable_cruise and CS.cruiseState.modeSel != 0 and CS.vSetDis < (self.v_cruise_kph_last - 1):
-        if self.cruise_road_limit_spd_enabled_cnt == 2 and abs(CS.vSetDis - self.v_cruise_kph) > 9 and 29 < self.v_cruise_kph < 255:
-          self.cruise_road_limit_spd_enabled_cnt == 0
+        self.cruise_road_limit_spd_switch = True
         self.v_cruise_kph_set_timer = 30
         self.v_cruise_kph = self.v_cruise_kph_last
         if round(CS.vSetDis)-1 > self.v_cruise_kph:
@@ -563,8 +557,7 @@ class Controls:
           self.osm_off_spdlimit_init = True
           self.osm_speedlimit = round(self.sm['liveMapData'].speedLimit)
       elif CS.cruiseButtons == Buttons.RES_ACCEL and self.variable_cruise and CS.cruiseState.modeSel != 0 and t_speed <= self.v_cruise_kph_last <= round(CS.vEgo*m_unit):
-        if self.cruise_road_limit_spd_enabled_cnt == 2 and abs(CS.vSetDis - self.v_cruise_kph) > 9 and 29 < self.v_cruise_kph < 255:
-          self.cruise_road_limit_spd_enabled_cnt == 0
+        self.cruise_road_limit_spd_switch = True
         self.v_cruise_kph_set_timer = 30
         self.v_cruise_kph = round(CS.vEgo*m_unit)
         if round(CS.vSetDis)-1 > self.v_cruise_kph:
@@ -574,18 +567,18 @@ class Controls:
           self.osm_off_spdlimit_init = True
           self.osm_speedlimit = round(self.sm['liveMapData'].speedLimit)
       elif (CS.cruiseButtons == Buttons.RES_ACCEL and not self.v_cruise_kph_set_timer) or CS.cruiseButtons == Buttons.SET_DECEL:
-        if self.cruise_road_limit_spd_enabled_cnt == 2 and abs(CS.vSetDis - self.v_cruise_kph) > 9 and 29 < self.v_cruise_kph < 255:
-          self.cruise_road_limit_spd_enabled_cnt == 0
+        self.cruise_road_limit_spd_switch = True
         self.v_cruise_kph = round(CS.cruiseState.speed * m_unit)
         self.v_cruise_kph_last = self.v_cruise_kph
         if self.osm_speedlimit_enabled:
           self.osm_off_spdlimit_init = True
           self.osm_speedlimit = round(self.sm['liveMapData'].speedLimit)
-      elif self.variable_cruise and self.cruise_road_limit_spd_enabled and int(self.v_cruise_kph) != (int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset) and 1 < int(self.sm['liveENaviData'].roadLimitSpeed) < 150 and self.cruise_road_limit_spd_enabled_cnt == 2:
-        self.v_cruise_kph = int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset
-        self.v_cruise_kph_last = self.v_cruise_kph
-      elif CS.driverAcc and self.variable_cruise and self.cruise_over_maxspeed and t_speed <= self.v_cruise_kph < round(CS.vEgo*m_unit):
+      elif CS.driverAcc and self.variable_cruise and (self.cruise_over_maxspeed or self.cruise_road_limit_spd_enabled) and t_speed <= self.v_cruise_kph < round(CS.vEgo*m_unit):
+        self.cruise_road_limit_spd_switch = False
         self.v_cruise_kph = round(CS.vEgo*m_unit)
+        self.v_cruise_kph_last = self.v_cruise_kph
+      elif self.variable_cruise and self.cruise_road_limit_spd_enabled and int(self.v_cruise_kph) != (int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset) and 1 < int(self.sm['liveENaviData'].roadLimitSpeed) < 150 and self.cruise_road_limit_spd_switch:
+        self.v_cruise_kph = int(self.sm['liveENaviData'].roadLimitSpeed) + self.cruise_road_limit_spd_offset
         self.v_cruise_kph_last = self.v_cruise_kph
       elif self.variable_cruise and CS.cruiseState.modeSel != 0 and self.osm_speedlimit_enabled and self.osm_off_spdlimit_init:
         osm_speedlimit_ = round(self.sm['liveMapData'].speedLimit)
