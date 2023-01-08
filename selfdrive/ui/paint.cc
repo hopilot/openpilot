@@ -162,8 +162,8 @@ static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &le
     } else {
       draw_chevron(s, x, y, sz, nvgRGBA(0, 160, 0, 200), nvgRGBA(0, 160, 0, 200));
     }
-    ui_draw_text(s, x, y + sz/2.0f, radarDist, 80, COLOR_WHITE, "sans-bold");
-    ui_draw_text(s, x, y - sz/2.0f, radarSpeed, 80, COLOR_WHITE, "sans-bold");
+    ui_draw_text(s, x, y - sz/2.0f, radarDist, 80, COLOR_WHITE, "sans-bold");
+    ui_draw_text(s, x, y + sz/2.0f, radarSpeed, 80, COLOR_WHITE, "sans-bold");
   } else {
     ui_draw_circle_image_rotation(s, x, y, sz, "custom_lead_vision", nvgRGBA(0, 0, 0, 0), 0.7f, s->scene.bearingUblox); 
   }
