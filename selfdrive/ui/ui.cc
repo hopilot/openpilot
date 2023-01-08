@@ -356,6 +356,9 @@ static void update_state(UIState *s) {
     scene.liveENaviData.eopkrdisttoturn = lme_data.getDistanceToTurn();
     scene.liveENaviData.eopkrconalive = lme_data.getConnectionAlive();
     scene.liveENaviData.eopkrroadlimitspeed = lme_data.getRoadLimitSpeed();
+    scene.liveENaviData.eopkrlinklength = lme_data.getLinkLength();
+    scene.liveENaviData.eopkrcurrentlinkangle = lme_data.getCurrentLinkAngle();
+    scene.liveENaviData.eopkrnextlinkangle = lme_data.getNextLinkAngle();
     scene.liveENaviData.eopkrposroadname = lme_data.getPosRoadName();
     scene.liveENaviData.eopkrishighway = lme_data.getIsHighway();
     scene.liveENaviData.eopkristunnel = lme_data.getIsTunnel();

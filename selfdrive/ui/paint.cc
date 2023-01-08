@@ -443,12 +443,11 @@ static void ui_draw_debug(UIState *s) {
       if (scene.navi_select == 3) { 
         ui_print(s, ui_viz_rx+200, ui_viz_ry+200, "[TMap]");
         if (scene.liveENaviData.eopkrsafetysign) ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "CS:%d", scene.liveENaviData.eopkrsafetysign);
-        if (scene.liveENaviData.eopkrspeedlimit) ui_print(s, ui_viz_rx+200, ui_viz_ry+280, "SL:%d", scene.liveENaviData.eopkrspeedlimit);
-        if (scene.liveENaviData.eopkrsafetydist) ui_print(s, ui_viz_rx+200, ui_viz_ry+320, "DS:%.0f", scene.liveENaviData.eopkrsafetydist);
-        if (scene.liveENaviData.eopkrturninfo) ui_print(s, ui_viz_rx+200, ui_viz_ry+360, "TI:%d", scene.liveENaviData.eopkrturninfo);
-        if (scene.liveENaviData.eopkrdisttoturn) ui_print(s, ui_viz_rx+200, ui_viz_ry+400, "DT:%.0f", scene.liveENaviData.eopkrdisttoturn);
-        if (scene.liveENaviData.eopkrishighway || scene.liveENaviData.eopkristunnel) ui_print(s, ui_viz_rx+200, ui_viz_ry+440, "H:%d/T:%d", scene.liveENaviData.eopkrishighway, scene.liveENaviData.eopkristunnel);
-        if (scene.liveENaviData.eopkrroadlimitspeed > 0 && scene.liveENaviData.eopkrroadlimitspeed < 200) ui_print(s, ui_viz_rx+200, ui_viz_ry+480, "RS:%d", scene.liveENaviData.eopkrroadlimitspeed);
+        if (scene.liveENaviData.eopkrspeedlimit) ui_print(s, ui_viz_rx+200, ui_viz_ry+280, "SL:%d/DS:%.0f", scene.liveENaviData.eopkrspeedlimit, scene.liveENaviData.eopkrsafetydist);
+        if (scene.liveENaviData.eopkrturninfo) ui_print(s, ui_viz_rx+200, ui_viz_ry+320, "TI:%d/DT:%.0f", scene.liveENaviData.eopkrturninfo, scene.liveENaviData.eopkrdisttoturn);
+        if (scene.liveENaviData.eopkrroadlimitspeed > 0 && scene.liveENaviData.eopkrroadlimitspeed < 200) ui_print(s, ui_viz_rx+200, ui_viz_ry+360, "RS:%d", scene.liveENaviData.eopkrroadlimitspeed);        
+        if (scene.liveENaviData.eopkrishighway || scene.liveENaviData.eopkristunnel) ui_print(s, ui_viz_rx+200, ui_viz_ry+400, "H:%d/T:%d", scene.liveENaviData.eopkrishighway, scene.liveENaviData.eopkristunnel);
+        //if (scene.liveENaviData.eopkrlinklength || scene.liveENaviData.eopkrcurrentlinkangle || scene.liveENaviData.eopkrnextlinkangle) ui_print(s, ui_viz_rx, ui_viz_ry+840, "L:%d/C:%d/N:%d", scene.liveENaviData.eopkrlinklength, scene.liveENaviData.eopkrcurrentlinkangle, scene.liveENaviData.eopkrnextlinkangle);        
       } else if (scene.navi_select == 0 ) { 
         ui_print(s, ui_viz_rx+200, ui_viz_ry+200, "[iNavi]");
         if (scene.liveNaviData.opkrspeedsign) ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "CS:%d", scene.liveNaviData.opkrspeedsign);
