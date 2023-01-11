@@ -120,6 +120,7 @@ class Controls:
     self.no_mdps_mods = params.get_bool('NoSmartMDPS')
 
     self.cruise_road_limit_spd_switch = True
+    self.cruise_road_limit_spd_switch_prev = 0
 
     # detect sound card presence and ensure successful init
     sounds_available = HARDWARE.get_sound_card_online()
@@ -545,6 +546,10 @@ class Controls:
     if not self.CP.pcmCruise:
       self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled)
     elif self.CP.pcmCruise and CS.cruiseState.enabled:
+      if self.cruise_road_limit_spd_enabled and not self.cruise_road_limit_spd_switch and self.cruise_road_limit_spd_switch_prev != 0 and self.cruise_road_limit_spd_switch_prev != self.sm['liveENaviData'].roadLimitSpeed:
+        self.cruise_road_limit_spd_switch = True
+        self.cruise_road_limit_spd_switch_prev = 0
+
       if self.variable_cruise and CS.cruiseState.modeSel != 0 and self.CP.vCruisekph > t_speed:
         self.v_cruise_kph = self.CP.vCruisekph
         self.v_cruise_kph_last = self.v_cruise_kph
@@ -576,6 +581,7 @@ class Controls:
           self.osm_off_spdlimit_init = True
           self.osm_speedlimit = round(self.sm['liveMapData'].speedLimit)
       elif CS.driverAcc and self.variable_cruise and (self.cruise_over_maxspeed or self.cruise_road_limit_spd_enabled) and t_speed <= self.v_cruise_kph < round(CS.vEgo*m_unit):
+        self.cruise_road_limit_spd_switch_prev = self.sm['liveENaviData'].roadLimitSpeed
         self.cruise_road_limit_spd_switch = False
         self.v_cruise_kph = round(CS.vEgo*m_unit)
         self.v_cruise_kph_last = self.v_cruise_kph
