@@ -2019,7 +2019,7 @@ void LaneChangeDelay::refresh() {
   }
 }
 
-LeftCurvOffset::LeftCurvOffset() : AbstractControl(tr("LeftCurv Offset"), tr("Adjust the position of the vehicle in the curve section. (-value: move the car to the left, +value: move the car to the right)"), "../assets/offroad/icon_shell.png") {
+LeftCurvOffset::LeftCurvOffset() : AbstractControl(tr("LeftCurv Offset"), tr("Adjust the position of the vehicle in the curve section. (+value: move the car to the left, -value: move the car to the right)"), "../assets/offroad/icon_shell.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label.setStyleSheet("color: #e0e879");
@@ -2078,7 +2078,7 @@ void LeftCurvOffset::refresh() {
   label.setText(QString::fromStdString(params.get("LeftCurvOffsetAdj")));
 }
 
-RightCurvOffset::RightCurvOffset() : AbstractControl(tr("RightCurv Offset"), tr("Adjust the position of the vehicle in the curve section. (-value: move the car to the left, +value: move the car to the right)"), "../assets/offroad/icon_shell.png") {
+RightCurvOffset::RightCurvOffset() : AbstractControl(tr("RightCurv Offset"), tr("Adjust the position of the vehicle in the curve section. (+value: move the car to the left, -value: move the car to the right)"), "../assets/offroad/icon_shell.png") {
 
   label.setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label.setStyleSheet("color: #e0e879");

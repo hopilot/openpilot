@@ -1823,7 +1823,7 @@
     <message>
         <location filename="../qt/widgets/opkr.cc" line="2022"/>
         <source>Adjust the position of the vehicle in the curve section. (-value: move the car to the left, +value: move the car to the right)</source>
-        <translation>커브 구간에서 차량의 위치를 조정합니다(-값: 차량을 왼쪽으로 이동, +값: 차량을 오른쪽으로 이동)</translation>
+        <translation>커브 구간에서 차량의 위치를 조정합니다(+값: 차량을 왼쪽으로 이동, -값: 차량을 오른쪽으로 이동)</translation>
     </message>
 </context>
 <context>
@@ -1836,7 +1836,7 @@
     <message>
         <location filename="../qt/widgets/opkr.cc" line="2081"/>
         <source>Adjust the position of the vehicle in the curve section. (-value: move the car to the left, +value: move the car to the right)</source>
-        <translation>커브 구간에서 차량의 위치를 조정합니다(-값: 차량을 왼쪽으로 이동, +값: 차량을 오른쪽으로 이동)</translation>
+        <translation>커브 구간에서 차량의 위치를 조정합니다(+값: 차량을 왼쪽으로 이동, -값: 차량을 오른쪽으로 이동)</translation>
     </message>
 </context>
 <context>
