@@ -27,12 +27,6 @@ class LatControlTorque(LatControl):
   def __init__(self, CP, CI):
     super().__init__(CP, CI)
     self.torque_params = CP.lateralTuning.torque
-    self.CP = CP
-
-    self.mpc_frame = 0
-    self.params = Params()
-
-
     self.pid = PIDController(self.torque_params.kp, self.torque_params.ki,
                              k_f=self.torque_params.kf, pos_limit=self.steer_max, neg_limit=-self.steer_max)
     self.torque_from_lateral_accel = CI.torque_from_lateral_accel()                             
@@ -41,6 +35,13 @@ class LatControlTorque(LatControl):
 
     self.live_tune_enabled = False
     self.lt_timer = 0
+
+    self.mpc_frame = 0
+    self.params = Params()
+
+  def reset(self):
+    super().reset()
+    self.pid.reset()
 
   def live_tune(self, CP):
     self.mpc_frame += 1
@@ -56,9 +57,6 @@ class LatControlTorque(LatControl):
 
       self.pid = PIDController(self.torque_params.kp, self.torque_params.ki,
                              k_f=self.torque_params.kf, pos_limit=self.steer_max, neg_limit=-self.steer_max)
-
-
-        
       self.mpc_frame = 0
 
   def update_live_torque_params(self, latAccelFactor, latAccelOffset, friction):
