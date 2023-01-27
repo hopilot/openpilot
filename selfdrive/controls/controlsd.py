@@ -122,6 +122,9 @@ class Controls:
     self.cruise_road_limit_spd_switch = True
     self.cruise_road_limit_spd_switch_prev = 0
 
+    self.desired_curvature = 0.0
+    self.desired_curvature_rate = 0.0    
+
     # detect sound card presence and ensure successful init
     sounds_available = HARDWARE.get_sound_card_online()
 
@@ -744,13 +747,15 @@ class Controls:
 
       # Steering PID loop and lateral MPC
       lat_active = self.active and not CS.steerFaultPermanent and not (CS.vEgo < self.CP.minSteerSpeed and self.no_mdps_mods) and not self.lkas_temporary_off
-      desired_curvature, desired_curvature_rate = get_lag_adjusted_curvature(self.CP, CS.vEgo,
-                                                                             lat_plan.psis,
-                                                                             lat_plan.curvatures,
-                                                                             lat_plan.curvatureRates)
-      actuators.steer, actuators.steeringAngleDeg, lac_log = self.LaC.update(lat_active, CS, self.CP, self.VM, params, self.last_actuators, self.steer_limited,
-                                                                             desired_curvature, desired_curvature_rate, self.sm['liveLocationKalman'])
+      self.desired_curvature, self.desired_curvature_rate = get_lag_adjusted_curvature(self.CP, CS.vEgo,
+                                                                                      lat_plan.psis,
+                                                                                      lat_plan.curvatures,
+                                                                                      lat_plan.curvatureRates)
+      actuators.steer, actuators.steeringAngleDeg, lac_log = self.LaC.update(lat_active, CS, self.CP, self.VM, params, 
+                                                                            self.last_actuators, self.steer_limited, self.desired_curvature, 
+                                                                            self.desired_curvature_rate, self.sm['liveLocationKalman'])
       self.desired_angle_deg = actuators.steeringAngleDeg
+      actuators.curvature = self.desired_curvature
     else:
       lac_log = log.ControlsState.LateralDebugState.new_message()
       if self.sm.rcv_frame['testJoystick'] > 0 and self.active:
