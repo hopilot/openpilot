@@ -386,6 +386,8 @@ struct CarControl {
     longControlState @5: LongControlState;
     oaccel @7: Float32; # m/s^2
 
+    curvature @8: Float32;
+
     enum LongControlState @0xe40f3a917d908282{
       off @0;
       pid @1;
