@@ -17,7 +17,7 @@ QGeoCoordinate to_QGeoCoordinate(const QMapbox::Coordinate &in);
 QMapbox::CoordinatesCollections model_to_collection(
   const cereal::LiveLocationKalman::Measurement::Reader &calibratedOrientationECEF,
   const cereal::LiveLocationKalman::Measurement::Reader &positionECEF,
-  const cereal::XYZTData::Reader &line);
+  const cereal::ModelDataV2::XYZTData::Reader &line);
 QMapbox::CoordinatesCollections coordinate_to_collection(QMapbox::Coordinate c);
 QMapbox::CoordinatesCollections coordinate_list_to_collection(QList<QGeoCoordinate> coordinate_list);
 

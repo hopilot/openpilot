@@ -766,17 +766,6 @@ struct ControlsState @0x97ff69c53601abf1 {
   steeringAngleDesiredDegDEPRECATED @29 :Float32;
 }
 
-# All SI units and in device frame
-struct XYZTData {
-  x @0 :List(Float32);
-  y @1 :List(Float32);
-  z @2 :List(Float32);
-  t @3 :List(Float32);
-  xStd @4 :List(Float32);
-  yStd @5 :List(Float32);
-  zStd @6 :List(Float32);
-}
-
 struct ModelDataV2 {
   frameId @0 :UInt32;
   frameIdExtra @20 :UInt32;
@@ -809,6 +798,17 @@ struct ModelDataV2 {
   stopLine @21 :StopLineData;
 
   meta @12 :MetaData;
+
+  # All SI units and in device frame
+  struct XYZTData {
+    x @0 :List(Float32);
+    y @1 :List(Float32);
+    z @2 :List(Float32);
+    t @3 :List(Float32);
+    xStd @4 :List(Float32);
+    yStd @5 :List(Float32);
+    zStd @6 :List(Float32);
+  }
 
   struct LeadDataV2 {
     prob @0 :Float32; # probability that car is your lead at time t
@@ -986,11 +986,6 @@ struct LongitudinalPlan @0xe00b5b3eba12876c {
     x @0 :List(Float32);
     y @1 :List(Float32);
   }
-}
-
-struct UiPlan {
-  position @0 :XYZTData;
-  accel @1 :List(Float32);
 }
 
 struct LateralPlan @0xe1e9318e2ae8b51e {
@@ -1961,7 +1956,6 @@ struct Event {
     carControl @23 :Car.CarControl;
     longitudinalPlan @24 :LongitudinalPlan;
     lateralPlan @64 :LateralPlan;
-    uiPlan @95 :UiPlan;
     ubloxGnss @34 :UbloxGnss;
     ubloxRaw @39 :Data;
     qcomGnss @31 :QcomGnss;
