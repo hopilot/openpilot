@@ -70,6 +70,7 @@ services = {
   "liveNaviData": (False, 0.),
   "liveENaviData": (False, 0.),
   "liveMapData": (False, 0.),
+  "uiPlan": (True, 20., 40.),    
   # debug
   "testJoystick": (False, 0.),
 }
