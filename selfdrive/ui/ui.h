@@ -190,6 +190,7 @@ typedef struct UIScene {
   int car_valid_status_changed2 = 0;
   float angleSteers;
   float desired_angle_steers;
+  bool gap_by_speed_on;
   float steerRatio;
   bool brakeLights;
   bool steerOverride;

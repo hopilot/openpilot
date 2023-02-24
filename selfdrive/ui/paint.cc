@@ -1172,15 +1172,32 @@ static void bb_ui_draw_measures_right(UIState *s, int bb_x, int bb_y, int bb_w )
     NVGcolor val_color = COLOR_YELLOW_ALPHA(230);
     NVGcolor uom_color2 = COLOR_WHITE_ALPHA(200);
     if (scene.cruise_gap == 1) {
-      uom_color2 = COLOR_RED_ALPHA(240);
+      if (scene.gap_by_speed_on) {
+        uom_color2 = nvgRGBA(0, 180, 255, 220);
+      } else {
+        uom_color2 = COLOR_RED_ALPHA(240);
+      }
       gap = "■";
     } else if (scene.cruise_gap == 2) {
-      uom_color2 = COLOR_OCHRE_ALPHA(220);
+      if (scene.gap_by_speed_on) {
+        uom_color2 = nvgRGBA(0, 180, 255, 220);
+      } else {
+        uom_color2 = COLOR_OCHRE_ALPHA(220);
+      }
       gap = "■■";
     } else if (scene.cruise_gap == 3) {
-      uom_color2 = COLOR_GREEN_ALPHA(200);
+      if (scene.gap_by_speed_on) {
+        uom_color2 = nvgRGBA(0, 180, 255, 220);
+      } else {
+        uom_color2 = COLOR_GREEN_ALPHA(200);
+      }
       gap = "■■■";
     } else {
+      if (scene.gap_by_speed_on) {
+        uom_color2 = nvgRGBA(0, 180, 255, 220);
+      } else {
+        uom_color2 = COLOR_WHITE_ALPHA(200);
+      }
       gap = "■■■■";
     }
     bb_ry +=bb_ui_draw_measure(s, main_val.c_str(), gap.c_str(), scene.charge_meter>0?"MAIN BAT":"GEAR",

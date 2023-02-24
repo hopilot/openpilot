@@ -197,6 +197,10 @@ class CarController():
     self.gap_by_spd_gap2 = False
     self.gap_by_spd_gap3 = False
     self.gap_by_spd_gap4 = False
+    self.gap_by_spd_on_sw = False
+    self.gap_by_spd_on_sw_trg = True
+    self.gap_by_spd_on_sw_cnt = 0
+    self.gap_by_spd_on_sw_cnt2 = 0
 
     self.radar_disabled_conf = self.params.get_bool("RadarDisable")
     self.prev_cruiseButton = 0
@@ -434,6 +438,8 @@ class CarController():
     if CS.cruise_active: # to toggle lkas, hold gap button for 1 sec
       if CS.cruise_buttons == 3:
         self.lkas_onoff_counter += 1
+        self.gap_by_spd_on_sw = True
+        self.gap_by_spd_on_sw_cnt2 = 0
         if self.lkas_onoff_counter > 100:
           self.lkas_onoff_counter = 0
           self.lkas_temp_disabled = not self.lkas_temp_disabled
@@ -445,10 +451,26 @@ class CarController():
         if self.lkas_temp_disabled_timer:
           self.lkas_temp_disabled_timer -= 1
         self.lkas_onoff_counter = 0
+        if self.gap_by_spd_on_sw:
+          self.gap_by_spd_on_sw = False
+          self.gap_by_spd_on_sw_cnt += 1
+          if self.gap_by_spd_on_sw_cnt > 4: #temporary disable of auto gap if you press gap button 5 times quickly.
+            self.gap_by_spd_on_sw_trg = not self.gap_by_spd_on_sw_trg
+            self.gap_by_spd_on_sw_cnt = 0
+            self.gap_by_spd_on_sw_cnt2 = 0
+        elif self.gap_by_spd_on_sw_cnt:
+          self.gap_by_spd_on_sw_cnt2 += 1
+          if self.gap_by_spd_on_sw_cnt2 > 20:
+            self.gap_by_spd_on_sw_cnt = 0
+            self.gap_by_spd_on_sw_cnt2 = 0
     else:
       self.lkas_onoff_counter = 0
       if self.lkas_temp_disabled_timer:
         self.lkas_temp_disabled_timer -= 1
+      self.gap_by_spd_on_sw_cnt = 0
+      self.gap_by_spd_on_sw_cnt2 = 0
+      self.gap_by_spd_on_sw = False
+      self.gap_by_spd_on_sw_trg = True
 
     can_sends = []
 
@@ -576,7 +598,7 @@ class CarController():
         else:
           self.cruise_gap_adjusting = False
       if not self.cruise_gap_adjusting:
-        if not self.gap_by_spd_on:
+        if not self.gap_by_spd_on or not self.gap_by_spd_on_sw_trg:
           if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 and self.try_early_stop and CS.cruiseGapSet != 4.0 and CS.clu_Vanz > 30 and \
            0 < self.sm['longitudinalPlan'].e2eX[12] < 120 and (self.sm['longitudinalPlan'].stopLine[12] < 100 or CS.lead_objspd < -4):
             if not self.try_early_stop_retrieve:
@@ -611,7 +633,7 @@ class CarController():
               self.try_early_stop_retrieve = False
           else:
             self.resume_cnt = 0
-        elif self.gap_by_spd_on:
+        elif self.gap_by_spd_on and self.gap_by_spd_on_sw_trg:
           if 0 < CS.lead_distance <= 149 and CS.lead_objspd < 0 and self.try_early_stop and CS.cruiseGapSet != 4.0 and CS.clu_Vanz > 30 and \
            0 < self.sm['longitudinalPlan'].e2eX[12] < 120 and (self.sm['longitudinalPlan'].stopLine[12] < 100 or CS.lead_objspd < -4):
             if not self.try_early_stop_retrieve:
@@ -798,7 +820,7 @@ class CarController():
             self.e2e_standstill = True
             self.e2e_standstill_stat = False
             self.e2e_standstill_timer = 0
-            self.e2e_standstill_timer_buf += 100
+            self.e2e_standstill_timer_buf += 300
           elif 0 < self.sm['longitudinalPlan'].e2eX[12] < 10 and self.sm['longitudinalPlan'].stopLine[12] < 10 and CS.clu_Vanz == 0:
             self.e2e_standstill_timer += 1
             if self.e2e_standstill_timer > (300 + self.e2e_standstill_timer_buf):
@@ -1176,7 +1198,7 @@ class CarController():
       # self.to_avoid_lkas_fault_max_frame = int(self.params.get("AvoidLKASFaultMaxFrame", encoding="utf8"))
       # self.e2e_long_enabled = self.params.get_bool("E2ELong")
       # self.stopsign_enabled = self.params.get_bool("StopAtStopSign")
-      self.gap_by_spd_on = self.params.get_bool("CruiseGapBySpdOn")
+      # self.gap_by_spd_on = self.params.get_bool("CruiseGapBySpdOn")
       if self.params.get_bool("OpkrLiveTunePanelEnable"):
         if CS.CP.lateralTuning.which() == 'pid':
           self.str_log2 = 'T={:0.2f}/{:0.3f}/{:0.1f}/{:0.5f}'.format(float(Decimal(self.params.get("PidKp", encoding="utf8"))*Decimal('0.01')), \
@@ -1226,4 +1248,4 @@ class CarController():
 
     self.lkas11_cnt += 1
 
-    return new_actuators, can_sends, safetycam_speed, self.lkas_temp_disabled
+    return new_actuators, can_sends, safetycam_speed, self.lkas_temp_disabled, (self.gap_by_spd_on_sw_trg and self.gap_by_spd_on)
