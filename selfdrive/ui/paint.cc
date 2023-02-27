@@ -458,29 +458,9 @@ static void ui_draw_debug(UIState *s) {
         if (scene.liveNaviData.opkrroadsign) ui_print(s, ui_viz_rx+200, ui_viz_ry+440, "RS:%d", scene.liveNaviData.opkrroadsign);
       } else if (scene.navi_select == 1 ) { 
         ui_print(s, ui_viz_rx+200, ui_viz_ry+200, "[Mappy]");
-        switch(scene.liveNaviData.opkrspeedsign) {
-            case 111:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "오른쪽 급커브"); break;
-            case 112:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "왼쪽 급커브"); break;
-            case 118 || 127:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "어린이 보호구역"); break;
-            case 124:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "과속 방지턱"); break;
-            case 131 || 135 || 150 || 200 || 231:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "과속 단속카메라"); break;
-            case 165:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "구간 속도단속"); break;
-            case 246:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "버스전용차로단속"); break;
-            case 248:
-              ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "교통정보수집"); break;
-            default :
-              break;
-        }
-        // if (scene.liveNaviData.opkrspeedsign) ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "CS:%d", scene.liveNaviData.opkrspeedsign);
-        if (scene.liveNaviData.opkrspeedlimit) ui_print(s, ui_viz_rx+200, ui_viz_ry+280, "속도:%d", scene.liveNaviData.opkrspeedlimit);
-        if (scene.liveNaviData.opkrspeedlimitdist) ui_print(s, ui_viz_rx+200, ui_viz_ry+320, "거리:%.0f", scene.liveNaviData.opkrspeedlimitdist);
+        if (scene.liveNaviData.opkrspeedsign) ui_print(s, ui_viz_rx+200, ui_viz_ry+240, "CS:%d", scene.liveNaviData.opkrspeedsign);
+        if (scene.liveNaviData.opkrspeedlimit) ui_print(s, ui_viz_rx+200, ui_viz_ry+280, "SL:%d", scene.liveNaviData.opkrspeedlimit);
+        if (scene.liveNaviData.opkrspeedlimitdist) ui_print(s, ui_viz_rx+200, ui_viz_ry+320, "DS:%.0f", scene.liveNaviData.opkrspeedlimitdist);
         if (scene.liveNaviData.opkrturninfo) ui_print(s, ui_viz_rx+200, ui_viz_ry+360, "TI:%d", scene.liveNaviData.opkrturninfo);
         if (scene.liveNaviData.opkrdisttoturn) ui_print(s, ui_viz_rx+200, ui_viz_ry+400, "DT:%.0f", scene.liveNaviData.opkrdisttoturn);
         if (scene.liveNaviData.opkrroadsign) ui_print(s, ui_viz_rx+200, ui_viz_ry+440, "RS:%d", scene.liveNaviData.opkrroadsign);
