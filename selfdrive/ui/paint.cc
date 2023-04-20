@@ -115,6 +115,46 @@ static void ui_draw_line(UIState *s, const line_vertices_data &vd, NVGcolor *col
   nvgFill(s->vg);
 }
 
+static void ui_draw_line1(const UIState* s, const QPolygonF& vd, NVGcolor* color, NVGpaint* paint) {
+  if (vd.size() == 0) return;
+
+  nvgBeginPath(s->vg);
+  nvgMoveTo(s->vg, vd.at(0).x(), vd.at(0).y());
+  for (int i = 1; i < vd.size(); i++) {
+      nvgLineTo(s->vg, vd.at(i).x(), vd.at(i).y());
+  }
+  nvgClosePath(s->vg);
+  if (color) {
+      nvgFillColor(s->vg, *color);
+  }
+  else if (paint) {
+      nvgFillPaint(s->vg, *paint);
+  }
+  nvgFill(s->vg);
+}
+
+static void ui_draw_line2(const UIState* s, float x[], float y[], int size, NVGcolor* color, NVGpaint* paint, float stroke=0.0) {
+  nvgBeginPath(s->vg);
+  nvgMoveTo(s->vg, x[0], y[0]);
+  for (int i = 1; i < size; i++) {
+      nvgLineTo(s->vg, x[i], y[i]);
+  }
+  nvgClosePath(s->vg);
+  if (color) {
+      nvgFillColor(s->vg, *color);
+  }
+  else if (paint) {
+      nvgFillPaint(s->vg, *paint);
+  }
+  nvgFill(s->vg);
+
+  if (stroke > 0.0) {
+      nvgStrokeColor(s->vg, COLOR_WHITE);
+      nvgStrokeWidth(s->vg, stroke);
+      nvgStroke(s->vg);
+  }
+}
+
 static void draw_lead(UIState *s, const cereal::RadarState::LeadData::Reader &lead_data, const vertex_data &vd) {
   // Draw lead car indicator
   const float speed = std::max(0.0, (*s->sm)["carState"].getCarState().getVEgo()*(s->scene.is_metric ? 3.6 : 2.2369363));
@@ -199,17 +239,33 @@ static void ui_draw_vision_lane_lines(UIState *s) {
   float red_lvl_line = 0;
   float green_lvl_line = 0;
 
+  int track_vertices_len = scene.track_vertices.length();
+  int alpha = 120;
+  NVGcolor colors[10] = {
+    COLOR_RED_ALPHA(alpha),
+    nvgRGBA(255,153,0, alpha),
+    COLOR_YELLOW_ALPHA(alpha),
+    COLOR_GREEN_ALPHA(alpha),
+    COLOR_BLUE_ALPHA(alpha),
+    nvgRGBA(0,0,128, alpha),
+    nvgRGBA(0x8b,0,0xff, alpha),
+    COLOR_OCHRE_ALPHA(alpha),
+    COLOR_WHITE_ALPHA(alpha),
+    COLOR_BLACK_ALPHA(alpha),
+  };
+
   // paint blindspot path
   NVGcolor color;
-  track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                               COLOR_RED_ALPHA(200), COLOR_RED_ALPHA(50));
+  color = nvgRGBA(255, 215, 0, 150);
+  // track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
+  //                              COLOR_RED_ALPHA(200), COLOR_RED_ALPHA(50));
   if( scene.leftblindspot ) {
-    ui_draw_line(s, scene.lane_line_vertices[1], nullptr, &track_bg);
-    ui_draw_line(s, scene.lane_blindspot_vertices[0], nullptr, &track_bg);
+    //ui_draw_line(s, scene.lane_line_vertices[1], nullptr, &track_bg);
+    ui_draw_line1(s, scene.lane_blindspot_vertices[0], &color, nullptr);
   }
   if( scene.rightblindspot ) {
-    ui_draw_line(s, scene.lane_line_vertices[2], nullptr, &track_bg);
-    ui_draw_line(s, scene.lane_blindspot_vertices[1], nullptr, &track_bg);
+    //ui_draw_line(s, scene.lane_line_vertices[2], nullptr, &track_bg);
+    ui_draw_line1(s, scene.lane_blindspot_vertices[1], &color, nullptr);
   }
 
   if (!scene.lateralPlan.lanelessModeStatus) {
@@ -236,26 +292,49 @@ static void ui_draw_vision_lane_lines(UIState *s) {
     }
   }
 
-  // paint path
+  float x[6], y[6];
   if (scene.controls_state.getEnabled() && scene.comma_stock_ui != 1) {
-    if (steerOverride) {
-      track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                    COLOR_GREY_ALPHA(100), COLOR_GREY_ALPHA(50));
-    } else if (torque_scale > 230) {    
-        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                    nvgRGBA(red_lvl, green_lvl, 0, 200), nvgRGBA(red_lvl, green_lvl, 0, 70)); 
-    } else if (!scene.lateralPlan.lanelessModeStatus) {
-        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                    nvgRGBAf(0.2, 0.8, 0.2, 0.8), nvgRGBAf(0.9, 0.9, 0.1, 0.8)); 
-    } else { //laneless status
-        track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
-                                    nvgRGBAf(0.1, 0.6, 0.9, 0.8), nvgRGBAf(0.1, 0.8, 0.5, 0.5)); 
+    for (int i = 0, color_n = 0; i < track_vertices_len / 2 - 2; i += 2) {
+        x[0] = scene.track_vertices[i].x();
+        y[0] = scene.track_vertices[i].y();
+        x[1] = scene.track_vertices[i + 1].x();
+        y[1] = scene.track_vertices[i + 1].y();
+        x[2] = (scene.track_vertices[i + 2].x() + scene.track_vertices[track_vertices_len - i - 3].x()) / 2;
+        y[2] = (scene.track_vertices[i + 2].y() + scene.track_vertices[track_vertices_len - i - 3].y()) / 2;
+        x[3] = scene.track_vertices[track_vertices_len - i - 2].x();
+        y[3] = scene.track_vertices[track_vertices_len - i - 2].y();
+        x[4] = scene.track_vertices[track_vertices_len - i - 1].x();
+        y[4] = scene.track_vertices[track_vertices_len - i - 1].y();
+        x[5] = (x[1] + x[3]) / 2;
+        y[5] = (y[1] + y[3]) / 2;
+
+        ui_draw_line2(s, x, y, 6, &colors[color_n], nullptr, 2.0);
+
+        if (i > 1) color_n++;
+        if (color_n > 6) color_n = 0;
     }
-  } else { // Draw yellow vision track when not enable
-      track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
-                                    COLOR_YELLOW_ALPHA(150), COLOR_ORANGE_ALPHA(70));
   }
-  ui_draw_line(s, scene.track_vertices, nullptr, &track_bg);
+
+  // paint path
+  // if (scene.controls_state.getEnabled() && scene.comma_stock_ui != 1) {
+  //   if (steerOverride) {
+  //     track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
+  //                                   COLOR_GREY_ALPHA(100), COLOR_GREY_ALPHA(50));
+  //   } else if (torque_scale > 230) {    
+  //       track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
+  //                                   nvgRGBA(red_lvl, green_lvl, 0, 200), nvgRGBA(red_lvl, green_lvl, 0, 70)); 
+  //   } else if (!scene.lateralPlan.lanelessModeStatus) {
+  //       track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
+  //                                   nvgRGBAf(0.2, 0.8, 0.2, 0.8), nvgRGBAf(0.9, 0.9, 0.1, 0.8)); 
+  //   } else { //laneless status
+  //       track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h*.4,
+  //                                   nvgRGBAf(0.1, 0.6, 0.9, 0.8), nvgRGBAf(0.1, 0.8, 0.5, 0.5)); 
+  //   }
+  // } else { // Draw yellow vision track when not enable
+  //     track_bg = nvgLinearGradient(s->vg, s->fb_w, s->fb_h, s->fb_w, s->fb_h * .4,
+  //                                   COLOR_YELLOW_ALPHA(150), COLOR_ORANGE_ALPHA(70));
+  // }
+  // ui_draw_line(s, scene.track_vertices, nullptr, &track_bg);
 }
 
 // Draw all world space objects.
