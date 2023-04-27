@@ -393,15 +393,15 @@ class NaviControl():
     elif CS.cruise_set_mode in (1,2,4):
       if CS.out.brakeLights and CS.out.vEgo == 0:
         self.faststart = True
-        var_speed = min(navi_speed, 38 if CS.is_set_speed_in_mph else 60)
+        var_speed = min(navi_speed, 35 if CS.is_set_speed_in_mph else 55)
       elif self.onSpeedBumpControl2 and not self.lead_0.status:
-        var_speed = min(navi_speed, 38 if CS.is_set_speed_in_mph else 60)
+        var_speed = min(navi_speed, 35 if CS.is_set_speed_in_mph else 55)
         self.t_interval = 7
       elif self.onSpeedBumpControl:
         var_speed = min(navi_speed, 20 if CS.is_set_speed_in_mph else 30)
         self.t_interval = 7
       elif self.faststart and CS.CP.vFuture <= 40:
-        var_speed = min(navi_speed, 38 if CS.is_set_speed_in_mph else 60)
+        var_speed = min(navi_speed, 35 if CS.is_set_speed_in_mph else 55)
       elif self.lead_0.status and CS.CP.vFuture >= (min_control_speed-(4 if CS.is_set_speed_in_mph else 7)):
         self.faststart = False
         dRel = int(self.lead_0.dRel)
