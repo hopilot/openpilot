@@ -810,9 +810,6 @@ struct ModelDataV2 {
     zStd @6 :List(Float32);
   }
 
-  # Model perceived motion
-  temporalPose @22 :Pose;
-
   struct LeadDataV2 {
     prob @0 :Float32; # probability that car is your lead at time t
     t @1 :Float32;
@@ -886,13 +883,6 @@ struct ModelDataV2 {
     brake3MetersPerSecondSquaredProbs @4 :List(Float32);
     brake4MetersPerSecondSquaredProbs @5 :List(Float32);
     brake5MetersPerSecondSquaredProbs @6 :List(Float32);
-  }
-
-  struct Pose {
-    trans @0 :List(Float32); # m/s in device frame
-    rot @1 :List(Float32); # rad/s in device frame
-    transStd @2 :List(Float32); # std m/s in device frame
-    rotStd @3 :List(Float32); # std rad/s in device frame
   }
 }
 

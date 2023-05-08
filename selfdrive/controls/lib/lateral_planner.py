@@ -5,7 +5,7 @@ from common.realtime import sec_since_boot, DT_MDL
 from common.numpy_fast import interp
 from selfdrive.swaglog import cloudlog
 from selfdrive.controls.lib.lateral_mpc_lib.lat_mpc import LateralMpc
-from selfdrive.controls.lib.drive_helpers import CONTROL_N, LAT_MPC_N, MIN_SPEED, get_speed_error
+from selfdrive.controls.lib.drive_helpers import CONTROL_N, LAT_MPC_N, MIN_SPEED
 from selfdrive.controls.lib.lane_planner import LanePlanner
 from selfdrive.controls.lib.desire_helper import DesireHelper
 import cereal.messaging as messaging
@@ -104,7 +104,6 @@ class LateralPlanner:
     if sm.frame % 5 == 0:
       self.model_speed = self.curve_speed(sm, v_ego)
     measured_curvature = sm['controlsState'].curvature
-    v_ego_car = sm['carState'].vEgo
 
     # Parse model predictions
     md = sm['modelV2']
@@ -114,10 +113,6 @@ class LateralPlanner:
       self.t_idxs = np.array(md.position.t)
       self.plan_yaw = np.array(md.orientation.z)
       self.plan_yaw_rate = np.array(md.orientationRate.z)
-      self.velocity_xyz = np.column_stack([md.velocity.x, md.velocity.y, md.velocity.z])
-      car_speed = np.linalg.norm(self.velocity_xyz, axis=1) - get_speed_error(md, v_ego_car)
-      self.v_plan = np.clip(car_speed, MIN_SPEED, np.inf)
-      self.v_ego = self.v_plan[0]      
     if len(md.position.xStd) == TRAJECTORY_SIZE:
       self.path_xyz_stds = np.column_stack([md.position.xStd, md.position.yStd, md.position.zStd])
 
